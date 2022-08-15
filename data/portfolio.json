@@ -1,0 +1,71 @@
+{
+  "name": "Yovie Fesya Pratama",
+  "headerTaglineOne": "Hello 👋",
+  "headerTaglineTwo": "I'm Yovie Fesya Pratama",
+  "headerTaglineThree": "Frontend Developer",
+  "headerTaglineFour": " based in Indonesia.",
+  "showBlog": true,
+  "darkMode": true,
+  "socials": [
+    {
+      "id": "1",
+      "title": "Github",
+      "link": "https://github.com/vieyama"
+    },
+    {
+      "id": "2",
+      "title": "LinkedIn",
+      "link": "https://www.linkedin.com/in/yovie-fesya/"
+    },
+    {
+      "id": "3",
+      "title": "Twitter",
+      "link": "https://twitter.com/yoviefp"
+    },
+    { "id": "5", "title": "Email", "link": "mailto:yoviefp@gmail.com" }
+  ],
+  "projects": [
+    {
+      "id": "1",
+      "title": "Edoo Dashboard",
+      "description": "Edoo Dashboard is LMS digital platform",
+      "imageSrc": "https://drive.google.com/uc?export=view&id=1kQmmVPcR29RZoIYLblllhwVCx0m0Q7pH",
+      "url": "https://dashboard.edoo.id/"
+    },
+    {
+      "id": "2",
+      "title": "Edoo Web",
+      "description": "Edoo Web is LMS digital platform",
+      "imageSrc": "https://drive.google.com/uc?export=view&id=1JNTy5TWmtZgsVsariWK3nSPn9RxVB_sf",
+      "url": "https://app.edoo.id/"
+    },
+    {
+      "id": "3",
+      "title": "Minepedia",
+      "description": "E-Catalog by ESDM",
+      "imageSrc": "https://drive.google.com/uc?export=view&id=1wvKwMYfl3Hz84KPQSir56ynHUBICkpFU",
+      "url": "https://minerba.esdm.go.id/minepedia"
+    },
+    {
+      "id": "4",
+      "title": "GREDU",
+      "description": "GREDU is LMS digital Platform",
+      "imageSrc": "https://drive.google.com/uc?export=view&id=1D-xY3QD8q8GhgAsXhCsFsXxYkHR7G6wR",
+      "url": "https://belajar.gredu.co"
+    }
+  ],
+  "services": [
+    {
+      "id": "1",
+      "title": "Frontend Developer",
+      "description": "Build a web page display using javascript (ReactJS/NextJS)"
+    },
+
+    {
+      "id": "3",
+      "title": "Convert Web Design",
+      "description": "Convert web design from figma to coding"
+    }
+  ],
+  "aboutpara": "A person with more than 3 years experience as a frontend developer, and has been in the programming world for more than 5 years. Learning and continuing to learn is the key to my life. Have interest and skills in JavaScript, TypeScript, React.js, Next.Js, CSS, HTML, and other web developer components. Hiking and coffee are my hobbies, playing games and watching anime are my spare time."
+}
