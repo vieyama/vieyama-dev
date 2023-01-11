@@ -29,28 +29,28 @@
       "id": "1",
       "title": "Edoo Dashboard",
       "description": "Edoo Dashboard is LMS digital platform",
-      "imageSrc": "https://drive.google.com/uc?export=view&id=1kQmmVPcR29RZoIYLblllhwVCx0m0Q7pH",
+      "imageSrc": "/images/edoo-dashboard.png",
       "url": "https://dashboard.edoo.id/"
     },
     {
       "id": "2",
       "title": "Edoo Web",
       "description": "Edoo Web is LMS digital platform",
-      "imageSrc": "https://drive.google.com/uc?export=view&id=1JNTy5TWmtZgsVsariWK3nSPn9RxVB_sf",
+      "imageSrc": "/images/edoo-web.png",
       "url": "https://app.edoo.id/"
     },
     {
       "id": "3",
       "title": "Minepedia",
       "description": "E-Catalog by ESDM",
-      "imageSrc": "https://drive.google.com/uc?export=view&id=1wvKwMYfl3Hz84KPQSir56ynHUBICkpFU",
+      "imageSrc": "/images/minepedia.png",
       "url": "https://minerba.esdm.go.id/minepedia"
     },
     {
       "id": "4",
       "title": "GREDU",
       "description": "GREDU is LMS digital Platform",
-      "imageSrc": "https://drive.google.com/uc?export=view&id=1D-xY3QD8q8GhgAsXhCsFsXxYkHR7G6wR",
+      "imageSrc": "/images/gredu.png",
       "url": "https://belajar.gredu.co"
     }
   ],
