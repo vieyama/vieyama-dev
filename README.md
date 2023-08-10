@@ -1,92 +1,97 @@
-# FF-FE-FAP
+# FishFin
 
+FishFin Dashboard Application using NextJS and React
 
+## Features
 
-## Getting started
+- ⚡️ Next.js 13
+- ⚛️ React 18
+- ⛑ TypeScript
+- 💅 Tailwind + Emotion for styling and components
+- 💡 Sentry — Performance monitoring tools for handle capture an errors
+- 📊 Microsoft/Google Analytics — Get Analytics of web applications
+- 📏 ESLint — Find and fix problems in your code
+- 💖 Prettier — Code Formatter for consistent style
+- 🐶 Husky — For running scripts before committing
+- ⚡ Extracts & React Query — Tools for data fetching and state for API. Or you can use GraphQL
+- 📄 Commitizen — To define a standard way of committing rules
+- 🚓 Commitlint — Make sure your commit messages follow the convention
+- 🚫 lint-staged — To run ESLint and Prettier against staged Git files
+- ⚙️ EditorConfig — Maintain consistent coding styles across editors and IDEs
+- 🗂 Path Mapping — Import components or images using the `~` prefix
+- 👻 Jotai for State Management
+- 📝 React Hook Form + Yup for handling nested forms and deep logic for forms validation
+- 🧪 Testing with React Testing Library, Jest, Playwright
+- 🐳 Docker for running this app in your local container
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## Quick Start
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
-
-## Add your files
-
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+You need to clone this repo using this command to cloning or create the app
 
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/fishlog/fishfin/ff-fe-fap.git
-git branch -M main
-git push -uf origin main
+git clone git@gitlab.com:fishlog/fishfin/ff-fe-fap.git
 ```
 
-## Integrate with your tools
+### Development
 
-- [ ] [Set up project integrations](https://gitlab.com/fishlog/fishfin/ff-fe-fap/-/settings/integrations)
+To start the project locally, run:
 
-## Collaborate with your team
+```bash
+yarn dev
+```
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+Open `http://localhost:3000` with your browser to see the result.
 
-## Test and Deploy
+### Requirements
 
-Use the built-in continuous integration in GitLab.
+- Node.js >= 18
+- Yarn 1 (Classic) or pnpm
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing(SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+Instead of installing a node and yarn
+you can push this apps using command `yarn docker-run` to up this app into your local container using docker
 
-***
+### Directory Structure
 
-# Editing this README
+- [`.gitlab`](.gitlab) — Gitlab configuration including the CI workflow.<br>
+- [`.husky`](.husky) — Husky configuration and hooks.<br>
+- [`public`](./public) — Static assets such as robots.txt, images, and favicon.<br>
+- [`src`](./src) — Application source code, including pages, components, styles, etc.
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thank you to [makeareadme.com](https://www.makeareadme.com/) for this template.
+### Scripts
 
-## Suggestions for a good README
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+- `yarn dev` — Starts the application in development mode at `http://localhost:3000`.
+- `yarn build` — Creates an optimized production build of your application.
+- `yarn start` — Starts the application in production mode.
+- `yarn type-check` — Validate code using TypeScript compiler.
+- `yarn lint` — Runs ESLint for all files in the `src` directory.
+- `yarn format` — Runs Prettier for all files in the `src` directory.
+- `yarn commit` — Run commitizen. Alternative to `git commit`.
+- `yarn check:ts` — Run typescript compiler and check type.
+- `yarn docker-run` — Run this app in docker container.
+- `yarn generate-icon-type` - Run this to generate icon type.
 
-## Name
-Choose a self-explaining name for your project.
+### Path Mapping
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+TypeScript are pre-configured with custom path mappings. To import components or files, use the `~` prefix.
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+```ts
+import {Button} from "~/components/Button";
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+// To import images or other files from the public folder
+import Avatar from "~/public/avatar.png";
+```
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+### Note: Switch to yarn for running this app
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+By default, this starter uses yarn, please install yarn first for global engine package, install the dependencies with `yarn`
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+### Merge Request Workflow
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+Every PR should be formatting for example:
+`feat(800): Create login page`
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+This mean you give a explanation what you doing in your code.
+`feat` mean you adding new feature `800` is optional like you explanation backlog jira code
+and `Create login page` is description what you doing.
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
-
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
+And every PR should be reviewed by one person

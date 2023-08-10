@@ -1,0 +1,16 @@
+build/
+dist/
+lib/
+node_modules/
+
+src/assets/
+.snapshots/
+*.min.js
+
+# Ignore unit test
+.test.tsx
+coverage/
+
+next-i18next.config.js
+next.config.js
+commitlint.config.js
