@@ -11,9 +11,23 @@ module.exports = {
     fontFamily: {
       sans: ["Inter"],
     },
+    fontSize: {
+      "heading-1": ['26px', '39px'],
+      "heading-2": ['24px', '36px'],
+      "heading-3": ['22px', '33px'],
+      "sub-header-1": ['20px', '30px'],
+      "sub-header-2": ['18px', '27px'],
+      "body-text-1": ['14px', '21px'],
+      "body-text-2": ['12px', '18px'],
+      "caption-1": ['10px', '15px'],
+      "caption-2": ['8px', '12px']
+    },
+    minHeight: {
+      sidebar: '90vh'
+    },
     extend: {
       colors: {
-        background:"#FBFBFB",
+        background: "#FBFBFB",
         blue: {
           50: "#F0F5FF",
           100: "#CFDFFF",
@@ -110,10 +124,47 @@ module.exports = {
           800: "#46007D",
           900: "#2F0055",
         },
+        black: "#1C1C1C",
+        white: "#FFFFFF",
+
+        // primary
+        "primary-blue": "#254E9C",
+        "primary-yellow": "#EBB105",
+
+        // status
+        error: "#CB3A31",
+        success: "#43936C",
+        warning: "#EF9643",
+        "soft-blue": "#F0F5FF",
+        "soft-yellow": "#FFF8E6",
+        "soft-error": "#FFC8C5",
+        "soft-success": "#BAFFDD",
+        "soft-warning": "#FFE0C3",
+
+        // typography
+        typography: "#212121",
+        stroke: "#EEEEEE",
+      },
+      inset: {
+        '21': '95px',
+      },
+      height: {
+        '21': '88px',
+        '23': '91px',
+      },
+      width: {
+        'modal-xl': "900px",
+        'modal-lg': "576px",
+        'modal-md': "512px",
+        'modal-sm': "448px",
+        'modal-xs': "384px",
       },
       padding: {
         5.5: "22px",
       },
+      screens: {
+        'tablet': '768px'
+      }
     },
   },
   plugins: [],
