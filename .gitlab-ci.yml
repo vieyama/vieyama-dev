@@ -1,0 +1,42 @@
+stages:
+  - scan-dev
+  - build-dev
+  - build-production
+
+scan-dev:
+  stage: scan-dev
+  only:
+      - release/dev
+  script:
+    - docker run --rm -e SONAR_HOST_URL=$SONAR_HOST_URL -e SONAR_LOGIN=$SONAR_TOKEN -v "${PWD}:/usr/src" sonarsource/sonar-scanner-cli
+  allow_failure: false
+  tags:
+    - docker
+    - docker-build
+
+docker_build-dev:
+  stage: build-dev
+  only:
+    - release/dev
+  script:
+    - docker login registry.gitlab.com -u $IMAGE_REGISTRY_USER -p $IMAGE_REGISTRY_PASSWORD
+    - docker build --progress=plain --rm=true -t $IMAGE_REGISTRY/dev:latest -f deploy/dev/Dockerfile .
+    - docker push $IMAGE_REGISTRY/dev:latest
+    - docker logout
+    - ssh gitlab-runner@$SERVER_ADDRESS 'sh deploy.sh fe'
+  tags:
+    - docker
+    - docker-build
+
+docker_build-production:
+  stage: build-production
+  only:
+    - release/production
+  script:
+    - docker login registry.gitlab.com -u $IMAGE_REGISTRY_USER -p $IMAGE_REGISTRY_PASSWORD
+    - docker build --progress=plain --rm=true --build-arg ENV_PRODUCTION="$ENV_PRODUCTION" -t $IMAGE_REGISTRY/production:latest -f deploy/production/Dockerfile .
+    - docker push $IMAGE_REGISTRY/production:latest
+    - docker logout
+  tags:
+    - docker
+    - docker-build
