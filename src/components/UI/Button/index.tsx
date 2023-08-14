@@ -2,9 +2,8 @@ import * as React from "react";
 
 import {cva, type VariantProps} from "class-variance-authority";
 
-import {cn} from "~/lib/utils";
-
-import Icon from "../Icon";
+import {Icon} from "~/components/ui";
+import {cn} from "~/utils/tailwind-utils";
 
 import type {ColorIndex} from "~/interfaces/constants/colors";
 import type {IcomoonType} from "~/interfaces/icons/icomoonType";
@@ -26,7 +25,7 @@ const buttonVariants = cva(
         sm: "h-8 rounded-lg py-1 px-5.5",
         md: "h-11 py-2.5 px-5.5",
         lg: "h-11 rounded-lg px-8 text-lg",
-        icon: "h-10 w-10",
+        icon: "h-auto w-auto",
       },
     },
     defaultVariants: {
@@ -76,7 +75,7 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
                 ? "gray400"
                 : getIconColor(variant as string)) as ColorIndex
             }
-            className="mr-1"
+            className={!children ? "mr-0" : "mr-1"}
           />
         )}
         {children}
@@ -86,4 +85,5 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
 );
 Button.displayName = "Button";
 
-export {Button, buttonVariants};
+export {buttonVariants};
+export default Button;
