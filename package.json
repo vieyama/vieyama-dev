@@ -20,7 +20,7 @@
     "push-ngrok": "ngrok http 3000",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "generate-icon-type": "node ./src/components/icon/iconType.ts"
+    "generate-icon-type": "node ./src/components/ui/icon/iconType.ts"
   },
   "lint-staged": {
     "./src/**/*.{ts,js,jsx,tsx}": [
@@ -35,6 +35,7 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.16",
+    "@hookform/resolvers": "^3.2.0",
     "@mantine/hooks": "^6.0.19",
     "@radix-ui/react-dialog": "^1.0.4",
     "@types/node": "20.4.9",
@@ -49,8 +50,9 @@
     "next": "13.4.13",
     "react": "18.2.0",
     "react-dom": "18.2.0",
-    "react-hook-form": "^7.0.0",
-    "tailwind-merge": "^1.14.0"
+    "react-hook-form": "^7.45.4",
+    "tailwind-merge": "^1.14.0",
+    "yup": "^1.2.0"
   },
   "devDependencies": {
     "@commitlint/cli": "^17.7.1",

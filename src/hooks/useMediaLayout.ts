@@ -5,6 +5,7 @@ export const MediaQueryProp = {
   md: "768px",
   lg: "1024px",
   xl: "1280px",
+  "screen-870": "870px",
   "2xl": "1536px",
 };
 

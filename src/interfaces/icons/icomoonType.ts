@@ -1,4 +1,6 @@
 export type IcomoonType =
+  | "eye-off"
+  | "user"
   | "eyes"
   | "edit"
   | "trash"

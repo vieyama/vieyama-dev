@@ -5,34 +5,28 @@ import {useAtom} from "jotai";
 import Image from "next/image";
 
 import {Button, Drawer, Icon} from "~/components/ui";
-import {useMediaLayout} from "~/hooks/useMediaLayout";
-import {drawerAtom, hideSidebarAtom} from "~/state/drawer";
+import {drawerAtom} from "~/state/drawer";
 
 import SidebarComponent from "../sidebar/sidebar";
 
 const Header = () => {
   const [drawer, setDrawer] = useAtom(drawerAtom);
-  const [hideSidebar, setHideSidebar] = useAtom(hideSidebarAtom);
-  const isTablet = useMediaLayout("md");
 
   return (
     <>
-      <div className="absolute z-50 flex h-23 w-screen items-center justify-between bg-white px-8 py-6 drop-shadow-md">
+      <div className="fixed z-50 flex h-23 w-screen items-center justify-between bg-white px-8 py-6 drop-shadow-md">
         <div className="flex">
           <Button
             variant="transparent"
             size="icon"
-            onClick={() =>
-              isTablet
-                ? setDrawer({isOpen: !drawer.isOpen})
-                : setHideSidebar({isHide: !hideSidebar.isHide})
-            }>
+            className="block screen-870:hidden"
+            onClick={() => setDrawer({isOpen: !drawer.isOpen})}>
             <Icon name="menu" size={39} />
           </Button>
           <Image
             src="/assets/fishfin-logo.svg"
             alt="Fishfin Logo"
-            className="ml-10 hidden md:block"
+            className="ml-10 hidden md:block screen-870:ml-0"
             width={142}
             height={39}
           />
