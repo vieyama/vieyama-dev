@@ -1,16 +1,18 @@
 "use client";
 import React from "react";
 
-import {Text} from "~/components/ui";
 import Breadcrumbs from "~/dashboard/components/breadcrumbs";
 
+import Workspace from "./components/workspace";
+
 const WorkspacePage = () => {
+  const breadcrumb = [{label: "Workspace", path: "/workspace"}];
   return (
     <div className="">
       {/* breadcrumb */}
-      <Breadcrumbs />
+      <Breadcrumbs breadcrumb={breadcrumb} />
 
-      <Text>Workspace dashboard</Text>
+      <Workspace />
     </div>
   );
 };

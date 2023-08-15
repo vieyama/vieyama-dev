@@ -45,7 +45,7 @@ const SidebarComponent: FC<SidebarProps> = ({source}) => {
             color={route.url.includes(pathname) ? "blue600" : "black"}
           />
           <span
-            className={`text-base ml-2 ${
+            className={`ml-2 text-base ${
               route.url.includes(pathname) ? "text-blue-600" : "text-black"
             }`}>
             {route.label}

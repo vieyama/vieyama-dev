@@ -20,15 +20,19 @@ const Sidebar = () => {
       <Transition.Child
         as={Fragment}
         enter="transition ease-in-out duration-200 transform"
-        enterFrom="-translate-x-0"
-        enterTo="-translate-x-1"
+        enterFrom="translate-x-0"
+        enterTo="-translate-x-full"
         leave="ease-in duration-200"
-        leaveFrom="translate-x-0"
+        leaveFrom="-translate-x-full"
         leaveTo="translate-x-0">
-        <div
-          className={`relative top-21 z-0 h-full min-h-sidebar w-64 bg-white px-5.5 py-6 drop-shadow-lg`}>
-          <SidebarComponent source="sidebar" />
-        </div>
+        <aside
+          id="default-sidebar"
+          className="fixed left-0 top-21 z-40 h-screen w-64 -translate-x-full transition-transform screen-870:translate-x-0"
+          aria-label="Sidebar">
+          <div className="h-full overflow-y-auto bg-white px-3 py-4 ">
+            <SidebarComponent source="sidebar" />
+          </div>
+        </aside>
       </Transition.Child>
     </Transition>
   );

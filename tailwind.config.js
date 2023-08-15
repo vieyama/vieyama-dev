@@ -11,21 +11,21 @@ module.exports = {
     fontFamily: {
       sans: ["Inter"],
     },
-    fontSize: {
-      "heading-1": ['26px', '39px'],
-      "heading-2": ['24px', '36px'],
-      "heading-3": ['22px', '33px'],
-      "sub-header-1": ['20px', '30px'],
-      "sub-header-2": ['18px', '27px'],
-      "body-text-1": ['14px', '21px'],
-      "body-text-2": ['12px', '18px'],
-      "caption-1": ['10px', '15px'],
-      "caption-2": ['8px', '12px']
-    },
     minHeight: {
       sidebar: '90vh'
     },
     extend: {
+      fontSize: {
+        "heading-1": ['26px', '39px'],
+        "heading-2": ['24px', '36px'],
+        "heading-3": ['22px', '33px'],
+        "sub-header-1": ['20px', '30px'],
+        "sub-header-2": ['18px', '27px'],
+        "body-text-1": ['14px', '21px'],
+        "body-text-2": ['12px', '18px'],
+        "caption-1": ['10px', '15px'],
+        "caption-2": ['8px', '12px']
+      },
       colors: {
         background: "#FBFBFB",
         blue: {
@@ -151,6 +151,7 @@ module.exports = {
       height: {
         '21': '88px',
         '23': '91px',
+        '13': '55px'
       },
       width: {
         'modal-xl': "900px",
@@ -161,10 +162,15 @@ module.exports = {
       },
       padding: {
         5.5: "22px",
+        7.5: "30px"
       },
       screens: {
-        'tablet': '768px'
-      }
+        'screen-870': '870px',
+        'screen-520': '520px'
+      },
+      backgroundImage: {
+        'gradient-auth': 'linear-gradient(209deg, #2A9BD6 0%, #133FA7 100%)'
+      },
     },
   },
   plugins: [],
