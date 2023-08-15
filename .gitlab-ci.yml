@@ -20,7 +20,7 @@ docker_build-dev:
     - release/dev
   script:
     - docker login registry.gitlab.com -u $IMAGE_REGISTRY_USER -p $IMAGE_REGISTRY_PASSWORD
-    - docker build --progress=plain --rm=true -t $IMAGE_REGISTRY/dev:latest -f deploy/dev/Dockerfile .
+    - docker build --progress=plain --rm=true --build-arg ENV_DEVELOPMENT="$ENV_DEVELOPMENT" -t $IMAGE_REGISTRY/dev:latest -f deploy/dev/Dockerfile .
     - docker push $IMAGE_REGISTRY/dev:latest
     - docker logout
     - ssh gitlab-runner@$SERVER_ADDRESS 'sh deploy.sh fe'
