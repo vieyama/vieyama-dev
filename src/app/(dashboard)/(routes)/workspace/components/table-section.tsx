@@ -35,11 +35,11 @@ const TableSection = () => {
           </tr>
         </thead>
         <tbody>
-          {[...Array(10)].map((u, i) => (
+          {[...Array(10)].map((u, key) => (
             <tr
-              key={i}
+              key={key}
               className="border-b bg-white hover:bg-gray-50 dark:border-gray-700 dark:bg-gray-800 dark:hover:bg-gray-600">
-              <td className="px-6 py-4">{i + 1}</td>
+              <td className="px-6 py-4">{key + 1}</td>
               <th
                 scope="row"
                 className="whitespace-nowrap px-6 py-4 text-gray-900">

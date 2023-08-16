@@ -171,6 +171,9 @@ module.exports = {
       backgroundImage: {
         'gradient-auth': 'linear-gradient(209deg, #2A9BD6 0%, #133FA7 100%)'
       },
+      listStyleType: {
+        'lower-latin': 'lower-latin',
+      }
     },
   },
   plugins: [],

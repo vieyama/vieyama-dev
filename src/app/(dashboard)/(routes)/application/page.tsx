@@ -1,8 +1,9 @@
 "use client";
 import React from "react";
 
-import {Text} from "~/components/ui";
 import Breadcrumbs from "~/dashboard/components/breadcrumbs";
+
+import Application from "./components/application";
 
 const ApplicationPage = () => {
   const breadcrumb = [
@@ -10,11 +11,11 @@ const ApplicationPage = () => {
     {label: "Application", path: "/application"},
   ];
   return (
-    <div className="">
+    <div className="min-h-screen">
       {/* breadcrumb */}
       <Breadcrumbs breadcrumb={breadcrumb} />
 
-      <Text>Application dashboard</Text>
+      <Application />
     </div>
   );
 };
