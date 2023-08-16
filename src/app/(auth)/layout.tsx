@@ -7,9 +7,11 @@ import {Text} from "~/components/ui";
 
 const AuthLayout = ({children}: {children: ReactNode}) => {
   return (
-    <div className="grid grid-cols-2">
-      <div className="flex items-center justify-center">{children}</div>
-      <div className="hidden h-screen flex-col justify-between bg-gradient-auth px-[44px] py-[66px] md:flex">
+    <div className="grid grid-cols-1 sm:grid-cols-2">
+      <div className="hidden items-center justify-center sm:flex">
+        {children}
+      </div>
+      <div className="flex h-screen flex-col justify-between bg-gradient-auth px-[44px] py-[66px]">
         <div className="self-end">
           <Image
             src="/assets/auth-illustration.svg"
@@ -33,6 +35,17 @@ const AuthLayout = ({children}: {children: ReactNode}) => {
           height={22}
           alt="Fishfin auth illustration"
         />
+      </div>
+      {/* for mobile */}
+      <div className="grid h-screen bg-transparent py-8 sm:hidden">
+        <Image
+          src="/assets/fishfin-logo.svg"
+          width={145}
+          height={22}
+          alt="Fishfin auth illustration"
+          className="justify-self-center"
+        />
+        {children}
       </div>
     </div>
   );

@@ -32,7 +32,7 @@ const LoginComponent = () => {
   };
 
   return (
-    <div className="flex w-full flex-col px-24">
+    <div className="flex w-full max-w-2xl flex-col px-10 min-[953px]:px-24">
       <Text variant="heading-2" className="mb-11">
         Masuk
       </Text>
