@@ -5,7 +5,7 @@ export default function SiteLayout({children}: {children: React.ReactNode}) {
     <>
       <Header />
       <Sidebar />
-      <main className="min-h-screen bg-background p-4 screen-870:ml-64">
+      <main className="min-h-screen h-full p-4 screen-870:ml-64">
         <div className="mt-24 h-auto">{children}</div>
       </main>
     </>

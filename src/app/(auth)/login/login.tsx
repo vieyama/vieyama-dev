@@ -26,7 +26,7 @@ const LoginComponent = () => {
     setIsLoading(true);
     setTimeout(() => {
       setIsLoading(false);
-      setCookie("accessToken", "whahaha cookies", {maxAge: 60 * 6 * 24});
+      setCookie("accessToken", "whahaha cookies");
       replace("/workspace");
     }, 1000);
   };
