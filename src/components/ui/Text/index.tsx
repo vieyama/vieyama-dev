@@ -25,6 +25,12 @@ const textVariants = cva("", {
       "semi-bold": "font-semibold",
       bold: "font-bold",
     },
+    align: {
+      "text-left": "text-left",
+      "text-right": "text-right",
+      "text-center": "text-center",
+      "text-justify": "text-justify",
+    },
   },
   defaultVariants: {
     variant: "paragraph",
@@ -37,11 +43,19 @@ export interface TextProps extends VariantProps<typeof textVariants> {
   className?: string;
 }
 
-const Text: FC<TextProps> = ({children, variant, weight, className}) => {
+const Text: FC<TextProps> = ({
+  children,
+  variant,
+  weight,
+  align = "text-left",
+  className,
+}) => {
   return (
-    <span className={textVariants({variant, weight, className})}>
-      {children}
-    </span>
+    <div className={`flex ${align}`}>
+      <span className={textVariants({variant, weight, className})}>
+        {children}
+      </span>
+    </div>
   );
 };
 

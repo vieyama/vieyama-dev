@@ -2,8 +2,6 @@
 
 import * as React from "react";
 
-import * as CheckboxPrimitive from "@radix-ui/react-checkbox";
-
 import {randomString} from "~/utils/random-string";
 import {cn} from "~/utils/tailwind-utils";
 
@@ -25,7 +23,7 @@ const Checkbox = React.forwardRef<HTMLInputElement, InputProps>(
           id={randId}
           type="checkbox"
           className={cn(
-            "h-5 w-5 rounded border-gray-300 bg-gray-100 text-blue-600 accent-blue-600 focus:ring-2 focus:ring-blue-500",
+            "h-5 min-h-[20px] w-5 min-w-[20px] rounded border-gray-300 bg-gray-100 text-blue-600 accent-blue-600 focus:ring-2 focus:ring-blue-500",
             className,
           )}
           {...props}
@@ -37,6 +35,6 @@ const Checkbox = React.forwardRef<HTMLInputElement, InputProps>(
     );
   },
 );
-Checkbox.displayName = CheckboxPrimitive.Root.displayName;
+Checkbox.displayName = "Checkbox";
 
 export default Checkbox;

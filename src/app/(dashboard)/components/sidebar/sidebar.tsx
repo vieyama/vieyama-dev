@@ -42,11 +42,11 @@ const SidebarComponent: FC<SidebarProps> = ({source}) => {
           <Icon
             name={route.icon as IcomoonType}
             size={24}
-            color={route.url.includes(pathname) ? "blue600" : "black"}
+            color={pathname.includes(route.url) ? "blue600" : "black"}
           />
           <span
             className={`ml-2 text-base ${
-              route.url.includes(pathname) ? "text-blue-600" : "text-black"
+              pathname.includes(route.url) ? "text-blue-600" : "text-black"
             }`}>
             {route.label}
           </span>

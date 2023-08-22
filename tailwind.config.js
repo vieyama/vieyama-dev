@@ -6,6 +6,7 @@ module.exports = {
     "./components/**/*.{ts,tsx}",
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
+    "./node_modules/flowbite/**/*.js"
   ],
   theme: {
     fontFamily: {
@@ -176,5 +177,6 @@ module.exports = {
       }
     },
   },
-  plugins: [],
+  plugins: [
+    require('@headlessui/tailwindcss')({ prefix: 'ui' }), require('flowbite/plugin')],
 };

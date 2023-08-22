@@ -85,7 +85,7 @@ const Modal: FC<IModal> = ({
                     className={`text-lg font-semibold ${
                       title ? "block" : "hidden"
                     }`}>
-                    Modal Title
+                    {title}
                   </span>
                   <Button
                     className={closable ? "block" : "hidden"}
