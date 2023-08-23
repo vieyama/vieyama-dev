@@ -5,7 +5,7 @@ import type {FieldError} from "react-hook-form";
 
 interface FormItemProps {
   children: ReactNode;
-  error: FieldError | undefined;
+  error?: FieldError;
   label?: string | ReactNode;
   className?: string;
   childClassName?: string;

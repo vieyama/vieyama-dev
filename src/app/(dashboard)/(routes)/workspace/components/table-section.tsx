@@ -106,13 +106,14 @@ const TableSection = () => {
           <Text>Showing</Text>
           <select
             id="states"
+            defaultValue={10}
             className="w-18 block rounded-lg border border-l-2 border-gray-300 border-l-gray-100 p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500">
-            <option selected>5</option>
-            <option value="CA">10</option>
-            <option value="TX">25</option>
-            <option value="VG">50</option>
-            <option value="GE">100</option>
-            <option value="GE">200</option>
+            <option value={5}>5</option>
+            <option value={10}>10</option>
+            <option value={25}>25</option>
+            <option value={50}>50</option>
+            <option value={100}>100</option>
+            <option value={200}>200</option>
           </select>
           <Text>1 - 5 of 20 items</Text>
         </div>
