@@ -7,4 +7,4 @@ export {default as Checkbox} from "./Checkbox";
 export {default as Radio} from "./Radio";
 export {default as RadioGroup} from "./Radio/RadioGroup";
 export {default as Select} from "./Select";
-export {Input, InputPassword, InputNumber} from "./Input";
+export {Input, InputPassword, InputNumber, InputTextArea} from "./Input";

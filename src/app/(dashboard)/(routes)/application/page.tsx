@@ -2,7 +2,7 @@ import React from "react";
 
 import Application from "./components/application";
 
-const ApplicationPage = () => {
+const ApplicationPage = async () => {
   return <Application />;
 };
 

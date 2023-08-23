@@ -86,15 +86,22 @@ const FinancingDataSection = ({
         <div className="flex flex-col gap-4 md:flex-row">
           <select
             className={`block w-full rounded-lg border ${
-              !!errors.paymentMethod ? "border-error" : "border-gray-300"
+              errors.paymentMethod ? "border-error" : "border-gray-300"
             } p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
             {...register("loanPurposes")}
+            defaultValue=""
             placeholder="Tujuan Pinjaman">
-            <option selected>Pilih Tujuan Pinjaman</option>
-            <option value="US">United States</option>
-            <option value="CA">Canada</option>
-            <option value="FR">France</option>
-            <option value="DE">Germany</option>
+            <option value="">Pilih Tujuan Pinjaman</option>
+            <option value="Perdagangan">Perdagangan</option>
+            <option value="Peningkatan Modal Kerja">
+              Peningkatan Modal Kerja
+            </option>
+            <option value="Ekspor/Impor">Ekspor/Impor</option>
+            <option value="Rawat Inap/Medis">Rawat Inap/Medis</option>
+            <option value="Pendidikan">Pendidikan</option>
+            <option value="Perjalanan">Perjalanan</option>
+            <option value="Konsumsi Pribadi">Konsumsi Pribadi</option>
+            <option value="Lainnya">Lainnya</option>
           </select>
         </div>
       </FormItem>
@@ -107,13 +114,14 @@ const FinancingDataSection = ({
         <div className="flex flex-col gap-4 md:flex-row">
           <select
             className={`block w-full rounded-lg border ${
-              !!errors.paymentMethod ? "border-error" : "border-gray-300"
+              errors.storages ? "border-error" : "border-gray-300"
             } p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
             {...register("storages")}
+            defaultValue=""
             placeholder="Storage">
-            <option selected>Pilih Storage</option>
-            <option value="US">Fishlog Cold Storage</option>
-            <option value="CA">Mitra Cold Storage</option>
+            <option value="">Pilih Storage</option>
+            <option value="Fishlog Cold Storage">Fishlog Cold Storage</option>
+            <option value="Mitra Cold Storage">Mitra Cold Storage</option>
           </select>
         </div>
       </FormItem>

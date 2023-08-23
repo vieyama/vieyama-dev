@@ -6,15 +6,44 @@ import {useForm} from "react-hook-form";
 import {Button} from "~/components/ui";
 import {DetailApplicationSchema} from "~/validations/FormApplication";
 
-import {FinancingDataSection} from "./section";
+import {
+  ApplicantDataSection,
+  CompanyAddressDataSection,
+  CompanyDirectionDataSection,
+  FinancingDataSection,
+} from "./section";
+
+import type {DetailApplicationType} from "~/interfaces/form/detailApplication";
 
 const ApplicationDetailsForm = () => {
   const {
+    control,
     register,
     handleSubmit,
     formState: {errors},
-  } = useForm({
+  } = useForm<DetailApplicationType>({
     resolver: yupResolver(DetailApplicationSchema),
+    defaultValues: {
+      companyDirction: [
+        {
+          fullName: "",
+          email: "",
+          ktpNumber: "",
+          pob: "",
+          dob: "",
+          position: "",
+          phone: "",
+          phoneCode: "",
+          shareholding: "",
+          addressById: "",
+          provinceById: "",
+          regencyById: "",
+          districtById: "",
+          villageById: "",
+          postalCodeById: "",
+        },
+      ],
+    },
   });
 
   const onSubmit = (data: object) => {
@@ -24,6 +53,13 @@ const ApplicationDetailsForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <FinancingDataSection register={register} errors={errors} />
+      <ApplicantDataSection register={register} errors={errors} />
+      <CompanyAddressDataSection register={register} errors={errors} />
+      <CompanyDirectionDataSection
+        register={register}
+        errors={errors}
+        control={control}
+      />
       <Button type="submit">Submit</Button>
     </form>
   );
