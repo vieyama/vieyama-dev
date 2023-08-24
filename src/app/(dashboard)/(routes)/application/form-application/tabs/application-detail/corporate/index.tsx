@@ -4,7 +4,7 @@ import {yupResolver} from "@hookform/resolvers/yup";
 import {useForm} from "react-hook-form";
 
 import {Button} from "~/components/ui";
-import {DetailApplicationSchema} from "~/validations/FormApplication";
+import {DetailApplicationCorporateSchema} from "~/validations/FormApplication";
 
 import {
   ApplicantDataSection,
@@ -15,14 +15,14 @@ import {
 
 import type {DetailApplicationType} from "~/interfaces/form/detailApplication";
 
-const ApplicationDetailsForm = () => {
+const ApplicationDetailCorporateForm = () => {
   const {
     control,
     register,
     handleSubmit,
     formState: {errors},
   } = useForm<DetailApplicationType>({
-    resolver: yupResolver(DetailApplicationSchema),
+    resolver: yupResolver(DetailApplicationCorporateSchema),
     defaultValues: {
       companyDirction: [
         {
@@ -65,4 +65,4 @@ const ApplicationDetailsForm = () => {
   );
 };
 
-export default ApplicationDetailsForm;
+export default ApplicationDetailCorporateForm;
