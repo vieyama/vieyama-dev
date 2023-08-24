@@ -69,13 +69,13 @@ const Application = () => {
   const [explanationReaded, explanationHandler] = useDisclosure(false);
   const [policyReaded, policyHandler] = useDisclosure(false);
 
-  const handleCreateApplication = (type: "individual" | "corporate") => {
+  const handleCreateApplication = () => {
     setApplicationTabs([
       ...applicationTabs,
       {name: "application-details", isDone: false},
     ]);
     router.push(
-      `/application/form-application?process=application-details&type=${type}&mitra=${selectedMitra}&payment=${selectedPayment}`,
+      `/application/form-application?process=application-details&type=${selectedMitra}&payment=${selectedPayment}`,
     );
   };
 
@@ -107,20 +107,20 @@ const Application = () => {
               </Disclosure.Button>
               <Disclosure.Panel className="px-4 pb-2 pt-4">
                 <ol className="list-inside list-decimal">
-                  {preparedDocs.map((item, key) => (
-                    <li key={key} className="p-1">
+                  {preparedDocs.map((item) => (
+                    <li key={item.docs} className="p-1">
                       <Text className="pl-3 text-justify">{item.docs}</Text>
                       {item.sub ? (
                         <ol className="list-inside list-lower-latin pl-5">
-                          {item.sub.map((sub, keySub) => (
-                            <li key={keySub} className="p-1">
+                          {item.sub.map((sub) => (
+                            <li key={sub.docs} className="p-1">
                               <Text className="pl-2 text-justify">
                                 {sub.docs}
                               </Text>
                               {sub.sub ? (
                                 <ol className="list-inside list-none pl-5">
-                                  {sub.sub.map((child, keyChild) => (
-                                    <li key={keyChild} className="p-1">
+                                  {sub.sub.map((child) => (
+                                    <li key={child.docs} className="p-1">
                                       <Text className="pl-1 text-justify">
                                         <span className="pr-3">-</span>{" "}
                                         {child.docs}
@@ -156,8 +156,8 @@ const Application = () => {
               </Disclosure.Button>
               <Disclosure.Panel className="px-4 pb-2 pt-4">
                 <ol className="list-inside list-disc">
-                  {needToKnow.map((item, key) => (
-                    <li key={key}>
+                  {needToKnow.map((item) => (
+                    <li key={item}>
                       <Text className="text-justify">{item}</Text>
                     </li>
                   ))}
@@ -268,17 +268,10 @@ const Application = () => {
         </Text>
         <div className="flex w-full flex-col justify-between gap-5 sm:flex-row">
           <Button
-            variant="tertiary"
             className="w-full"
-            onClick={() => handleCreateApplication("individual")}
+            onClick={handleCreateApplication}
             disabled={!explanationReaded || !policyReaded}>
-            Pengajuan Individual
-          </Button>
-          <Button
-            className="w-full"
-            onClick={() => handleCreateApplication("corporate")}
-            disabled={!explanationReaded || !policyReaded}>
-            Pengajuan Perusahaan
+            Kirim
           </Button>
         </div>
       </div>

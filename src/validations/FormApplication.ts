@@ -2,7 +2,7 @@ import * as Yup from "yup";
 
 const requiredMessage = "This field is required.";
 
-const DetailApplicationSchema = Yup.object().shape({
+const DetailApplicationCorporateSchema = Yup.object().shape({
   financingValue: Yup.string().required(requiredMessage),
   tenor: Yup.number().required(requiredMessage).oneOf([1, 2, 3]),
   paymentMethod: Yup.string()
@@ -45,4 +45,4 @@ const DetailApplicationSchema = Yup.object().shape({
     )
     .required(requiredMessage),
 });
-export {DetailApplicationSchema};
+export {DetailApplicationCorporateSchema};

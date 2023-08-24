@@ -33,9 +33,9 @@ const SidebarComponent: FC<SidebarProps> = ({source}) => {
   };
   return (
     <div className="flex flex-col">
-      {routes.map((route, key) => (
+      {routes.map((route) => (
         <Button
-          key={key}
+          key={route.url}
           variant="transparent"
           className="justify-start px-4"
           onClick={() => handleRoute(route.url)}>

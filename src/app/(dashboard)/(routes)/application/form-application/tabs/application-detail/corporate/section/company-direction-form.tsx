@@ -270,22 +270,10 @@ const CompanyDirectionForm: React.FC<{
                 className="flex flex-col gap-4 md:flex-row"
                 childClassName="w-full"
                 labelClassName="md:min-w-[200px] lg:min-w-[240px]">
-                <div className="flex flex-col gap-4 md:flex-row">
-                  <select
-                    className={`block w-full rounded-lg border ${
-                      errors.companyDirction?.[index]?.postalCodeById
-                        ? "border-error"
-                        : "border-gray-300"
-                    } p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
-                    {...register(`companyDirction.${index}.postalCodeById`)}
-                    defaultValue=""
-                    placeholder="Kode Pos">
-                    <option value="">Pilih Kode Pos</option>
-                    <option value="Jawa Tengah">Semarang</option>
-                    <option value="Jawa Barat">Surakarta</option>
-                    <option value="Jawa Timur">Banyumas</option>
-                  </select>
-                </div>
+                <Input
+                  {...register(`companyDirction.${index}.postalCodeById`)}
+                  isError={!!errors.companyDirction?.[index]?.postalCodeById}
+                />
               </FormItem>
             </div>
           </Disclosure.Panel>

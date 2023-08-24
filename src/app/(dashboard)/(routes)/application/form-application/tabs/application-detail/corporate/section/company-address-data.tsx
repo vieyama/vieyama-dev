@@ -1,7 +1,7 @@
 import React from "react";
 
 import FormItem from "~/components/form";
-import {InputTextArea, Text} from "~/components/ui";
+import {Input, InputTextArea, Text} from "~/components/ui";
 
 import type {FieldErrors, UseFormRegister} from "react-hook-form";
 import type {DetailApplicationType} from "~/interfaces/form/detailApplication";
@@ -119,20 +119,10 @@ const CompanyAddressData = ({
         className="flex flex-col gap-4 md:flex-row"
         childClassName="w-full"
         labelClassName="md:min-w-[200px] lg:min-w-[240px]">
-        <div className="flex flex-col gap-4 md:flex-row">
-          <select
-            className={`block w-full rounded-lg border ${
-              errors.companyPostalCode ? "border-error" : "border-gray-300"
-            } p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
-            {...register("companyPostalCode")}
-            defaultValue=""
-            placeholder="Kode Pos">
-            <option value="">Pilih Kode Pos</option>
-            <option value="Jawa Tengah">Semarang</option>
-            <option value="Jawa Barat">Surakarta</option>
-            <option value="Jawa Timur">Banyumas</option>
-          </select>
-        </div>
+        <Input
+          {...register("companyPostalCode")}
+          isError={!!errors.companyPostalCode}
+        />
       </FormItem>
     </div>
   );

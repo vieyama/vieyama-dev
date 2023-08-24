@@ -8,10 +8,12 @@ import {Text} from "~/components/ui";
 import {useMediaLayout} from "~/hooks/useMediaLayout";
 import {applicationTabsAtom} from "~/state/formApplication";
 
-import ApplicationDetailsForm from "./components/form/application-detail";
-import ConfirmationForm from "./components/form/confirmation";
-import ItemDetailsForm from "./components/form/item-detail";
-import RequirementDocumentForm from "./components/form/requirement-document";
+import {
+  ApplicationDetailsForm,
+  ConfirmationForm,
+  ItemDetailsForm,
+  RequirementDocumentForm,
+} from "./tabs";
 
 const FormApplication = () => {
   const searchParams = useSearchParams();

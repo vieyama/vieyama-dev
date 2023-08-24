@@ -22,10 +22,10 @@ const Breadcrumb = ({breadcrumb}: {breadcrumb: BreadcrumbsProps}) => {
 
   const isMobile = useMediaLayout("sm");
   return (
-    <div className="flex gap-x-2">
+    <div className="fixed top-[90px] z-40 flex w-full gap-x-2 bg-background p-5">
       {breadcrumb.map((crumb, i) => {
         return (
-          <div className="flex items-center gap-x-2" key={i}>
+          <div className="flex items-center gap-x-2" key={crumb.path}>
             <Link href={crumb.path} className="hover:underline">
               <Text
                 variant={isMobile ? "body-text-2" : "sub-header-2"}
