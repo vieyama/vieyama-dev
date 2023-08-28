@@ -34,12 +34,16 @@ export interface InputProps
   prefix?: React.ReactNode;
   suffix?: React.ReactNode;
   isError?: boolean;
+  inputWrapperClassName?: string;
 }
 
 const Input = React.forwardRef<HTMLInputElement, InputProps>(
-  ({className, size, prefix, suffix, isError, ...props}, ref) => {
+  (
+    {className, size, prefix, suffix, isError, inputWrapperClassName, ...props},
+    ref,
+  ) => {
     return (
-      <div className="relative">
+      <div className={`relative ${inputWrapperClassName ?? ""}`}>
         <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
           {prefix ?? null}
         </div>
@@ -55,7 +59,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
             }),
           )}
         />
-        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center pr-3.5">
+        <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center">
           {suffix ?? null}
         </div>
       </div>

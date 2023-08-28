@@ -10,6 +10,7 @@ interface FormItemProps {
   className?: string;
   childClassName?: string;
   labelClassName?: string;
+  optional?: boolean;
 }
 
 const FormItem: FC<FormItemProps> = ({
@@ -19,10 +20,16 @@ const FormItem: FC<FormItemProps> = ({
   className,
   childClassName,
   labelClassName,
+  optional = false,
 }) => {
   return (
     <div className={className}>
-      {<div className={labelClassName || ""}>{label}</div> ?? null}
+      {label ? (
+        <div className={labelClassName ?? ""}>
+          {label}{" "}
+          {optional ? <span className="text-gray-500">Opsional</span> : ""}
+        </div>
+      ) : null}
       <div className={childClassName}>
         {children}
         <span className="text-base text-error">{error?.message}</span>

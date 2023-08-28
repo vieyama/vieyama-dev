@@ -12,20 +12,20 @@ import {Button} from "~/components/ui";
 import CompanyDirectionForm from "./company-direction-form";
 
 import type {Control} from "react-hook-form";
-import type {DetailApplicationType} from "~/interfaces/form/detailApplication";
+import type {DetailApplicationCorporateType} from "~/interfaces/form/detailApplication";
 
 const CompanyDirectionData = ({
   errors,
   register,
   control,
 }: {
-  register: UseFormRegister<DetailApplicationType>;
-  errors: FieldErrors<DetailApplicationType>;
-  control: Control<DetailApplicationType>;
+  register: UseFormRegister<DetailApplicationCorporateType>;
+  errors: FieldErrors<DetailApplicationCorporateType>;
+  control: Control<DetailApplicationCorporateType>;
 }) => {
   const {fields, append, remove} = useFieldArray({
     control,
-    name: "companyDirction", // unique name for your Field Array
+    name: "directors", // unique name for your Field Array
   });
   return (
     <div className="mt-10 flex flex-col gap-y-5">
@@ -43,26 +43,26 @@ const CompanyDirectionData = ({
 
       <Button
         type="button"
+        variant="tertiary"
         onClick={() =>
           append({
-            fullName: "",
+            name: "",
             email: "",
-            ktpNumber: "",
+            no_ktp: "",
             pob: "",
             dob: "",
             position: "",
-            phone: "",
+            no_hp: 0,
             phoneCode: "",
-            shareholding: "",
-            addressById: "",
-            provinceById: "",
-            regencyById: "",
-            districtById: "",
-            villageById: "",
-            postalCodeById: "",
+            share_ownership: "",
+            address: "",
+            province: "",
+            city: "",
+            district: "",
+            postal_code: "",
           })
         }>
-        Tambah Pemegang Saham / Direksi
+        + Tambah Pemegang Saham / Direksi
       </Button>
     </div>
   );

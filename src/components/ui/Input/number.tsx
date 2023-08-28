@@ -53,6 +53,9 @@ const InputNumber = forwardRef<HTMLInputElement, InputProps>(
     };
     return (
       <div className="relative">
+        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center rounded-s-lg bg-gray-200 px-4">
+          IDR
+        </div>
         <input
           ref={ref}
           {...props}
@@ -61,7 +64,7 @@ const InputNumber = forwardRef<HTMLInputElement, InputProps>(
           className={cn(
             inputVariants({
               size,
-              className: `${
+              className: `pl-12 ${
                 isError ? "border-2 border-error focus:border-error" : ""
               } ${className}`,
             }),
