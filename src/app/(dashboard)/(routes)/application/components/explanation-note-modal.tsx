@@ -24,6 +24,7 @@ const ExplanationNoteModal: React.FC<ExplanationNoteModalProps> = ({
         onClose={onClose}
         title="Catatan Penjelasan"
         closable={false}
+        className="m-5 max-h-[600px] w-[900px] overflow-y-auto md:max-h-max"
         footer={
           <>
             <Button

@@ -106,19 +106,19 @@ const Application = () => {
                 />
               </Disclosure.Button>
               <Disclosure.Panel className="px-4 pb-2 pt-4">
-                <ol className="list-inside list-decimal">
+                <ol className="list-decimal">
                   {preparedDocs.map((item) => (
                     <li key={item.docs} className="p-1">
                       <Text className="pl-3 text-justify">{item.docs}</Text>
                       {item.sub ? (
-                        <ol className="list-inside list-lower-latin pl-5">
+                        <ol className="list-lower-latin pl-5">
                           {item.sub.map((sub) => (
                             <li key={sub.docs} className="p-1">
                               <Text className="pl-2 text-justify">
                                 {sub.docs}
                               </Text>
                               {sub.sub ? (
-                                <ol className="list-inside list-none pl-5">
+                                <ol className="list-none pl-5">
                                   {sub.sub.map((child) => (
                                     <li key={child.docs} className="p-1">
                                       <Text className="pl-1 text-justify">
@@ -155,7 +155,7 @@ const Application = () => {
                 />
               </Disclosure.Button>
               <Disclosure.Panel className="px-4 pb-2 pt-4">
-                <ol className="list-inside list-disc">
+                <ol className="list-disc">
                   {needToKnow.map((item) => (
                     <li key={item}>
                       <Text className="text-justify">{item}</Text>

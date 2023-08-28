@@ -10,13 +10,13 @@ import type {
   UseFieldArrayRemove,
   UseFormRegister,
 } from "react-hook-form";
-import type {DetailApplicationType} from "~/interfaces/form/detailApplication";
+import type {DetailApplicationCorporateType} from "~/interfaces/form/detailApplication";
 
 const CompanyDirectionForm: React.FC<{
-  field: FieldArrayWithId<DetailApplicationType, "companyDirction", "id">;
+  field: FieldArrayWithId<DetailApplicationCorporateType, "directors", "id">;
   index: number;
-  errors: FieldErrors<DetailApplicationType>;
-  register: UseFormRegister<DetailApplicationType>;
+  errors: FieldErrors<DetailApplicationCorporateType>;
+  register: UseFormRegister<DetailApplicationCorporateType>;
   fieldsLength: number;
   remove: UseFieldArrayRemove;
 }> = ({field, index, errors, register, fieldsLength, remove}) => {
@@ -36,124 +36,114 @@ const CompanyDirectionForm: React.FC<{
           <Disclosure.Panel className="mt-5 flex flex-col gap-5">
             <FormItem
               label="Alamat Lengkap"
-              error={errors.companyDirction?.[index]?.fullName}
+              error={errors.directors?.[index]?.name}
               className="flex flex-col gap-4 md:flex-row"
               childClassName="w-full"
-              labelClassName="md:min-w-[200px] lg:min-w-[240px]">
-              <Input
-                isError={!!errors.companyDirction?.[index]?.fullName}
-                {...register(`companyDirction.${index}.fullName`)}
+              labelClassName="md:min-w-[250px] lg:min-w-[250px]">
+              <InputTextArea
+                isError={!!errors.directors?.[index]?.name}
+                {...register(`directors.${index}.name`)}
               />
             </FormItem>
             <FormItem
               label="No. KTP"
-              error={errors.companyDirction?.[index]?.ktpNumber}
+              error={errors.directors?.[index]?.no_ktp}
               className="flex flex-col gap-4 md:flex-row"
               childClassName="w-full"
-              labelClassName="md:min-w-[200px] lg:min-w-[240px]">
+              labelClassName="md:min-w-[250px] lg:min-w-[250px]">
               <Input
                 type="number"
-                isError={!!errors.companyDirction?.[index]?.ktpNumber}
-                {...register(`companyDirction.${index}.ktpNumber`)}
+                min={0}
+                isError={!!errors.directors?.[index]?.no_ktp}
+                {...register(`directors.${index}.no_ktp`)}
               />
             </FormItem>
             <FormItem
               label="Tempat Lahir"
-              error={errors.companyDirction?.[index]?.pob}
+              error={errors.directors?.[index]?.pob}
               className="flex flex-col gap-4 md:flex-row"
               childClassName="w-full"
-              labelClassName="md:min-w-[200px] lg:min-w-[240px]">
-              <div className="flex flex-col gap-4 md:flex-row">
-                <select
-                  className={`block w-full rounded-lg border ${
-                    errors.companyDirction?.[index]?.pob
-                      ? "border-error"
-                      : "border-gray-300"
-                  } p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
-                  {...register(`companyDirction.${index}.pob`)}
-                  defaultValue=""
-                  placeholder="Tempat Lahir">
-                  <option value="">Pilih Kota</option>
-                  <option value="Bogor">Bogor</option>
-                  <option value="Jakarta">Jakarta</option>
-                  <option value="Bandung">Bandung</option>
-                </select>
-              </div>
+              labelClassName="md:min-w-[250px] lg:min-w-[250px]">
+              <Input
+                isError={!!errors.directors?.[index]?.pob}
+                {...register(`directors.${index}.pob`)}
+              />
             </FormItem>
             <FormItem
               label="Tanggal Lahir"
-              error={errors.companyDirction?.[index]?.ktpNumber}
+              error={errors.directors?.[index]?.dob}
               className="flex flex-col gap-4 md:flex-row"
               childClassName="w-full"
-              labelClassName="md:min-w-[200px] lg:min-w-[240px]">
+              labelClassName="md:min-w-[250px] lg:min-w-[250px]">
               <Input
                 type="date"
-                isError={!!errors.companyDirction?.[index]?.ktpNumber}
-                {...register(`companyDirction.${index}.ktpNumber`)}
+                isError={!!errors.directors?.[index]?.dob}
+                {...register(`directors.${index}.dob`)}
               />
             </FormItem>
             <FormItem
               label="Jabatan"
-              error={errors.companyDirction?.[index]?.position}
+              error={errors.directors?.[index]?.position}
               className="flex flex-col gap-4 md:flex-row"
               childClassName="w-full"
-              labelClassName="md:min-w-[200px] lg:min-w-[240px]">
+              labelClassName="md:min-w-[250px] lg:min-w-[250px]">
               <Input
-                isError={!!errors.companyDirction?.[index]?.position}
-                {...register(`companyDirction.${index}.position`)}
+                isError={!!errors.directors?.[index]?.position}
+                {...register(`directors.${index}.position`)}
               />
             </FormItem>
             <FormItem
               label="No. Handphone"
-              error={errors.companyDirction?.[index]?.phone}
+              error={errors.directors?.[index]?.no_hp}
               className="flex flex-col gap-4 md:flex-row"
               childClassName="w-full"
-              labelClassName="md:min-w-[200px] lg:min-w-[240px]">
+              labelClassName="md:min-w-[250px] lg:min-w-[250px]">
               <div className="flex items-center gap-x-4">
                 <select
                   className={`block w-28 rounded-lg border ${
-                    errors.companyDirction?.[index]?.phoneCode
+                    errors.directors?.[index]?.phoneCode
                       ? "border-error"
                       : "border-gray-300"
                   } p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
-                  {...register(`companyDirction.${index}.phoneCode`)}
+                  {...register(`directors.${index}.phoneCode`)}
                   defaultValue="+62"
                   placeholder="No. Handphone">
                   <option value="+62">+62</option>
                   {dialPhone.map((dial) => (
-                    <option key={dial.code} value={dial.dial_code}>
+                    <option key={dial.id} value={dial.dial_code}>
                       {dial.dial_code}
                     </option>
                   ))}
                 </select>
                 <Input
                   type="number"
-                  isError={!!errors.companyPhone}
-                  {...register(`companyDirction.${index}.phone`)}
+                  min={0}
+                  isError={!!errors.directors?.[index]?.no_hp}
+                  {...register(`directors.${index}.no_hp`)}
                 />
               </div>
             </FormItem>
             <FormItem
               label="Alamat Email"
-              error={errors.companyDirction?.[index]?.email}
+              error={errors.directors?.[index]?.email}
               className="flex flex-col gap-4 md:flex-row"
               childClassName="w-full"
-              labelClassName="md:min-w-[200px] lg:min-w-[240px]">
+              labelClassName="md:min-w-[250px] lg:min-w-[250px]">
               <Input
                 type="email"
-                isError={!!errors.companyDirction?.[index]?.email}
-                {...register(`companyDirction.${index}.email`)}
+                isError={!!errors.directors?.[index]?.email}
+                {...register(`directors.${index}.email`)}
               />
             </FormItem>
             <FormItem
               label="Kepemilikan Saham"
-              error={errors.companyDirction?.[index]?.shareholding}
+              error={errors.directors?.[index]?.share_ownership}
               className="flex flex-col gap-4 md:flex-row"
               childClassName="w-full"
-              labelClassName="md:min-w-[200px] lg:min-w-[240px]">
+              labelClassName="md:min-w-[250px] lg:min-w-[250px]">
               <Input
-                isError={!!errors.companyDirction?.[index]?.shareholding}
-                {...register(`companyDirction.${index}.shareholding`)}
+                isError={!!errors.directors?.[index]?.share_ownership}
+                {...register(`directors.${index}.share_ownership`)}
               />
             </FormItem>
 
@@ -163,29 +153,29 @@ const CompanyDirectionForm: React.FC<{
               </Text>
               <FormItem
                 label="Alamat Lengkap"
-                error={errors.companyDirction?.[index]?.addressById}
+                error={errors.directors?.[index]?.address}
                 className="flex flex-col gap-4 md:flex-row"
                 childClassName="w-full"
-                labelClassName="md:min-w-[200px] lg:min-w-[240px]">
+                labelClassName="md:min-w-[250px] lg:min-w-[250px]">
                 <InputTextArea
-                  isError={!!errors.companyDirction?.[index]?.addressById}
-                  {...register(`companyDirction.${index}.addressById`)}
+                  isError={!!errors.directors?.[index]?.address}
+                  {...register(`directors.${index}.address`)}
                 />
               </FormItem>
               <FormItem
                 label="Provinsi"
-                error={errors.companyDirction?.[index]?.provinceById}
+                error={errors.directors?.[index]?.province}
                 className="flex flex-col gap-4 md:flex-row"
                 childClassName="w-full"
-                labelClassName="md:min-w-[200px] lg:min-w-[240px]">
+                labelClassName="md:min-w-[250px] lg:min-w-[250px]">
                 <div className="flex flex-col gap-4 md:flex-row">
                   <select
                     className={`block w-full rounded-lg border ${
-                      errors.companyDirction?.[index]?.provinceById
+                      errors.directors?.[index]?.province
                         ? "border-error"
                         : "border-gray-300"
                     } p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
-                    {...register(`companyDirction.${index}.provinceById`)}
+                    {...register(`directors.${index}.province`)}
                     defaultValue=""
                     placeholder="Provinsi">
                     <option value="">Pilih Provinsi</option>
@@ -197,18 +187,18 @@ const CompanyDirectionForm: React.FC<{
               </FormItem>
               <FormItem
                 label="Kota"
-                error={errors.companyDirction?.[index]?.regencyById}
+                error={errors.directors?.[index]?.city}
                 className="flex flex-col gap-4 md:flex-row"
                 childClassName="w-full"
-                labelClassName="md:min-w-[200px] lg:min-w-[240px]">
+                labelClassName="md:min-w-[250px] lg:min-w-[250px]">
                 <div className="flex flex-col gap-4 md:flex-row">
                   <select
                     className={`block w-full rounded-lg border ${
-                      errors.companyDirction?.[index]?.regencyById
+                      errors.directors?.[index]?.city
                         ? "border-error"
                         : "border-gray-300"
                     } p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
-                    {...register(`companyDirction.${index}.regencyById`)}
+                    {...register(`directors.${index}.city`)}
                     defaultValue=""
                     placeholder="Kota">
                     <option value="">Pilih Kota</option>
@@ -220,18 +210,18 @@ const CompanyDirectionForm: React.FC<{
               </FormItem>
               <FormItem
                 label="Kecamatan"
-                error={errors.companyDirction?.[index]?.districtById}
+                error={errors.directors?.[index]?.district}
                 className="flex flex-col gap-4 md:flex-row"
                 childClassName="w-full"
-                labelClassName="md:min-w-[200px] lg:min-w-[240px]">
+                labelClassName="md:min-w-[250px] lg:min-w-[250px]">
                 <div className="flex flex-col gap-4 md:flex-row">
                   <select
                     className={`block w-full rounded-lg border ${
-                      errors.companyDirction?.[index]?.districtById
+                      errors.directors?.[index]?.district
                         ? "border-error"
                         : "border-gray-300"
                     } p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
-                    {...register(`companyDirction.${index}.districtById`)}
+                    {...register(`directors.${index}.district`)}
                     defaultValue=""
                     placeholder="Kecamatan">
                     <option value="">Pilih Kecamatan</option>
@@ -241,38 +231,16 @@ const CompanyDirectionForm: React.FC<{
                   </select>
                 </div>
               </FormItem>
-              <FormItem
-                label="Kelurahan"
-                error={errors.companyDirction?.[index]?.villageById}
-                className="flex flex-col gap-4 md:flex-row"
-                childClassName="w-full"
-                labelClassName="md:min-w-[200px] lg:min-w-[240px]">
-                <div className="flex flex-col gap-4 md:flex-row">
-                  <select
-                    className={`block w-full rounded-lg border ${
-                      errors.companyDirction?.[index]?.villageById
-                        ? "border-error"
-                        : "border-gray-300"
-                    } p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
-                    {...register(`companyDirction.${index}.villageById`)}
-                    defaultValue=""
-                    placeholder="Kelurahan">
-                    <option value="">Pilih Kelurahan</option>
-                    <option value="Jawa Tengah">Semarang</option>
-                    <option value="Jawa Barat">Surakarta</option>
-                    <option value="Jawa Timur">Banyumas</option>
-                  </select>
-                </div>
-              </FormItem>
+
               <FormItem
                 label="Kode Pos"
-                error={errors.companyDirction?.[index]?.postalCodeById}
+                error={errors.directors?.[index]?.postal_code}
                 className="flex flex-col gap-4 md:flex-row"
                 childClassName="w-full"
-                labelClassName="md:min-w-[200px] lg:min-w-[240px]">
+                labelClassName="md:min-w-[250px] lg:min-w-[250px]">
                 <Input
-                  {...register(`companyDirction.${index}.postalCodeById`)}
-                  isError={!!errors.companyDirction?.[index]?.postalCodeById}
+                  {...register(`directors.${index}.postal_code`)}
+                  isError={!!errors.directors?.[index]?.postal_code}
                 />
               </FormItem>
             </div>

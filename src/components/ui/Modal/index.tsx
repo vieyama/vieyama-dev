@@ -75,7 +75,7 @@ const Modal: FC<IModal> = ({
           leaveFrom="opacity-100 scale-100"
           leaveTo="opacity-0 scale-95">
           <Dialog.Panel className="fixed inset-0 z-10 overflow-y-auto">
-            <div className="min-h-screen flex h-screen items-center justify-center p-4 sm:p-0">
+            <div className="min-h-screen flex h-screen w-full items-center justify-center p-4 sm:p-0">
               <div className={cn(modalVarians({size, className}))}>
                 <div
                   className={`flex h-10 items-center ${

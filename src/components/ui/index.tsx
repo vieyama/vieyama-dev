@@ -7,4 +7,5 @@ export {default as Checkbox} from "./Checkbox";
 export {default as Radio} from "./Radio";
 export {default as RadioGroup} from "./Radio/RadioGroup";
 export {default as Select} from "./Select";
+export {default as AutoComplete} from "./Autocomplete";
 export {Input, InputPassword, InputNumber, InputTextArea} from "./Input";

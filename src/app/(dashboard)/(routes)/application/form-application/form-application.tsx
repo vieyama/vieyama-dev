@@ -120,9 +120,7 @@ const FormApplication = () => {
         ))}
       </div>
 
-      <div className="bg-white p-6">
-        <Display />
-      </div>
+      <Display />
     </div>
   );
 };
