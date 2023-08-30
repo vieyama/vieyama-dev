@@ -11,4 +11,8 @@
     -webkit-appearance: none;
     margin: 0;
   }
+
+  .react-select [type="text"]:focus {
+    --tw-ring-shadow: 0 0 #000 !important;
+  }
 }

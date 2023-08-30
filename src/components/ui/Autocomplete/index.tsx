@@ -38,7 +38,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
         {filteredOptions.map((option) => (
           <Combobox.Option
             key={option.id}
-            value={option.value}
+            value={option.id}
             className="cursor-pointer p-2 hover:bg-gray-100">
             {option.value}
           </Combobox.Option>
