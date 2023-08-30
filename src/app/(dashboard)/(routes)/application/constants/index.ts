@@ -44,4 +44,55 @@ const needToKnow = [
   "Pemohon harus menyetujui pernyataan berikut sebelum melanjutkan pengajuan aplikasi pembiayaan",
 ];
 
-export {preparedDocs, needToKnow};
+const educationList = [
+  "TIDAK / BELUM SEKOLAH",
+  "SD / SEDERAJAT",
+  "SMP / SEDERAJAT",
+  "SMA / SEDERAJAT",
+  "DIPLOMA I/II",
+  "DIPLOMA III",
+  "DIPLOMA IV / STRATA I",
+  "STRATA II",
+  "STRATA III",
+];
+
+const maritalStatusList = ["Kawin", "Belum Kawin", "Cerai Hidup", "Cerai Mati"];
+
+const businessFieldList = [
+  "Penyedia Sarana Produksi Perikanan",
+  "Pengusaha Makanan & Minuman Siap Saji",
+  "Penjual Eceran (Ikan Beku)",
+  "Penyedia Transportasi berpendingin",
+  "Penyewaan Cold Storage (per satuan berat)",
+  "Penyewaan Cold Storage (per ruang / gedung)",
+  "Perdagangan / Trading Grosir",
+  "Pemrosesan Ikan",
+  "Pengusaha Budidaya",
+  "Penangkapan (Nelayan)",
+  "Exporter",
+  "Importer",
+  "Lainnya",
+];
+
+const loadPurposeList = [
+  "Perdagangan",
+  "Peningkatan Modal Kerja",
+  "Ekspor/Impor",
+  "Rawat Inap/Medis",
+  "Pendidikan",
+  "Perjalanan",
+  "Konsumsi Pribadi",
+  "Lainnya",
+];
+
+const storageList = ["Fishlog Cold Storage", "Mitra Cold Storage"];
+
+export {
+  preparedDocs,
+  needToKnow,
+  educationList,
+  maritalStatusList,
+  businessFieldList,
+  loadPurposeList,
+  storageList,
+};

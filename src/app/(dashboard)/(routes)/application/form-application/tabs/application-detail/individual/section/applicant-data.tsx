@@ -1,5 +1,9 @@
 import React from "react";
 
+import {
+  educationList,
+  maritalStatusList,
+} from "~/app/(dashboard)/(routes)/application/constants";
 import FormItem from "~/components/form";
 import {AutoComplete, Input, Text} from "~/components/ui";
 import {dialPhone, phoneCodeIndonesia} from "~/constants/dialPhones";
@@ -114,33 +118,11 @@ const ApplicantDataSection = ({
             defaultValue=""
             placeholder="Status Kepemilikan Rumah">
             <option value="">Pilih Status Kepemilikan Rumah</option>
-            <option value="Penyedia Sarana Produksi Perikanan">
-              Orang Tua / Keluarga
+            <option value="Milik Sendiri">Milik Sendiri</option>
+            <option value="Milik Orang Tua / Keluarga">
+              Milik Orang Tua / Keluarga
             </option>
-            <option value="Pengusaha Makanan & Minuman Siap Saji">
-              Pengusaha Makanan & Minuman Siap Saji
-            </option>
-            <option value="Penjual Eceran (Ikan Beku)">
-              Penjual Eceran (Ikan Beku)
-            </option>
-            <option value="Penyedia Transportasi berpendingin">
-              Penyedia Transportasi berpendingin
-            </option>
-            <option value="Penyewaan Cold Storage (per satuan berat)">
-              Penyewaan Cold Storage (per satuan berat)
-            </option>
-            <option value="Penyewaan Cold Storage (per ruang / gedung)">
-              Penyewaan Cold Storage (per ruang / gedung)
-            </option>
-            <option value="Perdagangan / Trading Grosir">
-              Perdagangan / Trading Grosir
-            </option>
-            <option value="Pemrosesan Ikan">Pemrosesan Ikan</option>
-            <option value="Pengusaha Budidaya">Pengusaha Budidaya</option>
-            <option value="Penangkapan (Nelayan)">Penangkapan (Nelayan)</option>
-            <option value="Exporter">Exporter</option>
-            <option value="Importer">Importer</option>
-            <option value="Lainnya">Lainnya</option>
+            <option value="Kontrak (Sewa)">Kontrak (Sewa)</option>
           </select>
         </div>
       </FormItem>
@@ -158,7 +140,9 @@ const ApplicantDataSection = ({
                 inputWrapperClassName="w-full"
                 className="w-full rounded-e-none text-end"
               />
-              <div className="flex items-center bg-gray-200 p-1.5">Tahun</div>
+              <div className="flex select-none items-center bg-gray-200 p-1.5">
+                Tahun
+              </div>
             </div>
             <span className="text-base text-error">
               {errors.length_of_stay_year?.message}
@@ -174,7 +158,9 @@ const ApplicantDataSection = ({
                 min={0}
                 className="w-full rounded-e-none text-end"
               />
-              <div className="flex items-center bg-gray-200 p-1.5">Bulan</div>
+              <div className="flex select-none items-center bg-gray-200 p-1.5">
+                Bulan
+              </div>
             </div>
             <span className="text-base text-error">
               {errors.length_of_stay_month?.message}
@@ -198,16 +184,11 @@ const ApplicantDataSection = ({
             defaultValue=""
             placeholder="Pendidikan Terakhir">
             <option value="">Pilih Pendidikan Terkahir</option>
-            <option value="STRATA III">STRATA III</option>
-            <option value="STRATA II">STRATA II</option>
-            <option value="DilpomaIV/Strata I">DilpomaIV/Strata I</option>
-            <option value="Akademi/Diploma III/S. Muda">
-              Akademi/Diploma III/S. Muda
-            </option>
-            <option value="Diploma I/II">Diploma I/II</option>
-            <option value="SLTA/Sederjat">SLTA/Sederjat</option>
-            <option value="SLTP/Sederajat">SLTP/Sederajat</option>
-            <option value="SD/Sederajat">SD/Sederajat</option>
+            {educationList.map((edu) => (
+              <option key={edu} value={edu}>
+                {edu}
+              </option>
+            ))}
           </select>
         </div>
       </FormItem>
@@ -227,10 +208,11 @@ const ApplicantDataSection = ({
             defaultValue=""
             placeholder="Status Perkawinan">
             <option value="">Pilih Status Perkawinan</option>
-            <option value="Kawin">Kawin</option>
-            <option value="Belum Kawin">Belum Kawin</option>
-            <option value="Cerai Hidup">Cerai Hidup</option>
-            <option value="Cerai Mati">Cerai Mati</option>
+            {maritalStatusList.map((marital) => (
+              <option key={marital} value={marital}>
+                {marital}
+              </option>
+            ))}
           </select>
         </div>
       </FormItem>

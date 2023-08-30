@@ -30,7 +30,7 @@ const CompanyDirectionForm: React.FC<{
               Data Pemegang Saham / Direksi #{index + 1}
             </Text>
             <Disclosure.Button>
-              <Icon name={open ? "minus-circle" : "plus-circle"} />
+              <Icon name={open ? "up-solid" : "down-solid"} />
             </Disclosure.Button>
           </div>
           <Disclosure.Panel className="mt-5 flex flex-col gap-5">

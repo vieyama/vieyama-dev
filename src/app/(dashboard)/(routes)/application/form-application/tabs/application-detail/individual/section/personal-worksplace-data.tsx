@@ -1,17 +1,24 @@
 import React from "react";
 
+import {businessFieldList} from "~/app/(dashboard)/(routes)/application/constants";
 import FormItem from "~/components/form";
 import {Input, InputNumber, InputTextArea, Text} from "~/components/ui";
 
-import type {FieldErrors, UseFormRegister} from "react-hook-form";
+import type {
+  FieldErrors,
+  UseFormRegister,
+  UseFormSetValue,
+} from "react-hook-form";
 import type {DetailApplicationIndividualType} from "~/interfaces/form/detailApplication";
 
 const PersonalWorkplaceDataSection = ({
   errors,
   register,
+  setValue,
 }: {
   register: UseFormRegister<DetailApplicationIndividualType>;
   errors: FieldErrors<DetailApplicationIndividualType>;
+  setValue: UseFormSetValue<DetailApplicationIndividualType>;
 }) => {
   return (
     <div className="mt-5 flex flex-col gap-y-5">
@@ -58,33 +65,11 @@ const PersonalWorkplaceDataSection = ({
             defaultValue=""
             placeholder="Bidang Usaha">
             <option value="">Pilih Bidang Usaha</option>
-            <option value="Penyedia Sarana Produksi Perikanan">
-              Penyedia Sarana Produksi Perikanan
-            </option>
-            <option value="Pengusaha Makanan & Minuman Siap Saji">
-              Pengusaha Makanan & Minuman Siap Saji
-            </option>
-            <option value="Penjual Eceran (Ikan Beku)">
-              Penjual Eceran (Ikan Beku)
-            </option>
-            <option value="Penyedia Transportasi berpendingin">
-              Penyedia Transportasi berpendingin
-            </option>
-            <option value="Penyewaan Cold Storage (per satuan berat)">
-              Penyewaan Cold Storage (per satuan berat)
-            </option>
-            <option value="Penyewaan Cold Storage (per ruang / gedung)">
-              Penyewaan Cold Storage (per ruang / gedung)
-            </option>
-            <option value="Perdagangan / Trading Grosir">
-              Perdagangan / Trading Grosir
-            </option>
-            <option value="Pemrosesan Ikan">Pemrosesan Ikan</option>
-            <option value="Pengusaha Budidaya">Pengusaha Budidaya</option>
-            <option value="Penangkapan (Nelayan)">Penangkapan (Nelayan)</option>
-            <option value="Exporter">Exporter</option>
-            <option value="Importer">Importer</option>
-            <option value="Lainnya">Lainnya</option>
+            {businessFieldList.map((business) => (
+              <option key={business} value={business}>
+                {business}
+              </option>
+            ))}
           </select>
         </div>
       </FormItem>
@@ -115,7 +100,9 @@ const PersonalWorkplaceDataSection = ({
                 inputWrapperClassName="w-full"
                 className="w-full rounded-e-none text-end"
               />
-              <div className="flex items-center bg-gray-200 p-1.5">Tahun</div>
+              <div className="flex select-none items-center bg-gray-200 p-1.5">
+                Tahun
+              </div>
             </div>
             <span className="text-base text-error">
               {errors.personal_workplace_length_of_work_year?.message}
@@ -131,7 +118,9 @@ const PersonalWorkplaceDataSection = ({
                 min={0}
                 className="w-full rounded-e-none text-end"
               />
-              <div className="flex items-center bg-gray-200 p-1.5">Bulan</div>
+              <div className="flex select-none items-center bg-gray-200 p-1.5">
+                Bulan
+              </div>
             </div>
             <span className="text-base text-error">
               {errors.personal_workplace_length_of_work_month?.message}
@@ -148,7 +137,9 @@ const PersonalWorkplaceDataSection = ({
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
         <InputNumber
           isError={!!errors.personal_workplace_income}
-          {...register("personal_workplace_income")}
+          onChangeValue={(value) =>
+            setValue("personal_workplace_income", value)
+          }
         />
       </FormItem>
       <FormItem
@@ -160,7 +151,9 @@ const PersonalWorkplaceDataSection = ({
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
         <InputNumber
           isError={!!errors.personal_workplace_other_income}
-          {...register("personal_workplace_other_income")}
+          onChangeValue={(value) =>
+            setValue("personal_workplace_other_income", value)
+          }
         />
       </FormItem>
       <FormItem
@@ -172,7 +165,9 @@ const PersonalWorkplaceDataSection = ({
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
         <InputNumber
           isError={!!errors.personal_workplace_additional_income}
-          {...register("personal_workplace_additional_income")}
+          onChangeValue={(value) =>
+            setValue("personal_workplace_additional_income", value)
+          }
         />
       </FormItem>
     </div>

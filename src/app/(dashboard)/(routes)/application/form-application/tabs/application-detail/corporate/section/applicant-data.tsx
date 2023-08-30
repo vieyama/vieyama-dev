@@ -1,6 +1,7 @@
 "use client";
 import React from "react";
 
+import {businessFieldList} from "~/app/(dashboard)/(routes)/application/constants";
 import FormItem from "~/components/form";
 import {AutoComplete, Input, Text} from "~/components/ui";
 import {phoneCodeIndonesia} from "~/constants/dialPhones";
@@ -100,33 +101,11 @@ const ApplicantDataSection = ({
             defaultValue=""
             placeholder="Bidang Usaha">
             <option value="">Pilih Bidang Usaha</option>
-            <option value="Penyedia Sarana Produksi Perikanan">
-              Penyedia Sarana Produksi Perikanan
-            </option>
-            <option value="Pengusaha Makanan & Minuman Siap Saji">
-              Pengusaha Makanan & Minuman Siap Saji
-            </option>
-            <option value="Penjual Eceran (Ikan Beku)">
-              Penjual Eceran (Ikan Beku)
-            </option>
-            <option value="Penyedia Transportasi berpendingin">
-              Penyedia Transportasi berpendingin
-            </option>
-            <option value="Penyewaan Cold Storage (per satuan berat)">
-              Penyewaan Cold Storage (per satuan berat)
-            </option>
-            <option value="Penyewaan Cold Storage (per ruang / gedung)">
-              Penyewaan Cold Storage (per ruang / gedung)
-            </option>
-            <option value="Perdagangan / Trading Grosir">
-              Perdagangan / Trading Grosir
-            </option>
-            <option value="Pemrosesan Ikan">Pemrosesan Ikan</option>
-            <option value="Pengusaha Budidaya">Pengusaha Budidaya</option>
-            <option value="Penangkapan (Nelayan)">Penangkapan (Nelayan)</option>
-            <option value="Exporter">Exporter</option>
-            <option value="Importer">Importer</option>
-            <option value="Lainnya">Lainnya</option>
+            {businessFieldList.map((business) => (
+              <option key={business} value={business}>
+                {business}
+              </option>
+            ))}
           </select>
         </div>
       </FormItem>

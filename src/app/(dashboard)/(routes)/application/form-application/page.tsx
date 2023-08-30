@@ -52,7 +52,7 @@ const FormApplicationPage = () => {
     },
   ];
 
-  if (applicationType === "po-financing") {
+  if (applicationType === "inventory") {
     tabs.splice(1, 0, {
       name: "item-details",
       label: "Rincian Barang",

@@ -20,7 +20,7 @@ const Application = () => {
   const [explanationModal, explanationModalHandler] = useDisclosure(false);
 
   const [selectedMitra, setSelectedMitra] = useState("corporate");
-  const [selectedPayment, setSelectedPayment] = useState("po-financing");
+  const [selectedPayment, setSelectedPayment] = useState("inventory");
 
   const [explanationReaded, explanationHandler] = useDisclosure(false);
   const [policyReaded, policyHandler] = useDisclosure(false);
@@ -160,6 +160,11 @@ const Application = () => {
             className="flex flex-col gap-2 min-[1000px]:flex-row"
             options={[
               {
+                value: "inventory",
+                label: "Inventory Financing",
+                className: "flex gap-x-3 items-center w-[190px]",
+              },
+              {
                 value: "po-financing",
                 label: "PO Financing",
                 className: "flex gap-x-3 items-center w-[150px]",
@@ -168,11 +173,6 @@ const Application = () => {
                 value: "invoice",
                 label: "Invoice Financing",
                 className: "flex gap-x-3 items-center w-[180px]",
-              },
-              {
-                value: "inventory",
-                label: "Inventory Financing",
-                className: "flex gap-x-3 items-center w-[190px]",
               },
             ]}
           />
@@ -212,7 +212,7 @@ const Application = () => {
           <a
             target="_blank"
             href="https://fishlog.co.id/en/privacy-policy"
-            className="text-blac p-0 px-1 underline underline-offset-4 hover:text-blue-600 hover:underline disabled:bg-transparent"
+            className="p-0 px-1 font-medium text-black underline underline-offset-4 hover:text-blue-600 hover:underline disabled:bg-transparent"
             rel="noopener noreferrer">
             Kebijakan Privasi
           </a>
