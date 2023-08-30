@@ -5,7 +5,7 @@ import {cva, type VariantProps} from "class-variance-authority";
 import {cn} from "~/utils/tailwind-utils";
 
 const inputVariants = cva(
-  "block w-full rounded-lg border focus:border-blue-500 outline-none border-gray-300 bg-white p-2.5 text-base text-gray-900 placeholder:text-gray-400",
+  "block w-full disabled:bg-gray-200 rounded-lg border focus:border-blue-500 outline-none border-gray-300 bg-white p-2.5 text-base text-gray-900 placeholder:text-gray-400",
   {
     variants: {
       extra: {
@@ -44,7 +44,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
   ) => {
     return (
       <div className={`relative ${inputWrapperClassName ?? ""}`}>
-        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
+        <div className=" pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3.5">
           {prefix ?? null}
         </div>
         <input

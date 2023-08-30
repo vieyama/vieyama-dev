@@ -1,4 +1,5 @@
 export type IcomoonType =
+  | "eyes-solid"
   | "down-solid"
   | "up-solid"
   | "cheveron-up-down"
