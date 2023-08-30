@@ -3,7 +3,11 @@ import React from "react";
 import FormItem from "~/components/form";
 import {InputNumber, Radio, Text} from "~/components/ui";
 
-import type {FieldErrors, UseFormRegister} from "react-hook-form";
+import type {
+  FieldErrors,
+  UseFormRegister,
+  UseFormSetValue,
+} from "react-hook-form";
 import type {
   DetailApplicationCorporateType,
   DetailApplicationIndividualType,
@@ -19,6 +23,9 @@ const FinancingDataSection = ({
   errors: FieldErrors<
     DetailApplicationCorporateType | DetailApplicationIndividualType
   >;
+  setValue: UseFormSetValue<
+    DetailApplicationCorporateType | DetailApplicationIndividualType
+  >;
 }) => {
   return (
     <div className="flex flex-col gap-y-5">
@@ -31,10 +38,7 @@ const FinancingDataSection = ({
         className="flex flex-col gap-4 md:flex-row"
         childClassName="w-full"
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-        <InputNumber
-          isError={!!errors.proposed_value}
-          {...register("proposed_value")}
-        />
+        <InputNumber isError={!!errors.proposed_value} />
       </FormItem>
       <FormItem
         label="Tenor"

@@ -47,7 +47,11 @@ const ApplicationDetailIndividualForm = () => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <div className="bg-white p-6">
-        <FinancingDataSection register={register} errors={errors} />
+        <FinancingDataSection
+          register={register}
+          errors={errors}
+          setValue={setValue}
+        />
         <ApplicantDataSection
           register={
             register as UseFormRegister<DetailApplicationIndividualType>
