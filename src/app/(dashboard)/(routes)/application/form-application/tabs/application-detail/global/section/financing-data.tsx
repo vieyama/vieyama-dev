@@ -1,5 +1,9 @@
 import React from "react";
 
+import {
+  loadPurposeList,
+  storageList,
+} from "~/app/(dashboard)/(routes)/application/constants";
 import FormItem from "~/components/form";
 import {InputNumber, Radio, Text} from "~/components/ui";
 
@@ -16,6 +20,7 @@ import type {
 const FinancingDataSection = ({
   errors,
   register,
+  setValue,
 }: {
   register: UseFormRegister<
     DetailApplicationCorporateType | DetailApplicationIndividualType
@@ -38,7 +43,10 @@ const FinancingDataSection = ({
         className="flex flex-col gap-4 md:flex-row"
         childClassName="w-full"
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-        <InputNumber isError={!!errors.proposed_value} />
+        <InputNumber
+          isError={!!errors.proposed_value}
+          onChangeValue={(value) => setValue("proposed_value", value)}
+        />
       </FormItem>
       <FormItem
         label="Tenor"
@@ -103,16 +111,11 @@ const FinancingDataSection = ({
             defaultValue=""
             placeholder="Tujuan Pinjaman">
             <option value="">Pilih Tujuan Pinjaman</option>
-            <option value="Perdagangan">Perdagangan</option>
-            <option value="Peningkatan Modal Kerja">
-              Peningkatan Modal Kerja
-            </option>
-            <option value="Ekspor/Impor">Ekspor/Impor</option>
-            <option value="Rawat Inap/Medis">Rawat Inap/Medis</option>
-            <option value="Pendidikan">Pendidikan</option>
-            <option value="Perjalanan">Perjalanan</option>
-            <option value="Konsumsi Pribadi">Konsumsi Pribadi</option>
-            <option value="Lainnya">Lainnya</option>
+            {loadPurposeList.map((loan) => (
+              <option key={loan} value={loan}>
+                {loan}
+              </option>
+            ))}
           </select>
         </div>
       </FormItem>
@@ -131,8 +134,11 @@ const FinancingDataSection = ({
             defaultValue=""
             placeholder="Storage">
             <option value="">Pilih Storage</option>
-            <option value="Fishlog Cold Storage">Fishlog Cold Storage</option>
-            <option value="Mitra Cold Storage">Mitra Cold Storage</option>
+            {storageList.map((storage) => (
+              <option key={storage} value={storage}>
+                {storage}
+              </option>
+            ))}
           </select>
         </div>
       </FormItem>

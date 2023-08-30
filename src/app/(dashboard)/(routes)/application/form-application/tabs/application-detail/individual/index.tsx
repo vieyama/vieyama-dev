@@ -84,10 +84,16 @@ const ApplicationDetailIndividualForm = () => {
             register as UseFormRegister<DetailApplicationIndividualType>
           }
           errors={errors}
+          setValue={
+            setValue as UseFormSetValue<DetailApplicationIndividualType>
+          }
         />
         <PersonalWorkplaceDataSection
           register={
             register as UseFormRegister<DetailApplicationIndividualType>
+          }
+          setValue={
+            setValue as UseFormSetValue<DetailApplicationIndividualType>
           }
           errors={errors}
         />

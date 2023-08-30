@@ -4,15 +4,21 @@ import FormItem from "~/components/form";
 import {Input, InputNumber, Text} from "~/components/ui";
 import {dialPhone} from "~/constants/dialPhones";
 
-import type {FieldErrors, UseFormRegister} from "react-hook-form";
+import type {
+  FieldErrors,
+  UseFormRegister,
+  UseFormSetValue,
+} from "react-hook-form";
 import type {DetailApplicationIndividualType} from "~/interfaces/form/detailApplication";
 
 const SpouseDataSection = ({
   errors,
   register,
+  setValue,
 }: {
   register: UseFormRegister<DetailApplicationIndividualType>;
   errors: FieldErrors<DetailApplicationIndividualType>;
+  setValue: UseFormSetValue<DetailApplicationIndividualType>;
 }) => {
   return (
     <div className="mt-5 flex flex-col gap-y-5">
@@ -87,6 +93,7 @@ const SpouseDataSection = ({
         <InputNumber
           isError={!!errors.spouse_income}
           {...register("spouse_income")}
+          onChangeValue={(value) => setValue("spouse_income", value)}
         />
       </FormItem>
       <FormItem
