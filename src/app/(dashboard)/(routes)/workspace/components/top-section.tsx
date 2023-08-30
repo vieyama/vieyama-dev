@@ -19,7 +19,7 @@ const TopSection = () => {
       </Button>
       <div className="w-full screen-520:w-auto">
         <Input
-          placeholder="Cari Barang"
+          placeholder="Cari"
           size="lg"
           className=""
           prefix={<Icon name="search" />}

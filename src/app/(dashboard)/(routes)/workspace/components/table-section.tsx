@@ -16,8 +16,8 @@ const TableSection = () => {
   return (
     <>
       <div className="relative mt-6 overflow-x-auto">
-        <table className="w-full text-left text-sm text-gray-500">
-          <thead className="bg-gray-50 text-xs text-gray-700">
+        <table className="w-full text-left text-base text-gray-500">
+          <thead className="bg-gray-50 text-base text-gray-700">
             <tr>
               <th scope="col" className="px-6 py-3">
                 No

@@ -10,61 +10,17 @@ import {Button, Checkbox, Icon, RadioGroup, Text} from "~/components/ui";
 import {applicationTabsAtom} from "~/state/formApplication";
 
 import ExplanationNoteModal from "./explanation-note-modal";
+import {needToKnow, preparedDocs} from "../constants";
 
 const Application = () => {
   const router = useRouter();
-  const preparedDocs = [
-    {
-      docs: "Data Pemohon (Nama, KTP, NPWP, No. Telp)",
-    },
-    {
-      docs: "Data Barang (Nama produk SKU, Ukuran, Kuantitas)",
-    },
-    {
-      docs: "Dokumen Persyaratan:",
-      sub: [
-        {
-          docs: "Untuk Individual",
-          sub: [
-            {docs: "Kartu Keluarga / Buku Nikah (jika Menikah)"},
-            {
-              docs: "Bukti Kepemilikan Rumah (Sertifikat/Akta Jual Beli/PBB/Rekening Listrik)",
-            },
-            {docs: "Nomor Induk Berusaha (NIB) atau Foto Usaha"},
-            {docs: "Rekening Koran / Buku Tabungan 6 bulan terakhir"},
-          ],
-        },
-        {
-          docs: "Untuk Perusahaan",
-          sub: [
-            {docs: "KTP Director, Komisaris, dan Pemegang Saham"},
-            {docs: "NPWP Director, Komisaris, dan Pemegang Saham"},
-            {docs: "NPWP Perusahaan"},
-            {docs: "Akta Pendirian / Akta Perubahan"},
-            {docs: "SK Kemenkumham"},
-            {docs: "SIUP, TDP atau NIB"},
-            {
-              docs: "Laporan Keuangan 2 Tahun Terakhir (diutamakan yang telah diaudit) / InHouse yang sudah ditandatangani",
-            },
-            {docs: "Rekening koran 6 bulan terakhir"},
-          ],
-        },
-      ],
-    },
-  ];
-
-  const needToKnow = [
-    "Harap dicatat bahwa Pemohon harus setuju untuk mentransfer komoditi ke FQC kami (Jika tidak, maka Pemohon harus menjadi mitra FQC terlebih dahulu)",
-    "Pemohon dapat menyimpan aplikasi dan melanjutkannya kemudian",
-    "Pemohon harus menyetujui pernyataan berikut sebelum melanjutkan pengajuan aplikasi pembiayaan",
-  ];
 
   const [applicationTabs, setApplicationTabs] = useAtom(applicationTabsAtom);
 
   const [explanationModal, explanationModalHandler] = useDisclosure(false);
 
   const [selectedMitra, setSelectedMitra] = useState("corporate");
-  const [selectedPayment, setSelectedPayment] = useState("po-finacing");
+  const [selectedPayment, setSelectedPayment] = useState("po-financing");
 
   const [explanationReaded, explanationHandler] = useDisclosure(false);
   const [policyReaded, policyHandler] = useDisclosure(false);
@@ -111,7 +67,7 @@ const Application = () => {
                     <li key={item.docs} className="p-1">
                       <Text className="pl-3 text-justify">{item.docs}</Text>
                       {item.sub ? (
-                        <ol className="list-lower-latin pl-5">
+                        <ol className="list-lower-latin pl-7">
                           {item.sub.map((sub) => (
                             <li key={sub.docs} className="p-1">
                               <Text className="pl-2 text-justify">
@@ -204,7 +160,7 @@ const Application = () => {
             className="flex flex-col gap-2 min-[1000px]:flex-row"
             options={[
               {
-                value: "po-finacing",
+                value: "po-financing",
                 label: "PO Financing",
                 className: "flex gap-x-3 items-center w-[150px]",
               },
@@ -253,11 +209,13 @@ const Application = () => {
             Ketentuan Layanan
           </Button>
           dan
-          <Button
-            variant="link"
-            className="p-0 px-1 text-black underline hover:text-blue-600">
+          <a
+            target="_blank"
+            href="https://fishlog.co.id/en/privacy-policy"
+            className="text-blac p-0 px-1 underline underline-offset-4 hover:text-blue-600 hover:underline disabled:bg-transparent"
+            rel="noopener noreferrer">
             Kebijakan Privasi
-          </Button>
+          </a>
           FishLog
         </Checkbox>
       </div>
