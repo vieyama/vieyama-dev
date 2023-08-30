@@ -1,11 +1,14 @@
-/* eslint-disable @next/next/no-img-element */
 "use client";
+
 import {type ChangeEvent, useState} from "react";
 
 import Image from "next/image";
 
+import DisplayImage from "./DisplayImage";
+
 const Upload = () => {
   const [files, setFiles] = useState<string[]>([]);
+
   const handleGetFile = (event: ChangeEvent<HTMLInputElement>) => {
     const filesData = event.target.files;
 
@@ -25,15 +28,7 @@ const Upload = () => {
   return (
     <div className="flex gap-4">
       {files
-        ? files.map((file) => (
-            <div key={file} className="flex gap-4">
-              <img
-                src={file}
-                className="h-[120px] w-[120px] object-cover object-center"
-                alt="fishfin image upload"
-              />
-            </div>
-          ))
+        ? files.map((file) => <DisplayImage key={file} file={file} />)
         : null}
       <div className="flex w-[120px] flex-col gap-2">
         <label

@@ -2,11 +2,11 @@
 import React, {useState} from "react";
 
 import {Disclosure} from "@headlessui/react";
-import {useDisclosure} from "@mantine/hooks";
 import {useAtom} from "jotai";
 import {useRouter} from "next/navigation";
 
 import {Button, Checkbox, Icon, RadioGroup, Text} from "~/components/ui";
+import {useDisclosure} from "~/hooks";
 import {applicationTabsAtom} from "~/state/formApplication";
 
 import ExplanationNoteModal from "./explanation-note-modal";

@@ -2,7 +2,7 @@
 import Link from "next/link";
 
 import {Icon, Text} from "~/components/ui";
-import {useMediaLayout} from "~/hooks/useMediaLayout";
+import {useMediaLayout} from "~/hooks";
 
 import type {BreadcrumbsProps} from "~/interfaces/components/breadcrumbs";
 const Breadcrumb = ({breadcrumb}: {breadcrumb: BreadcrumbsProps}) => {

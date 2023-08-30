@@ -40,8 +40,6 @@ const ApplicationDetailCorporateForm = () => {
             pob: "",
             dob: "",
             position: "",
-            no_hp: 0,
-            phoneCode: "",
             share_ownership: "",
             address: "",
             province: "",

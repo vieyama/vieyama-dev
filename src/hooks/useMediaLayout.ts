@@ -1,6 +1,6 @@
 "use client";
 
-import {useMediaQuery} from "@mantine/hooks";
+import {useMediaQuery} from "usehooks-ts";
 
 export const MediaQueryProp = {
   sm: "640px",
