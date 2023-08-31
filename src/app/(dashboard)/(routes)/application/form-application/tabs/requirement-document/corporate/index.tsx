@@ -2,8 +2,8 @@ import React from "react";
 
 import {useForm} from "react-hook-form";
 
-import FormItem from "~/components/form";
-import {Text, Upload} from "~/components/ui";
+import {FinanceDocSection, LegalDocSection, PhotosDocSection} from "./section";
+import FooterButton from "../../../components/footer-button";
 
 const RequirementDocumentCorporateForm = () => {
   const {handleSubmit} = useForm();
@@ -13,12 +13,10 @@ const RequirementDocumentCorporateForm = () => {
   };
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <div>
-        <Text>Kartu Identitas Direksi (e-KTP)</Text>
-        <FormItem>
-          <Upload />
-        </FormItem>
-      </div>
+      <LegalDocSection />
+      <FinanceDocSection />
+      <PhotosDocSection />
+      <FooterButton />
     </form>
   );
 };

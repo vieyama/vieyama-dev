@@ -13,7 +13,7 @@ const RequirementDocument = () => {
   return (
     <div className="flex flex-col gap-4 bg-white p-6">
       <Text className="text-blue-600" weight="semi-bold">
-        Lokasi Barang
+        Dokumen Legalitas
       </Text>
       <div className="bg-blue-50 p-4 text-base">
         <Icon name="exclamation-circle" /> Unggah hingga 5 file (.pdf, .doc,
