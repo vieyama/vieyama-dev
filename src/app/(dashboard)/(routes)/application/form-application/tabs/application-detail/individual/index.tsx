@@ -1,10 +1,8 @@
 import React from "react";
 
 import {yupResolver} from "@hookform/resolvers/yup";
-import {useRouter} from "next/navigation";
 import {useForm} from "react-hook-form";
 
-import {Button} from "~/components/ui";
 import {DetailApplicationCorporateSchema} from "~/validations/FormApplication";
 
 import {
@@ -14,6 +12,7 @@ import {
   PersonalWorkplaceDataSection,
   SpouseDataSection,
 } from "./section";
+import FooterButton from "../../../components/footer-button";
 import {EmergencyContactSection, FinancingDataSection} from "../global";
 
 import type {
@@ -27,7 +26,6 @@ import type {
 } from "~/interfaces/form/detailApplication";
 
 const ApplicationDetailIndividualForm = () => {
-  const router = useRouter();
   const {
     register,
     handleSubmit,
@@ -98,21 +96,7 @@ const ApplicationDetailIndividualForm = () => {
           errors={errors}
         />
         <EmergencyContactSection register={register} errors={errors} />
-        <div className="mt-8 flex flex-col gap-5 md:flex-row">
-          <Button
-            variant="tertiary"
-            className="w-full"
-            type="button"
-            onClick={() => router.push("/workspace")}>
-            Kembali
-          </Button>
-          <Button variant="tertiary" className="w-full" type="submit">
-            Simpan
-          </Button>
-          <Button type="submit" className="w-full">
-            Lanjut
-          </Button>
-        </div>
+        <FooterButton />
       </div>
     </form>
   );
