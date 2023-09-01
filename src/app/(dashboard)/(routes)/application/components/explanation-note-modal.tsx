@@ -47,17 +47,24 @@ const ExplanationNoteModal: React.FC<ExplanationNoteModalProps> = ({
           informasi konsumen yang diizinkan oleh undang-undang atau dengan cara
           lain yang diizinkan oleh ketentuan hukum yang berlaku, termasuk
           melalui pihak ketiga yang bekerja sama dengan PT Rantai Pasok
-          Teknologi. Jika permohonan pembiayaan ini disetujui, saya memberikan
-          persetujuan kepada PT Rantai Pasok Teknologi untuk menggunakan,
-          memanfaatkan, dan/atau menginformasikan data pribadi saya termasuk
-          namun tidak terbatas pada nomor telepon/ponsel/email untuk kegiatan
+          Teknologi.
+        </Text>
+        <br />
+        <Text align="text-justify">
+          Jika permohonan pembiayaan ini disetujui, saya memberikan persetujuan
+          kepada PT Rantai Pasok Teknologi untuk menggunakan, memanfaatkan,
+          dan/atau menginformasikan data pribadi saya termasuk namun tidak
+          terbatas pada nomor telepon/ponsel/email untuk kegiatan
           penagihan/pembayaran serta untuk pemasaran /kegiatan promosi, termasuk
           jika PT Rantai Pasok Teknologi menggunakan pihak ketiga yang bekerja
           sama dengan PT Rantai Pasok Teknologi. Apabila permohonan pembiayaan
           ini disetujui, untuk keperluan korespondensi, saya bersedia dihubungi
           melalui media teknologi dengan menggunakan nomor handphone atau email
-          termasuk namun tidak terbatas pada aplikasi WhatsApp. Dengan
-          menandatangani Formulir Permohonan Pembiayaan ini, saya telah
+          termasuk namun tidak terbatas pada aplikasi WhatsApp.
+        </Text>
+        <br />
+        <Text align="text-justify">
+          Dengan menandatangani Formulir Permohonan Pembiayaan ini, saya telah
           menyetujui ketentuan di atas.
         </Text>
       </Modal>

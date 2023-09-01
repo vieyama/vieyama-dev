@@ -6,6 +6,7 @@ import {dialPhone} from "~/constants/dialPhones";
 
 import type {
   FieldErrors,
+  UseFormGetValues,
   UseFormRegister,
   UseFormSetValue,
 } from "react-hook-form";
@@ -15,10 +16,12 @@ const SpouseDataSection = ({
   errors,
   register,
   setValue,
+  getValues,
 }: {
   register: UseFormRegister<DetailApplicationIndividualType>;
   errors: FieldErrors<DetailApplicationIndividualType>;
   setValue: UseFormSetValue<DetailApplicationIndividualType>;
+  getValues: UseFormGetValues<DetailApplicationIndividualType>;
 }) => {
   return (
     <div className="mt-5 flex flex-col gap-y-5">
@@ -94,6 +97,7 @@ const SpouseDataSection = ({
           isError={!!errors.spouse_income}
           {...register("spouse_income")}
           onChangeValue={(value) => setValue("spouse_income", value)}
+          defaultValue={getValues("spouse_income")}
         />
       </FormItem>
       <FormItem

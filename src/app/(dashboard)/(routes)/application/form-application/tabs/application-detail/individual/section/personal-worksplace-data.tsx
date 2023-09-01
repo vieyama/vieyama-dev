@@ -6,6 +6,7 @@ import {Input, InputNumber, InputTextArea, Text} from "~/components/ui";
 
 import type {
   FieldErrors,
+  UseFormGetValues,
   UseFormRegister,
   UseFormSetValue,
 } from "react-hook-form";
@@ -15,10 +16,12 @@ const PersonalWorkplaceDataSection = ({
   errors,
   register,
   setValue,
+  getValues,
 }: {
   register: UseFormRegister<DetailApplicationIndividualType>;
   errors: FieldErrors<DetailApplicationIndividualType>;
   setValue: UseFormSetValue<DetailApplicationIndividualType>;
+  getValues: UseFormGetValues<DetailApplicationIndividualType>;
 }) => {
   return (
     <div className="mt-5 flex flex-col gap-y-5">
@@ -140,6 +143,7 @@ const PersonalWorkplaceDataSection = ({
           onChangeValue={(value) =>
             setValue("personal_workplace_income", value)
           }
+          defaultValue={getValues("personal_workplace_income")}
         />
       </FormItem>
       <FormItem
@@ -154,6 +158,7 @@ const PersonalWorkplaceDataSection = ({
           onChangeValue={(value) =>
             setValue("personal_workplace_other_income", value)
           }
+          defaultValue={getValues("personal_workplace_other_income")}
         />
       </FormItem>
       <FormItem
@@ -168,6 +173,7 @@ const PersonalWorkplaceDataSection = ({
           onChangeValue={(value) =>
             setValue("personal_workplace_additional_income", value)
           }
+          defaultValue={getValues("personal_workplace_additional_income")}
         />
       </FormItem>
     </div>

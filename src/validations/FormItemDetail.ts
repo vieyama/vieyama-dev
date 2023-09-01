@@ -11,7 +11,7 @@ const DetailItemSchema = Yup.object<DetailItemType>({
     .of(
       Yup.object().shape({
         id: Yup.string().required(requiredMessage),
-        photos: Yup.array().of(Yup.string()).required(requiredMessage),
+        photos: Yup.array().required(requiredMessage),
         product_id62: Yup.string().required(requiredMessage),
         sku_id62: Yup.string().required(requiredMessage),
         qty: Yup.number().required(requiredMessage),
