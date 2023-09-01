@@ -1,21 +1,44 @@
+import isEmpty from "lodash/isEmpty";
 import {useFieldArray} from "react-hook-form";
 import Select from "react-select";
 
 import FormItem from "~/components/form";
 import {Button, Icon, Input, Text, Upload} from "~/components/ui";
 
-import type {Control, FieldErrors, UseFormRegister} from "react-hook-form";
+import type {
+  Control,
+  FieldError,
+  FieldErrors,
+  UseFormGetValues,
+  UseFormRegister,
+  UseFormSetValue,
+} from "react-hook-form";
+import type {FilesType} from "~/components/ui/Upload";
 import type {DetailItemType} from "~/interfaces/form/detailItem";
 
 const ItemsForm: React.FC<{
   register: UseFormRegister<DetailItemType>;
   control: Control<DetailItemType>;
   errors: FieldErrors<DetailItemType>;
-}> = ({control, errors, register}) => {
+  setValue: UseFormSetValue<DetailItemType>;
+  getValues: UseFormGetValues<DetailItemType>;
+}> = ({control, errors, register, setValue, getValues}) => {
   const {fields, append, remove} = useFieldArray({
     control,
     name: "items", // unique name for your Field Array
   });
+
+  const onChangeUpload = (values: {id: string}[], index: number) => {
+    const images = values.map((item) => item.id);
+    const currentImage = getValues(`items.${index}.photos`);
+
+    const setImage = currentImage ? [...currentImage, ...images] : images;
+    setValue(`items.${index}.photos`, setImage);
+  };
+
+  const onDeleteFile = (files: string[], index: number) => {
+    setValue(`items.${index}.photos`, isEmpty(files) ? undefined : files);
+  };
 
   return (
     <div className="mt-4 flex flex-col gap-4 bg-white p-6">
@@ -32,12 +55,19 @@ const ItemsForm: React.FC<{
               </Button>
             ) : null}
           </div>
-          <FormItem>
-            <Upload />
+          <FormItem error={errors.items?.[index]?.photos as FieldError}>
+            <Upload
+              fileList={getValues(`items.${index}.photos`) as FilesType}
+              onChange={(value) => onChangeUpload(value, index)}
+              onDelete={(value) => onDeleteFile(value, index)}
+              accept=".jpg, .png, .jpeg"
+              fileTypeLimiter={["image/jpeg", "image/jpg", "image/png"]}
+              maxFile={3}
+            />
           </FormItem>
           <FormItem
+            error={errors.items?.[index]?.product_id62}
             label="Nama Barang"
-            error={undefined}
             className="mt-5 flex flex-col gap-4 md:flex-row"
             childClassName="w-full"
             labelClassName="md:min-w-[250px] lg:min-w-[250px]">

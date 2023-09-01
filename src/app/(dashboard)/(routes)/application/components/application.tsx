@@ -221,17 +221,12 @@ const Application = () => {
       </div>
 
       <div className="flex-start flex flex-col gap-y-3.5 bg-white p-7.5">
-        <Text variant="sub-header-2" weight="semi-bold">
-          Mulai Dengan :
-        </Text>
-        <div className="flex w-full flex-col justify-between gap-5 sm:flex-row">
-          <Button
-            className="w-full"
-            onClick={handleCreateApplication}
-            disabled={!explanationReaded || !policyReaded}>
-            Kirim
-          </Button>
-        </div>
+        <Button
+          className="w-full"
+          onClick={handleCreateApplication}
+          disabled={!explanationReaded || !policyReaded}>
+          Kirim
+        </Button>
       </div>
 
       <ExplanationNoteModal

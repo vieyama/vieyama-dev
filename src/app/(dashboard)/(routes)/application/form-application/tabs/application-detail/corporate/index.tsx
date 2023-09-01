@@ -2,6 +2,7 @@ import React from "react";
 
 import {yupResolver} from "@hookform/resolvers/yup";
 import {useForm} from "react-hook-form";
+import useFormPersist from "react-hook-form-persist";
 
 import {DetailApplicationCorporateSchema} from "~/validations/FormApplication";
 
@@ -25,6 +26,8 @@ const ApplicationDetailCorporateForm = () => {
     register,
     handleSubmit,
     setValue,
+    getValues,
+    watch,
     formState: {errors},
   } = useForm<DetailApplicationIndividualType | DetailApplicationCorporateType>(
     {
@@ -50,6 +53,12 @@ const ApplicationDetailCorporateForm = () => {
     },
   );
 
+  useFormPersist("application-detail-coporate-form", {
+    watch,
+    setValue,
+    storage: window.localStorage, // default window.sessionStorage
+  });
+
   const onSubmit = (data: object) => {
     return data;
   };
@@ -61,6 +70,7 @@ const ApplicationDetailCorporateForm = () => {
           register={register}
           errors={errors}
           setValue={setValue}
+          getValues={getValues}
         />
         <ApplicantDataSection
           register={register as UseFormRegister<DetailApplicationCorporateType>}

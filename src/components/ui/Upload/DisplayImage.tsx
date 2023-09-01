@@ -5,26 +5,69 @@ import {Dialog, Transition} from "@headlessui/react";
 import Image from "next/image";
 import {useHover} from "usehooks-ts";
 
+import {googleApisFmsUrl} from "~/constants/globals";
 import {useDisclosure} from "~/hooks";
 
 import Icon from "../Icon";
 
-const DisplayImage = ({file}: {file: string}) => {
+const DisplayImage = ({
+  fileId,
+  handleDelete,
+}: {
+  fileId: string;
+  handleDelete: (file: string) => void;
+}) => {
   const hoverRef = useRef(null);
   const isHover = useHover(hoverRef);
   const [previewImage, previewImageHandler] = useDisclosure(false);
+  const fileType = fileId.split(".").pop();
+
+  let srcFile = "";
+
+  switch (fileType) {
+    case "jpg":
+      srcFile = `${googleApisFmsUrl}/attachment/fishfin/${fileId}`;
+      break;
+    case "jpeg":
+      srcFile = `${googleApisFmsUrl}/attachment/fishfin/${fileId}`;
+      break;
+    case "png":
+      srcFile = `${googleApisFmsUrl}/attachment/fishfin/${fileId}`;
+      break;
+    case "pdf":
+      srcFile = "/assets/preview-pdf.svg";
+      break;
+    case "docx":
+      srcFile = "/assets/preview-docx.svg";
+      break;
+    case "doc":
+      srcFile = "/assets/preview-docx.svg";
+      break;
+    default:
+      srcFile = "/assets/preview-image.svg";
+      break;
+  }
 
   return (
     <div
       ref={hoverRef as React.LegacyRef<HTMLDivElement>}
       className="relative flex flex-col gap-4">
+      <div
+        className={`absolute right-0 top-0 flex h-10 w-10 cursor-pointer items-center justify-center rounded-s-lg rounded-t-none bg-white bg-opacity-60 ${
+          isHover ? "opacity-100" : "opacity-0"
+        }`}
+        onClick={() => handleDelete(fileId)}>
+        <Icon name="trash" color="gray500" size={21} />
+      </div>
       <img
-        src={file}
+        src={srcFile}
         className="h-[120px] w-[120px] object-cover object-center"
         alt="fishfin image upload"
       />
       <div
-        className={`absolute bottom-[24.5px] flex h-10 w-full cursor-pointer items-center justify-center bg-white bg-opacity-60 ${
+        className={`${
+          ["doc", "docx"].includes(fileType as string) ? "hidden" : "absolute"
+        } bottom-[24.5px] flex h-10 w-full cursor-pointer items-center justify-center bg-white bg-opacity-60 ${
           isHover ? "opacity-100" : "opacity-0"
         }`}
         onClick={previewImageHandler.open}>
@@ -63,16 +106,24 @@ const DisplayImage = ({file}: {file: string}) => {
             <Dialog.Panel
               className="fixed inset-0 z-10 overflow-y-auto"
               onClick={previewImageHandler.close}>
-              <div className="flex h-screen w-screen flex-col items-center justify-center">
-                <Image
-                  src={file}
-                  width={300}
-                  height={300}
-                  alt=""
-                  onClick={(e) => e.preventDefault()}
-                  className="h-auto w-auto max-w-[950px] select-none"
-                />
-              </div>
+              {["jpg", "jpeg", "png"].includes(fileType as string) ? (
+                <div className="flex h-screen w-screen flex-col items-center justify-center">
+                  <Image
+                    src={`${googleApisFmsUrl}/attachment/fishfin/${fileId}`}
+                    width={300}
+                    height={300}
+                    alt=""
+                    onClick={(e) => e.preventDefault()}
+                    className="h-auto w-auto max-w-[950px] select-none"
+                  />
+                </div>
+              ) : (
+                <div className="flex h-screen w-screen flex-col items-center justify-center">
+                  <iframe
+                    className="h-[90vh] w-full max-w-[950px]"
+                    src={`${googleApisFmsUrl}/attachment/fishfin/${fileId}`}></iframe>
+                </div>
+              )}
             </Dialog.Panel>
           </Transition.Child>
         </Dialog>

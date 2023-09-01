@@ -8,7 +8,7 @@ const nextConfig = {
         return config;
     },
     images: {
-        domains: ['images.unsplash.com']
+        domains: ['images.unsplash.com', 'storage.googleapis.com']
     }
 }
 

@@ -49,6 +49,7 @@ const ApplicationDetailIndividualForm = () => {
           register={register}
           errors={errors}
           setValue={setValue}
+          getValues={getValues}
         />
         <ApplicantDataSection
           register={
@@ -85,6 +86,9 @@ const ApplicationDetailIndividualForm = () => {
           setValue={
             setValue as UseFormSetValue<DetailApplicationIndividualType>
           }
+          getValues={
+            getValues as UseFormGetValues<DetailApplicationIndividualType>
+          }
         />
         <PersonalWorkplaceDataSection
           register={
@@ -92,6 +96,9 @@ const ApplicationDetailIndividualForm = () => {
           }
           setValue={
             setValue as UseFormSetValue<DetailApplicationIndividualType>
+          }
+          getValues={
+            getValues as UseFormGetValues<DetailApplicationIndividualType>
           }
           errors={errors}
         />

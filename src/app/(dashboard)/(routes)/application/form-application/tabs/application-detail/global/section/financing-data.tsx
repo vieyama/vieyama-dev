@@ -9,6 +9,7 @@ import {InputNumber, Radio, Text} from "~/components/ui";
 
 import type {
   FieldErrors,
+  UseFormGetValues,
   UseFormRegister,
   UseFormSetValue,
 } from "react-hook-form";
@@ -21,6 +22,7 @@ const FinancingDataSection = ({
   errors,
   register,
   setValue,
+  getValues,
 }: {
   register: UseFormRegister<
     DetailApplicationCorporateType | DetailApplicationIndividualType
@@ -30,6 +32,9 @@ const FinancingDataSection = ({
   >;
   setValue: UseFormSetValue<
     DetailApplicationCorporateType | DetailApplicationIndividualType
+  >;
+  getValues: UseFormGetValues<
+    DetailApplicationIndividualType | DetailApplicationCorporateType
   >;
 }) => {
   return (
@@ -45,6 +50,7 @@ const FinancingDataSection = ({
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
         <InputNumber
           isError={!!errors.proposed_value}
+          defaultValue={getValues("proposed_value")}
           onChangeValue={(value) => setValue("proposed_value", value)}
         />
       </FormItem>
