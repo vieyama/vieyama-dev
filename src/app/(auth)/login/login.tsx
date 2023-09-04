@@ -1,18 +1,17 @@
 "use client";
-import {useState} from "react";
 
 import {yupResolver} from "@hookform/resolvers/yup";
-import {setCookie} from "cookies-next";
 import {useRouter} from "next/navigation";
 import {useForm} from "react-hook-form";
 
 import FormItem from "~/components/form";
 import {Button, Input, InputPassword, Text} from "~/components/ui";
+import {useLogin} from "~/services/auth/login";
+import {setCookieAuth} from "~/utils/setCookieAuth";
 import {LoginSchema} from "~/validations/AuthValidation";
 
 const LoginComponent = () => {
   const {replace} = useRouter();
-  const [isLoading, setIsLoading] = useState(false);
 
   const {
     register,
@@ -22,13 +21,13 @@ const LoginComponent = () => {
     resolver: yupResolver(LoginSchema),
   });
 
-  const onSubmit = (_data: {email: string; password: string}) => {
-    setIsLoading(true);
-    setTimeout(() => {
-      setIsLoading(false);
-      setCookie("accessToken", "whahaha cookies");
+  const handleLogin = useLogin();
+
+  const onSubmit = (data: {email: string; password: string}) => {
+    handleLogin.mutateAsync(data).then((res) => {
+      setCookieAuth(res);
       replace("/workspace");
-    }, 1000);
+    });
   };
 
   return (
@@ -55,7 +54,7 @@ const LoginComponent = () => {
           />
         </FormItem>
 
-        <Button isLoading={isLoading} type="submit">
+        <Button isLoading={handleLogin.isLoading} type="submit">
           Masuk
         </Button>
       </form>

@@ -1,6 +1,13 @@
+"use client";
+
+import {useAtom} from "jotai";
+
 import {Icon, Text} from "~/components/ui";
+import {authUserAtom} from "~/state/userAuth";
 
 const Greeting = () => {
+  const [authUser] = useAtom(authUserAtom);
+
   return (
     <div className="flex-start flex flex-col gap-3 bg-white p-7.5 sm:flex-row sm:items-center">
       <div className="flex h-16 w-16 items-center justify-center rounded-full border-2 border-stroke bg-background">
@@ -9,7 +16,7 @@ const Greeting = () => {
       <div className="flex flex-col gap-2">
         <div className="flex flex-col gap-x-2 md:flex-row">
           <Text variant="sub-header-2" weight="bold">
-            Hi, User !
+            Hi, {authUser?.user?.fullname ?? "User"} !
           </Text>
           <Text variant="sub-header-2" weight="medium">
             Welcome back to your FishFin Workspace
