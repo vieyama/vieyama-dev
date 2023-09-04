@@ -2,12 +2,12 @@
 
 import type {FC} from "react";
 
-import {deleteCookie} from "cookies-next";
 import {useAtom} from "jotai";
 import {usePathname, useRouter} from "next/navigation";
 
 import {Button, Icon} from "~/components/ui";
 import {routes} from "~/dashboard/constants/sidebar";
+import {useLogout} from "~/hooks/useLogout";
 import {drawerAtom} from "~/state/drawer";
 
 import type {IcomoonType} from "~/interfaces/icons/icomoonType";
@@ -21,11 +21,11 @@ const SidebarComponent: FC<SidebarProps> = ({source}) => {
 
   const pathname = usePathname();
   const router = useRouter();
+  const {logout} = useLogout();
 
   const handleRoute = (url: string) => {
     if (url === "/signout") {
-      deleteCookie("accessToken");
-      router.replace("/login");
+      logout();
     } else {
       router.push(url);
     }
