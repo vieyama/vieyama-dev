@@ -1,8 +1,9 @@
 import React from "react";
 
+import {toNumber} from "lodash";
+
 import FormItem from "~/components/form";
 import {Input, InputNumber, Text} from "~/components/ui";
-import {dialPhone} from "~/constants/dialPhones";
 
 import type {
   FieldErrors,
@@ -39,15 +40,15 @@ const SpouseDataSection = ({
       </FormItem>
       <FormItem
         label="No. KTP"
-        error={errors.spouse_no_ktp}
+        error={errors.spouse_ktp}
         className="flex flex-col gap-4 md:flex-row"
         childClassName="w-full"
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
         <Input
           type="number"
           min={0}
-          isError={!!errors.spouse_no_ktp}
-          {...register("spouse_no_ktp")}
+          isError={!!errors.spouse_ktp}
+          {...register("spouse_ktp")}
         />
       </FormItem>
       <FormItem
@@ -56,28 +57,12 @@ const SpouseDataSection = ({
         className="flex flex-col gap-4 md:flex-row"
         childClassName="w-full"
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-        <div className="flex items-center gap-x-4">
-          <select
-            className={`block w-28 rounded-lg border ${
-              errors.spousePhoneCode ? "border-error" : "border-gray-300"
-            } p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
-            {...register("spouse_no_hp")}
-            defaultValue="+62"
-            placeholder="No. Telepon">
-            <option value="+62">+62</option>
-            {dialPhone.map((dial) => (
-              <option key={dial.id} value={dial.dial_code}>
-                {dial.dial_code}
-              </option>
-            ))}
-          </select>
-          <Input
-            type="number"
-            min={0}
-            isError={!!errors.spouse_no_hp}
-            {...register("no_hp")}
-          />
-        </div>
+        <Input
+          type="number"
+          min={0}
+          isError={!!errors.spouse_no_hp}
+          {...register("spouse_no_hp")}
+        />
       </FormItem>
       <FormItem
         label="Pekerjaan"
@@ -95,9 +80,8 @@ const SpouseDataSection = ({
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
         <InputNumber
           isError={!!errors.spouse_income}
-          {...register("spouse_income")}
-          onChangeValue={(value) => setValue("spouse_income", value)}
-          defaultValue={getValues("spouse_income")}
+          onChangeValue={(value) => setValue("spouse_income", toNumber(value))}
+          defaultValue={toNumber(getValues("spouse_income"))}
         />
       </FormItem>
       <FormItem

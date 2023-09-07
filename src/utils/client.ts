@@ -1,5 +1,5 @@
 import axios from "axios";
-import {getCookie, setCookie} from "cookies-next";
+import {deleteCookie, getCookie, setCookie} from "cookies-next";
 import {isEmpty} from "lodash";
 
 import {baseApiUrl} from "~/constants/globals";
@@ -12,6 +12,7 @@ const customAxios = axios.create({
   baseURL: BASE_URL,
   headers: {
     "Content-Type": "application/json",
+    "Cache-Control": "no-cache",
   },
 });
 
@@ -30,6 +31,19 @@ let failedQueue: {
   resolve: (value: string | null) => void;
   reject: (reason: AxiosError) => void;
 }[] = [];
+
+const handleLogout = () => {
+  deleteCookie("accessToken");
+  deleteCookie("refreshToken");
+  deleteCookie("wmsToken");
+  deleteCookie("clientId");
+  deleteCookie("authId");
+
+  if (typeof window !== "undefined") {
+    localStorage.clear();
+    window.location.replace("/login");
+  }
+};
 
 const processQueue = (error: AxiosError | null, token = null) => {
   failedQueue.forEach((prom) => {
@@ -50,7 +64,7 @@ customAxios.interceptors.response.use(
   (err) => {
     const originalRequest = err.config;
 
-    if (err.response.status === 301) {
+    if (err.response.status === 401) {
       return Promise.reject(err);
     }
 
@@ -61,10 +75,7 @@ customAxios.interceptors.response.use(
       refreshToken === "undefined" ||
       isEmpty(refreshToken)
     ) {
-      if (err.response.status === 301)
-        if (typeof window !== "undefined") {
-          window.location.replace("/login");
-        }
+      if (err.response.status === 403) handleLogout();
     }
 
     if (err.response.status === 301 && !originalRequest._retry) {
@@ -91,12 +102,12 @@ customAxios.interceptors.response.use(
             refresh_token: refreshToken,
           })
           .then((result) => {
-            const usedToken = result.data?.access_token;
+            const usedToken = result.data?.data?.access_token;
 
             setCookie("accessToken", usedToken);
-            setCookie("refreshToken", result.data?.refresh_token);
-            setCookie("refreshToken", result.data?.refresh_token);
-            setCookie("wmsToken", result.data?.wms_token);
+            setCookie("refreshToken", result.data?.data?.refresh_token);
+            setCookie("refreshToken", result.data?.data?.refresh_token);
+            setCookie("wmsToken", result.data?.data?.wms_token);
 
             customAxios.defaults.headers.common.Authorization =
               "Bearer " + usedToken;
@@ -112,9 +123,7 @@ customAxios.interceptors.response.use(
             // 400 user tidak valid
             // 401 not autorized
             if ([422, 400, 401].includes(err.response.status)) {
-              if (typeof window !== "undefined") {
-                window.location.replace("/login");
-              }
+              handleLogout();
             }
 
             reject(err);

@@ -91,7 +91,6 @@ const ItemsForm: React.FC<{
                 {value: "Ikan Hiu", label: "Ikan Hiu"},
                 {value: "Ikan Pari", label: "Ikan Pari"},
               ]}
-              // menuPortalTarget={document.body}
             />
           </FormItem>
           <FormItem

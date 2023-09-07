@@ -1,41 +1,64 @@
 import React from "react";
 
+import {useAtom} from "jotai";
+import {debounce} from "lodash";
+import Select from "react-select";
+
 import {
   educationList,
   maritalStatusList,
 } from "~/app/(dashboard)/(routes)/application/constants";
 import FormItem from "~/components/form";
-import {AutoComplete, Input, Text} from "~/components/ui";
-import {dialPhone, phoneCodeIndonesia} from "~/constants/dialPhones";
+import {Input, Text} from "~/components/ui";
+import {
+  mitraListSearchAtom,
+  selectedMitraIdAtom,
+} from "~/state/formApplication";
 
 import type {
   FieldErrors,
+  UseFormGetValues,
   UseFormRegister,
   UseFormSetValue,
 } from "react-hook-form";
+import type {SingleValue} from "react-select";
 import type {DetailApplicationIndividualType} from "~/interfaces/form/detailApplication";
+import type {Partner} from "~/interfaces/services/finance";
+import type {PartnerResult} from "~/interfaces/services/partner/list";
 
 const ApplicantDataSection = ({
   errors,
   register,
   setValue,
+  mitraData,
+  isLoadingMitra,
+  dataPartner,
 }: {
   register: UseFormRegister<DetailApplicationIndividualType>;
   errors: FieldErrors<DetailApplicationIndividualType>;
   setValue: UseFormSetValue<DetailApplicationIndividualType>;
+  getValues: UseFormGetValues<DetailApplicationIndividualType>;
+  mitraData?: PartnerResult[];
+  isLoadingMitra?: boolean;
+  dataPartner?: Partner;
 }) => {
-  const people = [
-    {id: "1", value: "mitra ID 1"},
-    {id: "2", value: "mitra ID 2"},
-    {id: "3", value: "mitra ID 3"},
-    {id: "4", value: "mitra ID 4"},
-    {id: "5", value: "mitra ID 5"},
-  ];
+  const [, setMitraListSearch] = useAtom(mitraListSearchAtom);
+  const [, setSelectedMitraId] = useAtom(selectedMitraIdAtom);
 
-  const handleChangeMitraId = (id: string) => {
-    const selected = people.find((data) => data.id === id);
-    setValue("partner_id", selected?.value);
+  const handleChangeMitraId = (
+    eventChange: SingleValue<{
+      value: string;
+      label: string;
+    }>,
+  ) => {
+    setValue("partner_id", eventChange?.value);
+    setSelectedMitraId(eventChange?.value as string);
   };
+
+  const handleSearchMitra = debounce((search: string) => {
+    setMitraListSearch(search);
+  }, 1500);
+
   return (
     <div className="mt-5 flex flex-col gap-y-5">
       <Text className="text-blue-600" weight="semi-bold">
@@ -47,7 +70,34 @@ const ApplicantDataSection = ({
         className="flex flex-col gap-4 md:flex-row"
         childClassName="w-full"
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-        <AutoComplete options={people} onChange={handleChangeMitraId} />
+        <Select
+          className="react-select"
+          defaultValue={
+            dataPartner
+              ? {
+                  value: dataPartner?.partner_id as string,
+                  label:
+                    `${dataPartner?.no_registration} - ${dataPartner?.name}` as string,
+                }
+              : null
+          }
+          isLoading={isLoadingMitra}
+          theme={(theme) => ({
+            ...theme,
+            borderRadius: 8,
+          })}
+          styles={{
+            menu: (provided) => ({...provided, zIndex: 9999}),
+          }}
+          placeholder=""
+          onInputChange={handleSearchMitra}
+          onChange={handleChangeMitraId}
+          components={{IndicatorSeparator: null, DropdownIndicator: () => null}}
+          options={mitraData?.map((mitra) => ({
+            value: mitra.uuid,
+            label: `${mitra.no_registration} - ${mitra.name}`,
+          }))}
+        />
       </FormItem>
 
       <FormItem
@@ -58,6 +108,7 @@ const ApplicantDataSection = ({
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
         <Input
           isError={!!errors.applicant_name}
+          disabled
           {...register("applicant_name")}
         />
       </FormItem>
@@ -69,6 +120,7 @@ const ApplicantDataSection = ({
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
         <Input
           type="number"
+          disabled
           min={0}
           isError={!!errors.no_ktp}
           {...register("no_ktp")}
@@ -80,7 +132,7 @@ const ApplicantDataSection = ({
         className="flex flex-col gap-4 md:flex-row"
         childClassName="w-full"
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-        <Input isError={!!errors.pob} {...register("pob")} />
+        <Input isError={!!errors.pob} {...register("pob")} disabled />
       </FormItem>
       <FormItem
         label="Tanggal Lahir"
@@ -88,7 +140,14 @@ const ApplicantDataSection = ({
         className="flex flex-col gap-4 md:flex-row"
         childClassName="w-full"
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-        <Input type="date" isError={!!errors.dob} {...register("dob")} />
+        <Input
+          type="date"
+          isError={!!errors.dob}
+          disabled
+          {...register("dob", {
+            valueAsDate: true,
+          })}
+        />
       </FormItem>
 
       <FormItem
@@ -222,28 +281,12 @@ const ApplicantDataSection = ({
         className="flex flex-col gap-4 md:flex-row"
         childClassName="w-full"
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-        <div className="flex items-center gap-x-4">
-          <select
-            className={`block w-28 rounded-lg border ${
-              errors.noTelpCode ? "border-error" : "border-gray-300"
-            } p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
-            {...register("noTelpCode")}
-            defaultValue="021"
-            placeholder="No. Telepon Kantor">
-            <option value="021">021</option>
-            {phoneCodeIndonesia.map((dial) => (
-              <option key={dial.id} value={dial.id}>
-                {dial.id}
-              </option>
-            ))}
-          </select>
-          <Input
-            type="number"
-            min={0}
-            isError={!!errors.no_telp}
-            {...register("no_telp")}
-          />
-        </div>
+        <Input
+          disabled
+          min={0}
+          isError={!!errors.no_telp}
+          {...register("no_telp")}
+        />
       </FormItem>
       <FormItem
         label="No. Handpone #1"
@@ -251,28 +294,12 @@ const ApplicantDataSection = ({
         className="flex flex-col gap-4 md:flex-row"
         childClassName="w-full"
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-        <div className="flex items-center gap-x-4">
-          <select
-            className={`block w-28 rounded-lg border ${
-              errors.phoneCode ? "border-error" : "border-gray-300"
-            } p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
-            {...register("phoneCode")}
-            defaultValue="+62"
-            placeholder="No. Handphone #1">
-            <option value="+62">+62</option>
-            {dialPhone.map((dial) => (
-              <option key={dial.id} value={dial.dial_code}>
-                {dial.dial_code}
-              </option>
-            ))}
-          </select>
-          <Input
-            type="number"
-            min={0}
-            isError={!!errors.no_hp}
-            {...register("no_hp")}
-          />
-        </div>
+        <Input
+          min={0}
+          disabled
+          isError={!!errors.no_hp}
+          {...register("no_hp")}
+        />
       </FormItem>
       <FormItem
         label="No. Handpone #2"
@@ -281,28 +308,12 @@ const ApplicantDataSection = ({
         className="flex flex-col gap-4 md:flex-row"
         childClassName="w-full"
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-        <div className="flex items-center gap-x-4">
-          <select
-            className={`block w-28 rounded-lg border ${
-              errors.phoneCode2 ? "border-error" : "border-gray-300"
-            } p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
-            {...register("phoneCode2")}
-            defaultValue="+62"
-            placeholder="No. Handphone #2">
-            <option value="+62">+62</option>
-            {dialPhone.map((dial) => (
-              <option key={dial.id} value={dial.dial_code}>
-                {dial.dial_code}
-              </option>
-            ))}
-          </select>
-          <Input
-            type="number"
-            min={0}
-            isError={!!errors.no_hp2}
-            {...register("no_hp2")}
-          />
-        </div>
+        <Input
+          type="number"
+          min={0}
+          isError={!!errors.no_hp2}
+          {...register("no_hp2")}
+        />
       </FormItem>
       <FormItem
         label="Alamat Email"
@@ -310,7 +321,12 @@ const ApplicantDataSection = ({
         className="flex flex-col gap-4 md:flex-row"
         childClassName="w-full"
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-        <Input type="email" isError={!!errors.email} {...register("email")} />
+        <Input
+          type="email"
+          disabled
+          isError={!!errors.email}
+          {...register("email")}
+        />
       </FormItem>
     </div>
   );

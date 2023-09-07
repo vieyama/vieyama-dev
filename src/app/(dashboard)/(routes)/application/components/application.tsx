@@ -7,6 +7,7 @@ import {useRouter} from "next/navigation";
 
 import {Button, Checkbox, Icon, RadioGroup, Text} from "~/components/ui";
 import {useDisclosure} from "~/hooks";
+import {useInsertApplicationFinance} from "~/services/finance";
 import {applicationTabsAtom} from "~/state/formApplication";
 
 import ExplanationNoteModal from "./explanation-note-modal";
@@ -20,19 +21,31 @@ const Application = () => {
   const [explanationModal, explanationModalHandler] = useDisclosure(false);
 
   const [selectedMitra, setSelectedMitra] = useState("corporate");
-  const [selectedPayment, setSelectedPayment] = useState("inventory");
+  const [selectedPayment, setSelectedPayment] = useState("Inventory Financing");
 
   const [explanationReaded, explanationHandler] = useDisclosure(false);
   const [policyReaded, policyHandler] = useDisclosure(false);
+
+  const insertAgreement = useInsertApplicationFinance();
 
   const handleCreateApplication = () => {
     setApplicationTabs([
       ...applicationTabs,
       {name: "application-details", isDone: false},
     ]);
-    router.push(
-      `/application/form-application?process=application-details&type=${selectedMitra}&payment=${selectedPayment}`,
-    );
+
+    const formData = {
+      step: "agreement",
+      partner_type: selectedMitra,
+      financing_type: selectedPayment,
+      uuid: null,
+    };
+
+    insertAgreement.mutateAsync(formData).then((res) => {
+      router.push(
+        `/application/form-application?process=application-details&type=${selectedMitra}&payment=${selectedPayment}&uuid=${res.uuid}`,
+      );
+    });
   };
 
   return (
@@ -160,17 +173,17 @@ const Application = () => {
             className="flex flex-col gap-2 min-[1000px]:flex-row"
             options={[
               {
-                value: "inventory",
+                value: "Inventory Financing",
                 label: "Inventory Financing",
                 className: "flex gap-x-3 items-center w-[190px]",
               },
               {
-                value: "po-financing",
+                value: "PO Financing",
                 label: "PO Financing",
                 className: "flex gap-x-3 items-center w-[150px]",
               },
               {
-                value: "invoice",
+                value: "Invoice Financing",
                 label: "Invoice Financing",
                 className: "flex gap-x-3 items-center w-[180px]",
               },
