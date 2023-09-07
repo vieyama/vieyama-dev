@@ -67,6 +67,7 @@ const InputPassword = forwardRef<HTMLInputElement, InputProps>(
         />
         <div className="absolute inset-y-0 right-0 flex items-center pr-3.5">
           <button
+            type="button"
             className="absolute inset-y-0 right-0 flex items-center px-4 text-gray-600"
             onClick={togglePasswordVisibility}>
             {isPasswordVisible ? (

@@ -13,7 +13,7 @@ export interface InputProps
 const InputTextArea = React.forwardRef<HTMLTextAreaElement, InputProps>(
   ({className, isError, rows, ...props}, ref) => {
     const defaultClassName =
-      "block w-full rounded-lg p-2.5 border border-gray-300 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500";
+      "block disabled:bg-gray-200 w-full rounded-lg p-2.5 border border-gray-300 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500";
     return (
       <div className="relative">
         <textarea

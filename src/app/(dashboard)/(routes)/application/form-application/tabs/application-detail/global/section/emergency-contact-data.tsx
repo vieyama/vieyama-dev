@@ -2,7 +2,6 @@ import {useSearchParams} from "next/navigation";
 
 import FormItem from "~/components/form";
 import {Input, InputTextArea, Text} from "~/components/ui";
-import {dialPhone, phoneCodeIndonesia} from "~/constants/dialPhones";
 
 import type {FieldErrors, UseFormRegister} from "react-hook-form";
 import type {
@@ -67,28 +66,12 @@ const EmergencyContactData = ({
         className="flex flex-col gap-4 md:flex-row"
         childClassName="w-full"
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-        <div className="flex items-center gap-x-4">
-          <select
-            className={`block w-28 rounded-lg border ${
-              errors.emergency_phone_code ? "border-error" : "border-gray-300"
-            } p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
-            {...register(`emergency_phone_code`)}
-            defaultValue="+62"
-            placeholder="No. Handphone">
-            <option value="+62">+62</option>
-            {dialPhone.map((dial) => (
-              <option key={dial.id} value={dial.dial_code}>
-                {dial.dial_code}
-              </option>
-            ))}
-          </select>
-          <Input
-            type="number"
-            min={0}
-            isError={!!errors.emergency_no_hp}
-            {...register(`emergency_no_hp`)}
-          />
-        </div>
+        <Input
+          type="number"
+          min={0}
+          isError={!!errors.emergency_no_hp}
+          {...register(`emergency_no_hp`)}
+        />
       </FormItem>
       {userType === "corporate" && (
         <>
@@ -99,30 +82,12 @@ const EmergencyContactData = ({
             className="flex flex-col gap-4 md:flex-row"
             childClassName="w-full"
             labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-            <div className="flex items-center gap-x-4">
-              <select
-                className={`block w-28 rounded-lg border ${
-                  errors.emergencyPhoneOfficeCode
-                    ? "border-error"
-                    : "border-gray-300"
-                } p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
-                {...register("emergencyPhoneOfficeCode")}
-                defaultValue="021"
-                placeholder="No. Telepon Kantor">
-                <option value="021">021</option>
-                {phoneCodeIndonesia.map((dial) => (
-                  <option key={dial.id} value={dial.id}>
-                    {dial.id}
-                  </option>
-                ))}
-              </select>
-              <Input
-                type="number"
-                min={0}
-                isError={!!errors.emergency_office_no_telp}
-                {...register("emergency_office_no_telp")}
-              />
-            </div>
+            <Input
+              type="number"
+              min={0}
+              isError={!!errors.emergency_office_no_telp}
+              {...register("emergency_office_no_telp")}
+            />
           </FormItem>
           <FormItem
             label="No. Telepon Rumah"
@@ -131,30 +96,12 @@ const EmergencyContactData = ({
             className="flex flex-col gap-4 md:flex-row"
             childClassName="w-full"
             labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-            <div className="flex items-center gap-x-4">
-              <select
-                className={`block w-28 rounded-lg border ${
-                  errors.emergencyPhoneHomeCode
-                    ? "border-error"
-                    : "border-gray-300"
-                } p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
-                {...register("emergencyPhoneHomeCode")}
-                defaultValue="021"
-                placeholder="No. Telepon Kantor">
-                <option value="021">021</option>
-                {phoneCodeIndonesia.map((dial) => (
-                  <option key={dial.id} value={dial.id}>
-                    {dial.id}
-                  </option>
-                ))}
-              </select>
-              <Input
-                type="number"
-                min={0}
-                isError={!!errors.emergency_home_number}
-                {...register("emergency_home_number")}
-              />
-            </div>
+            <Input
+              type="number"
+              min={0}
+              isError={!!errors.emergency_home_number}
+              {...register("emergency_home_number")}
+            />
           </FormItem>
         </>
       )}

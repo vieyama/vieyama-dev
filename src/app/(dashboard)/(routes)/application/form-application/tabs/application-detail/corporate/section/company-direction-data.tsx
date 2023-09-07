@@ -11,17 +11,21 @@ import {Button} from "~/components/ui";
 
 import CompanyDirectionForm from "./company-direction-form";
 
-import type {Control} from "react-hook-form";
+import type {Control, UseFormGetValues, UseFormSetValue} from "react-hook-form";
 import type {DetailApplicationCorporateType} from "~/interfaces/form/detailApplication";
 
 const CompanyDirectionData = ({
   errors,
   register,
   control,
+  getValues,
+  setValue,
 }: {
   register: UseFormRegister<DetailApplicationCorporateType>;
   errors: FieldErrors<DetailApplicationCorporateType>;
   control: Control<DetailApplicationCorporateType>;
+  getValues: UseFormGetValues<DetailApplicationCorporateType>;
+  setValue: UseFormSetValue<DetailApplicationCorporateType>;
 }) => {
   const {fields, append, remove} = useFieldArray({
     control,
@@ -38,6 +42,8 @@ const CompanyDirectionData = ({
           register={register}
           fieldsLength={fields.length}
           remove={remove}
+          getValues={getValues}
+          setValue={setValue}
         />
       ))}
 
@@ -48,18 +54,11 @@ const CompanyDirectionData = ({
           append({
             name: "",
             email: "",
-            no_ktp: "",
             pob: "",
             dob: "",
             position: "",
-            no_hp: 0,
-            phoneCode: "",
             share_ownership: "",
             address: "",
-            province: "",
-            city: "",
-            district: "",
-            postal_code: "",
           })
         }>
         + Tambah Pemegang Saham / Direksi

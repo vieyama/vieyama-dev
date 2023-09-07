@@ -34,7 +34,7 @@ export interface InputProps
     >,
     VariantProps<typeof inputVariants> {
   isError?: boolean;
-  onChangeValue?: (value: string) => void;
+  onChangeValue?: (string: string) => void;
 }
 
 const InputNumber = forwardRef<HTMLInputElement, InputProps>(

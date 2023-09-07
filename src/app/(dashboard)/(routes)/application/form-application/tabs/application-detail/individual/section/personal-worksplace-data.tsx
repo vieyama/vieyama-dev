@@ -1,5 +1,7 @@
 import React from "react";
 
+import toNumber from "lodash/toNumber";
+
 import {businessFieldList} from "~/app/(dashboard)/(routes)/application/constants";
 import FormItem from "~/components/form";
 import {Input, InputNumber, InputTextArea, Text} from "~/components/ui";
@@ -141,9 +143,9 @@ const PersonalWorkplaceDataSection = ({
         <InputNumber
           isError={!!errors.personal_workplace_income}
           onChangeValue={(value) =>
-            setValue("personal_workplace_income", value)
+            setValue("personal_workplace_income", toNumber(value))
           }
-          defaultValue={getValues("personal_workplace_income")}
+          defaultValue={toNumber(getValues("personal_workplace_income"))}
         />
       </FormItem>
       <FormItem
@@ -156,9 +158,9 @@ const PersonalWorkplaceDataSection = ({
         <InputNumber
           isError={!!errors.personal_workplace_other_income}
           onChangeValue={(value) =>
-            setValue("personal_workplace_other_income", value)
+            setValue("personal_workplace_other_income", toNumber(value))
           }
-          defaultValue={getValues("personal_workplace_other_income")}
+          defaultValue={toNumber(getValues("personal_workplace_other_income"))}
         />
       </FormItem>
       <FormItem
@@ -171,7 +173,7 @@ const PersonalWorkplaceDataSection = ({
         <InputNumber
           isError={!!errors.personal_workplace_additional_income}
           onChangeValue={(value) =>
-            setValue("personal_workplace_additional_income", value)
+            setValue("personal_workplace_additional_income", toNumber(value))
           }
           defaultValue={getValues("personal_workplace_additional_income")}
         />

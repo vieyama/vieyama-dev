@@ -53,7 +53,7 @@ const FormApplication = () => {
     },
   ];
 
-  if (applicationType === "inventory") {
+  if (applicationType === "Inventory Financing") {
     tabs.splice(1, 0, {
       name: "item-details",
       label: "Rincian Barang",
@@ -72,9 +72,6 @@ const FormApplication = () => {
   const Display = () => {
     let result = null;
     switch (flowProccess) {
-      case "application-details":
-        result = <ApplicationDetailsForm />;
-        break;
       case "item-details":
         result = <ItemDetailsForm />;
         break;
@@ -85,7 +82,7 @@ const FormApplication = () => {
         result = <ConfirmationForm />;
         break;
       default:
-        result = <ApplicationDetailsForm />;
+        result = <ApplicationDetailsForm userType={userType as string} />;
         break;
     }
     return result;

@@ -1,5 +1,7 @@
 import React from "react";
 
+import toNumber from "lodash/toNumber";
+
 import {
   loadPurposeList,
   storageList,
@@ -50,8 +52,8 @@ const FinancingDataSection = ({
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
         <InputNumber
           isError={!!errors.proposed_value}
-          defaultValue={getValues("proposed_value")}
-          onChangeValue={(value) => setValue("proposed_value", value)}
+          defaultValue={toNumber(getValues("proposed_value"))}
+          onChangeValue={(value) => setValue("proposed_value", toNumber(value))}
         />
       </FormItem>
       <FormItem

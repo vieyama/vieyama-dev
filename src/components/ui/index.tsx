@@ -10,3 +10,4 @@ export {default as Select} from "./Select";
 export {default as AutoComplete} from "./Autocomplete";
 export {default as Upload} from "./Upload";
 export {Input, InputPassword, InputNumber, InputTextArea} from "./Input";
+export {TableSkeleton} from "./Skeleton";

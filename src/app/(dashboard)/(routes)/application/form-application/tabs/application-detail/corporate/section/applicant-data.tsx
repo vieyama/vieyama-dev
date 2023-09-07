@@ -1,39 +1,59 @@
 "use client";
 import React from "react";
 
-import {businessFieldList} from "~/app/(dashboard)/(routes)/application/constants";
+import {useAtom} from "jotai";
+import debounce from "lodash/debounce";
+import Select from "react-select";
+
 import FormItem from "~/components/form";
-import {AutoComplete, Input, Text} from "~/components/ui";
-import {phoneCodeIndonesia} from "~/constants/dialPhones";
+import {Input, Text} from "~/components/ui";
+import {
+  mitraListSearchAtom,
+  selectedMitraIdAtom,
+} from "~/state/formApplication";
 
 import type {
   FieldErrors,
   UseFormRegister,
   UseFormSetValue,
 } from "react-hook-form";
+import type {SingleValue} from "react-select";
 import type {DetailApplicationCorporateType} from "~/interfaces/form/detailApplication";
+import type {Partner} from "~/interfaces/services/finance";
+import type {PartnerResult} from "~/interfaces/services/partner/list";
 
 const ApplicantDataSection = ({
   errors,
   register,
   setValue,
+  mitraData,
+  isLoadingMitra,
+  dataPartner,
 }: {
   register: UseFormRegister<DetailApplicationCorporateType>;
   errors: FieldErrors<DetailApplicationCorporateType>;
   setValue: UseFormSetValue<DetailApplicationCorporateType>;
+  mitraData?: PartnerResult[];
+  isLoadingMitra?: boolean;
+  dataPartner?: Partner;
 }) => {
-  const people = [
-    {id: "1", value: "mitra ID 1"},
-    {id: "2", value: "mitra ID 2"},
-    {id: "3", value: "mitra ID 3"},
-    {id: "4", value: "mitra ID 4"},
-    {id: "5", value: "mitra ID 5"},
-  ];
+  const [, setMitraListSearch] = useAtom(mitraListSearchAtom);
+  const [, setSelectedMitraId] = useAtom(selectedMitraIdAtom);
 
-  const handleChangeMitraId = (id: string) => {
-    const selected = people.find((data) => data.id === id);
-    setValue("partner_id", selected?.value);
+  const handleChangeMitraId = (
+    eventChange: SingleValue<{
+      value: string;
+      label: string;
+    }>,
+  ) => {
+    setValue("partner_id", eventChange?.value);
+    setSelectedMitraId(eventChange?.value as string);
   };
+
+  const handleSearchMitra = debounce((search: string) => {
+    setMitraListSearch(search);
+  }, 1500);
+
   return (
     <div className="mt-5 flex flex-col gap-y-5">
       <Text className="text-blue-600" weight="semi-bold">
@@ -45,7 +65,34 @@ const ApplicantDataSection = ({
         className="flex flex-col gap-4 md:flex-row"
         childClassName="w-full"
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-        <AutoComplete options={people} onChange={handleChangeMitraId} />
+        <Select
+          className="react-select"
+          isLoading={isLoadingMitra}
+          theme={(theme) => ({
+            ...theme,
+            borderRadius: 8,
+          })}
+          defaultValue={
+            dataPartner
+              ? {
+                  value: dataPartner?.partner_id as string,
+                  label:
+                    `${dataPartner?.no_registration} - ${dataPartner?.name}` as string,
+                }
+              : null
+          }
+          styles={{
+            menu: (provided) => ({...provided, zIndex: 9999}),
+          }}
+          placeholder=""
+          onInputChange={handleSearchMitra}
+          onChange={handleChangeMitraId}
+          components={{IndicatorSeparator: null, DropdownIndicator: () => null}}
+          options={mitraData?.map((mitra) => ({
+            value: mitra.uuid,
+            label: `${mitra.no_registration} - ${mitra.name}`,
+          }))}
+        />
       </FormItem>
 
       <FormItem
@@ -55,6 +102,7 @@ const ApplicantDataSection = ({
         childClassName="w-full"
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
         <Input
+          disabled
           isError={!!errors.applicant_name}
           {...register("applicant_name")}
         />
@@ -65,7 +113,11 @@ const ApplicantDataSection = ({
         className="flex flex-col gap-4 md:flex-row"
         childClassName="w-full"
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-        <Input isError={!!errors.company_name} {...register("company_name")} />
+        <Input
+          disabled
+          isError={!!errors.company_name}
+          {...register("company_name")}
+        />
       </FormItem>
       <FormItem
         label="NPWP Pemohon"
@@ -84,7 +136,11 @@ const ApplicantDataSection = ({
         className="flex flex-col gap-4 md:flex-row"
         childClassName="w-full"
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-        <Input isError={!!errors.company_npwp} {...register("company_npwp")} />
+        <Input
+          disabled
+          isError={!!errors.company_npwp}
+          {...register("company_npwp")}
+        />
       </FormItem>
       <FormItem
         label="Bidang Usaha"
@@ -92,22 +148,12 @@ const ApplicantDataSection = ({
         className="flex flex-col gap-4 md:flex-row"
         childClassName="w-full"
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-        <div className="flex flex-col gap-4 md:flex-row">
-          <select
-            className={`block w-full rounded-lg border ${
-              errors.business_fields ? "border-error" : "border-gray-300"
-            } p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
-            {...register("business_fields")}
-            defaultValue=""
-            placeholder="Bidang Usaha">
-            <option value="">Pilih Bidang Usaha</option>
-            {businessFieldList.map((business) => (
-              <option key={business} value={business}>
-                {business}
-              </option>
-            ))}
-          </select>
-        </div>
+        <Input
+          disabled
+          min={0}
+          isError={!!errors.business_fields}
+          {...register("business_fields")}
+        />
       </FormItem>
       <FormItem
         label="No. Telepon Kantor"
@@ -115,28 +161,12 @@ const ApplicantDataSection = ({
         className="flex flex-col gap-4 md:flex-row"
         childClassName="w-full"
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-        <div className="flex items-center gap-x-4">
-          <select
-            className={`block w-28 rounded-lg border ${
-              errors.phoneCode ? "border-error" : "border-gray-300"
-            } p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
-            {...register("phoneCode")}
-            defaultValue="021"
-            placeholder="No. Telepon Kantor">
-            <option value="021">021</option>
-            {phoneCodeIndonesia.map((dial) => (
-              <option key={dial.id} value={dial.id}>
-                {dial.id}
-              </option>
-            ))}
-          </select>
-          <Input
-            type="number"
-            min={0}
-            isError={!!errors.no_telp}
-            {...register("no_telp")}
-          />
-        </div>
+        <Input
+          disabled
+          min={0}
+          isError={!!errors.no_telp}
+          {...register("no_telp")}
+        />
       </FormItem>
       <FormItem
         label="Alamat Email"
@@ -144,7 +174,12 @@ const ApplicantDataSection = ({
         className="flex flex-col gap-4 md:flex-row"
         childClassName="w-full"
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-        <Input type="email" isError={!!errors.email} {...register("email")} />
+        <Input
+          disabled
+          type="email"
+          isError={!!errors.email}
+          {...register("email")}
+        />
       </FormItem>
       <FormItem
         label="Jumlah Karyawan"
