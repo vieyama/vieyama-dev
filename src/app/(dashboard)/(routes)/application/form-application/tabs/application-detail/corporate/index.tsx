@@ -6,6 +6,7 @@ import omit from "lodash/omit";
 import toNumber from "lodash/toNumber";
 import {useSearchParams} from "next/navigation";
 import {useForm} from "react-hook-form";
+import useFormPersist from "react-hook-form-persist";
 
 import useToast from "~/hooks/useToast";
 import {useInsertApplicationFinance} from "~/services/finance";
@@ -40,11 +41,18 @@ const ApplicationDetailCorporateForm: React.FC<{
     register,
     handleSubmit,
     setValue,
+    watch,
     getValues,
     formState: {errors},
   } = useForm<FormValueType>({
     resolver: yupResolver(DetailApplicationCorporateSchema),
     defaultValues: defaultValueForm,
+  });
+
+  useFormPersist("application-detail-coporate-form", {
+    watch,
+    setValue,
+    storage: window.localStorage, // default window.sessionStorage
   });
 
   const searchParams = useSearchParams();
@@ -192,7 +200,7 @@ const ApplicationDetailCorporateForm: React.FC<{
       </div>
       <div className="mt-4 bg-white p-6">
         <EmergencyContactSection register={register} errors={errors} />
-        <FooterButton />
+        <FooterButton isLoading={insertApplicationDetail.isLoading} />
       </div>
     </form>
   );

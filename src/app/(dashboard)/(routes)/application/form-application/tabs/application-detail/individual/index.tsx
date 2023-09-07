@@ -239,7 +239,7 @@ const ApplicationDetailIndividualForm: React.FC<{
           errors={errors}
         />
         <EmergencyContactSection register={register} errors={errors} />
-        <FooterButton />
+        <FooterButton isLoading={insertApplicationDetail.isLoading} />
       </div>
     </form>
   );
