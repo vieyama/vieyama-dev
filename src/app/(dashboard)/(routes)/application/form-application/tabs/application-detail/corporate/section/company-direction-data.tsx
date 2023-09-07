@@ -31,6 +31,7 @@ const CompanyDirectionData = ({
     control,
     name: "directors", // unique name for your Field Array
   });
+
   return (
     <div className="mt-10 flex flex-col gap-y-5">
       {fields.map((field, index) => (

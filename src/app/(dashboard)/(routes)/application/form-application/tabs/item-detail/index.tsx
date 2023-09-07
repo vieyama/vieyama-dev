@@ -53,7 +53,7 @@ const ItemDetailsForm = () => {
         control={control}
         errors={errors}
       />
-      <FooterButton />
+      <FooterButton isLoading={false} />
     </form>
   );
 };

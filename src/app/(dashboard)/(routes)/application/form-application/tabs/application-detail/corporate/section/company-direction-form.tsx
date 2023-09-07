@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import {useState} from "react";
 
 import {Disclosure} from "@headlessui/react";
 import {useAtom} from "jotai";
@@ -51,6 +51,7 @@ const CompanyDirectionForm: React.FC<{
   const [selectedDomicileCityId, setSelectedDomicileCityId] = useAtom(
     selectedDomicileCityIdAtom,
   );
+
   const {data: dataProvince} = useGetRegionList({
     url: "province",
     page: 1,
@@ -116,31 +117,6 @@ const CompanyDirectionForm: React.FC<{
     setValue(`directors.${index}.district_id`, toNumber(eventChange?.value));
     setValue(`directors.${index}.district_name`, eventChange?.label);
   };
-
-  useEffect(() => {
-    const data = getValues();
-
-    if (data.province_id) {
-      handleChangeProvince({
-        value: toString(data.province_id),
-        label: data.province_name as string,
-      });
-    }
-
-    if (data.city_id) {
-      handleChangeCity({
-        value: toString(data.city_id),
-        label: data.city_name as string,
-      });
-    }
-
-    if (data.district_id) {
-      handleChangeDistrict({
-        value: toString(data.district_id),
-        label: data.district_name as string,
-      });
-    }
-  }, []);
 
   return (
     <Disclosure key={field.id} defaultOpen>

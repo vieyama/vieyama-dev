@@ -55,7 +55,7 @@ const RequirementDocumentCorporateForm = () => {
         setValue={setValue}
         getValues={getValues}
       />
-      <FooterButton />
+      <FooterButton isLoading={false} />
     </form>
   );
 };

@@ -54,7 +54,7 @@ const RequirementDocumentIndividualForm = () => {
         setValue={setValue}
         getValues={getValues}
       />
-      <FooterButton />
+      <FooterButton isLoading={false} />
     </form>
   );
 };

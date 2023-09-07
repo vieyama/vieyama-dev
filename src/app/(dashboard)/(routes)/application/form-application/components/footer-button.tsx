@@ -2,7 +2,7 @@ import {useRouter} from "next/navigation";
 
 import {Button} from "~/components/ui";
 
-const FooterButton = () => {
+const FooterButton = ({isLoading}: {isLoading: boolean}) => {
   const router = useRouter();
   return (
     <div className="mt-4 bg-white p-6">
@@ -11,13 +11,18 @@ const FooterButton = () => {
           variant="tertiary"
           className="w-full"
           type="button"
+          isLoading={isLoading}
           onClick={() => router.push("/workspace")}>
           Kembali
         </Button>
-        <Button variant="tertiary" className="w-full" type="submit">
+        <Button
+          variant="tertiary"
+          isLoading={isLoading}
+          className="w-full"
+          type="submit">
           Simpan
         </Button>
-        <Button type="submit" className="w-full">
+        <Button type="submit" isLoading={isLoading} className="w-full">
           Lanjut
         </Button>
       </div>
