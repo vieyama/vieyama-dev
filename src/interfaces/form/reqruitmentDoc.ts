@@ -20,13 +20,13 @@ export type ReqruitmentDocCorporateType = {
 };
 
 export type ReqruitmentDocIndividualType = {
-  spouse_ktp_photo?: string[];
-  applicant_npwp_photo?: string[];
-  family_document_photo?: string[];
-  house_ownership_photo?: string[];
-  bin_or_bussines_photo?: string[];
-  bank_statement_photo?: string[];
-  invoices_others_photo?: string[];
-  house_photo?: string[];
-  selfie_pic_photo?: string[];
+  spouse_ktp_photo?: string[] | null;
+  applicant_npwp_photo?: string[] | null;
+  family_document_photo?: string[] | null;
+  house_ownership_photo?: string[] | null;
+  bin_or_bussines_photo?: string[] | null;
+  bank_statement_photo?: string[] | null;
+  invoices_others_photo?: string[] | null;
+  house_photo?: string[] | null;
+  selfie_pic_photo?: string[] | null;
 };

@@ -1,9 +1,11 @@
-type Items = {
-  id?: string;
+export type Items = {
+  id: string | null;
   photos?: string[];
   product_id62?: string;
-  sku_id62?: string;
-  qty?: number;
+  stock_id62?: string;
+  batch_number?: string;
+  selected_stock?: string;
+  quantity?: number;
 };
 
 export type DetailItemType = {

@@ -7,7 +7,7 @@ import {useRouter} from "next/navigation";
 
 import {Button, Checkbox, Icon, RadioGroup, Text} from "~/components/ui";
 import {useDisclosure} from "~/hooks";
-import {useInsertApplicationFinance} from "~/services/finance";
+import {useInsertFinance} from "~/services/finance";
 import {applicationTabsAtom} from "~/state/formApplication";
 
 import ExplanationNoteModal from "./explanation-note-modal";
@@ -26,7 +26,7 @@ const Application = () => {
   const [explanationReaded, explanationHandler] = useDisclosure(false);
   const [policyReaded, policyHandler] = useDisclosure(false);
 
-  const insertAgreement = useInsertApplicationFinance();
+  const insertAgreement = useInsertFinance();
 
   const handleCreateApplication = () => {
     setApplicationTabs([

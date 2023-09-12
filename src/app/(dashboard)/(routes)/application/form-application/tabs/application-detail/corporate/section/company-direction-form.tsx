@@ -1,17 +1,16 @@
-import {useState} from "react";
+import {useCallback, useEffect} from "react";
 
 import {Disclosure} from "@headlessui/react";
 import {useAtom} from "jotai";
-import {toNumber, toString} from "lodash";
+import isEmpty from "lodash/isEmpty";
+import toNumber from "lodash/toNumber";
+import toString from "lodash/toString";
 import Select from "react-select";
 
 import FormItem from "~/components/form";
 import {Button, Icon, Input, InputTextArea, Text} from "~/components/ui";
-import {useGetRegionList} from "~/services/region/list";
-import {
-  selectedDomicileCityIdAtom,
-  selectedDomicileProvinceIdAtom,
-} from "~/state/formApplication";
+import {useGetRegion} from "~/hooks/useGetRegion";
+import {deletedDirectorAtom} from "~/state/formApplication";
 
 import type {
   FieldArrayWithId,
@@ -22,7 +21,10 @@ import type {
   UseFormSetValue,
 } from "react-hook-form";
 import type {SingleValue} from "react-select";
-import type {DetailApplicationCorporateType} from "~/interfaces/form/detailApplication";
+import type {
+  DetailApplicationCorporateType,
+  Directors,
+} from "~/interfaces/form/detailApplication";
 
 const CompanyDirectionForm: React.FC<{
   field: FieldArrayWithId<DetailApplicationCorporateType, "directors", "id">;
@@ -43,80 +45,103 @@ const CompanyDirectionForm: React.FC<{
   getValues,
   setValue,
 }) => {
-  const [searchCity, setSearchCity] = useState("");
-  const [searchDistrict, setSearchDistrict] = useState("");
-  const [selectedDomicileProvinceId, setSelectedDomicileProvinceId] = useAtom(
-    selectedDomicileProvinceIdAtom,
-  );
-  const [selectedDomicileCityId, setSelectedDomicileCityId] = useAtom(
-    selectedDomicileCityIdAtom,
-  );
+  const {
+    setSearchCity,
+    setSearchDistrict,
+    selectedProvince,
+    setSelectedProvince,
+    selectedCity,
+    setSelectedCity,
+    selectedDistrict,
+    setSelectedDistrict,
+    provinceOption,
+    cityOption,
+    districtOption,
+  } = useGetRegion();
 
-  const {data: dataProvince} = useGetRegionList({
-    url: "province",
-    page: 1,
-    per_page: 34,
-    country_id: 105,
-    search: "",
-  });
+  const [deletedDirector, setDeletedDirector] = useAtom(deletedDirectorAtom);
 
-  const {data: dataCity} = useGetRegionList(
-    {
-      url: "city",
-      page: 1,
-      per_page: 10,
-      province_id: selectedDomicileProvinceId as number,
-      search: searchCity,
+  const handleChangeProvince = useCallback(
+    (
+      eventChange: SingleValue<{
+        value: string;
+        label: string;
+      }>,
+    ) => {
+      setSelectedProvince({
+        value: eventChange?.value as string,
+        label: eventChange?.label as string,
+      });
+      setValue(`directors.${index}.province_id`, toNumber(eventChange?.value));
+      setValue(`directors.${index}.province_name`, eventChange?.label);
     },
-    {
-      enabled: !!selectedDomicileProvinceId,
-    },
-  );
-
-  const {data: dataDistrict} = useGetRegionList(
-    {
-      url: "district",
-      page: 1,
-      per_page: 10,
-      city_id: selectedDomicileCityId as number,
-      search: searchDistrict,
-    },
-    {
-      enabled: !!selectedDomicileCityId,
-    },
+    [index, setSelectedProvince, setValue],
   );
 
-  const handleChangeProvince = (
-    eventChange: SingleValue<{
-      value: string;
-      label: string;
-    }>,
-  ) => {
-    setSelectedDomicileProvinceId(toNumber(eventChange?.value));
-    setValue(`directors.${index}.province_id`, toNumber(eventChange?.value));
-    setValue(`directors.${index}.province_name`, eventChange?.label);
-  };
+  const handleChangeCity = useCallback(
+    (
+      eventChange: SingleValue<{
+        value: string;
+        label: string;
+      }>,
+    ) => {
+      setSelectedCity({
+        value: eventChange?.value as string,
+        label: eventChange?.label as string,
+      });
+      setValue(`directors.${index}.city_id`, toNumber(eventChange?.value));
+      setValue(`directors.${index}.city_name`, eventChange?.label);
+    },
+    [index, setSelectedCity, setValue],
+  );
 
-  const handleChangeCity = (
-    eventChange: SingleValue<{
-      value: string;
-      label: string;
-    }>,
-  ) => {
-    setSelectedDomicileCityId(toNumber(eventChange?.value));
-    setValue(`directors.${index}.city_id`, toNumber(eventChange?.value));
-    setValue(`directors.${index}.city_name`, eventChange?.label);
-  };
+  const handleChangeDistrict = useCallback(
+    (
+      eventChange: SingleValue<{
+        value: string;
+        label: string;
+      }>,
+    ) => {
+      setSelectedDistrict({
+        value: eventChange?.value as string,
+        label: eventChange?.label as string,
+      });
+      setValue(`directors.${index}.district_id`, toNumber(eventChange?.value));
+      setValue(`directors.${index}.district_name`, eventChange?.label);
+    },
+    [index, setSelectedDistrict, setValue],
+  );
 
-  const handleChangeDistrict = (
-    eventChange: SingleValue<{
-      value: string;
-      label: string;
-    }>,
-  ) => {
-    setValue(`directors.${index}.district_id`, toNumber(eventChange?.value));
-    setValue(`directors.${index}.district_name`, eventChange?.label);
-  };
+  const data = getValues();
+
+  useEffect(() => {
+    if (data.directors?.[index]?.province_id) {
+      handleChangeProvince({
+        value: toString(data.directors?.[index]?.province_id),
+        label: data.directors?.[index]?.province_name as string,
+      });
+    }
+
+    if (data.directors?.[index]?.city_id) {
+      handleChangeCity({
+        value: toString(data.directors?.[index]?.city_id),
+        label: data.directors?.[index]?.city_name as string,
+      });
+    }
+
+    if (data.directors?.[index]?.district_id) {
+      handleChangeDistrict({
+        value: toString(data.directors?.[index]?.district_id),
+        label: data.directors?.[index]?.district_name as string,
+      });
+    }
+  }, [
+    data.directors,
+    handleChangeCity,
+    handleChangeDistrict,
+    handleChangeProvince,
+    index,
+  ]);
 
   return (
     <Disclosure key={field.id} defaultOpen>
@@ -251,12 +276,8 @@ const CompanyDirectionForm: React.FC<{
                 <Select
                   className="react-select"
                   value={{
-                    value: toString(
-                      getValues(`directors.${index}.province_id`),
-                    ),
-                    label: getValues(
-                      `directors.${index}.province_name`,
-                    ) as string,
+                    value: toString(selectedProvince?.value),
+                    label: selectedProvince?.label as string,
                   }}
                   theme={(theme) => ({
                     ...theme,
@@ -270,10 +291,7 @@ const CompanyDirectionForm: React.FC<{
                   components={{
                     IndicatorSeparator: null,
                   }}
-                  options={dataProvince?.results?.map((mitra) => ({
-                    value: mitra.id.toString(),
-                    label: mitra.name,
-                  }))}
+                  options={provinceOption}
                 />
               </FormItem>
               <FormItem
@@ -285,8 +303,8 @@ const CompanyDirectionForm: React.FC<{
                 <Select
                   className="react-select"
                   value={{
-                    value: toString(getValues(`directors.${index}.city_id`)),
-                    label: getValues(`directors.${index}.city_name`) as string,
+                    value: toString(selectedCity?.value),
+                    label: selectedCity?.label as string,
                   }}
                   theme={(theme) => ({
                     ...theme,
@@ -301,10 +319,7 @@ const CompanyDirectionForm: React.FC<{
                   components={{
                     IndicatorSeparator: null,
                   }}
-                  options={dataCity?.results?.map((mitra) => ({
-                    value: mitra.id.toString(),
-                    label: mitra.name,
-                  }))}
+                  options={cityOption}
                 />
               </FormItem>
               <FormItem
@@ -316,12 +331,8 @@ const CompanyDirectionForm: React.FC<{
                 <Select
                   className="react-select"
                   value={{
-                    value: toString(
-                      getValues(`directors.${index}.district_id`),
-                    ),
-                    label: getValues(
-                      `directors.${index}.district_name`,
-                    ) as string,
+                    value: toString(selectedDistrict?.value),
+                    label: selectedDistrict?.label as string,
                   }}
                   theme={(theme) => ({
                     ...theme,
@@ -336,10 +347,7 @@ const CompanyDirectionForm: React.FC<{
                   components={{
                     IndicatorSeparator: null,
                   }}
-                  options={dataDistrict?.results?.map((mitra) => ({
-                    value: mitra.id.toString(),
-                    label: mitra.name,
-                  }))}
+                  options={districtOption}
                 />
               </FormItem>
 
@@ -363,7 +371,19 @@ const CompanyDirectionForm: React.FC<{
               variant="link"
               size="icon"
               className="text-error"
-              onClick={() => remove(index)}>
+              onClick={() => {
+                if (data?.directors?.[index].name !== "") {
+                  const deletedData = !isEmpty(deletedDirector)
+                    ? [
+                        ...(deletedDirector as Directors[]),
+                        data?.directors?.[index],
+                      ]
+                    : [data?.directors?.[index]];
+
+                  setDeletedDirector(deletedData as Directors[]);
+                }
+                return remove(index);
+              }}>
               Hapus
             </Button>
           )}

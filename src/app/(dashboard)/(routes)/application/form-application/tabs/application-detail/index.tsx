@@ -29,7 +29,7 @@ const ApplicationDetails = ({userType}: {userType: string}) => {
     mothers_maiden_name: data?.mothers_maiden_name,
     pob: data?.pob,
     ...(data?.dob && {
-      dob: dayjs(data?.dob).format("YYYY-MM-DD"),
+      dob: dayjs(data?.dob * 1000).format("YYYY-MM-DD"),
     }),
     house_ownership_status: data?.house_ownership_status,
     length_of_stay_year: toString(
@@ -112,7 +112,7 @@ const ApplicationDetails = ({userType}: {userType: string}) => {
     company_name: data?.company_name,
     company_npwp: data?.company_npwp,
     applicant_npwp: data?.applicant_npwp,
-    business_fields: data?.business_fields,
+    business_fields: data?.business_fields?.[0],
     no_telp: data?.no_telp,
     email: data?.email,
     number_of_employees: toNumber(data?.number_of_employees),
@@ -136,7 +136,7 @@ const ApplicationDetails = ({userType}: {userType: string}) => {
       email: item?.email,
       no_ktp: item?.ktp,
       pob: item?.pob,
-      dob: dayjs(item?.dob).format("YYYY-MM-DD"),
+      dob: dayjs((item?.dob as number) * 1000).format("YYYY-MM-DD"),
       position: item?.position,
       no_hp: item?.no_hp,
       share_ownership: item?.share_ownership,

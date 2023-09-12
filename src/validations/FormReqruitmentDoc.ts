@@ -26,11 +26,11 @@ const FormReqruitmentDocCorporateSchema =
     deed_of_incoraption_photo: Yup.array()
       .of(Yup.string())
       .required(requiredMessage),
-    amendment_deed_photo: Yup.array().of(Yup.string()),
+    amendment_deed_photo: Yup.array().of(Yup.string()).nullable(),
     sk_kemenkumham_photo: Yup.array()
       .of(Yup.string())
       .required(requiredMessage),
-    sk_kemenkumham_changes_photo: Yup.array().of(Yup.string()),
+    sk_kemenkumham_changes_photo: Yup.array().of(Yup.string()).nullable(),
     licensing_documents_photo: Yup.array()
       .of(Yup.string())
       .required(requiredMessage),
@@ -52,7 +52,6 @@ const FormReqruitmentDocCorporateSchema =
 
 const FormReqruitmentDocIndividualSchema =
   Yup.object<ReqruitmentDocCorporateType>({
-    directors_ktp_photo: Yup.array().of(Yup.string()).required(requiredMessage),
     spouse_ktp_photo: Yup.array().of(Yup.string()).required(requiredMessage),
     applicant_npwp_photo: Yup.array()
       .of(Yup.string())

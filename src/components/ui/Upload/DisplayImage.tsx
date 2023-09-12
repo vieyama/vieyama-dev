@@ -11,28 +11,33 @@ import {useDisclosure} from "~/hooks";
 import Icon from "../Icon";
 
 const DisplayImage = ({
+  index,
   fileId,
   handleDelete,
+  allowEmpty,
 }: {
+  index: number;
+  allowEmpty?: boolean;
   fileId: string;
   handleDelete: (file: string) => void;
 }) => {
   const hoverRef = useRef(null);
   const isHover = useHover(hoverRef);
   const [previewImage, previewImageHandler] = useDisclosure(false);
-  const fileType = fileId.split(".").pop();
+  const [isErrorImage, isErrorImageHandler] = useDisclosure(false);
+  const fileType = fileId?.split(".").pop();
 
   let srcFile = "";
 
   switch (fileType) {
     case "jpg":
-      srcFile = `${googleApisFmsUrl}/attachment/fishfin/${fileId}`;
+      srcFile = `${googleApisFmsUrl}/attachment/${fileId}`;
       break;
     case "jpeg":
-      srcFile = `${googleApisFmsUrl}/attachment/fishfin/${fileId}`;
+      srcFile = `${googleApisFmsUrl}/attachment/${fileId}`;
       break;
     case "png":
-      srcFile = `${googleApisFmsUrl}/attachment/fishfin/${fileId}`;
+      srcFile = `${googleApisFmsUrl}/attachment/${fileId}`;
       break;
     case "pdf":
       srcFile = "/assets/preview-pdf.svg";
@@ -48,31 +53,50 @@ const DisplayImage = ({
       break;
   }
 
+  let allowDelete = true;
+
+  if (!allowEmpty) {
+    if (!isErrorImage) {
+      allowDelete = index !== 0;
+    }
+  }
+
   return (
     <div
       ref={hoverRef as React.LegacyRef<HTMLDivElement>}
-      className="relative flex flex-col gap-4">
-      <div
-        className={`absolute right-0 top-0 flex h-10 w-10 cursor-pointer items-center justify-center rounded-s-lg rounded-t-none bg-white bg-opacity-60 ${
-          isHover ? "opacity-100" : "opacity-0"
-        }`}
-        onClick={() => handleDelete(fileId)}>
-        <Icon name="trash" color="gray500" size={21} />
-      </div>
-      <img
-        src={srcFile}
-        className="h-[120px] w-[120px] object-cover object-center"
+      className="relative flex h-[120px] max-h-[120px] w-[120px] max-w-[120px] flex-col gap-4 ">
+      {allowDelete ? (
+        <div
+          className={`absolute right-0 top-0 flex h-10 w-10 cursor-pointer items-center justify-center rounded-s-lg rounded-t-none bg-white bg-opacity-60 ${
+            isHover ? "opacity-100" : "opacity-0"
+          }`}
+          onClick={() => handleDelete(fileId)}>
+          <Icon name="trash" color="gray500" size={21} />
+        </div>
+      ) : null}
+      <Image
+        src={isErrorImage ? "/assets/broken-image.svg" : srcFile}
+        width={120}
+        height={120}
+        objectFit="cover"
+        objectPosition="center"
+        onError={() => {
+          isErrorImageHandler.open();
+        }}
+        className="h-full w-full object-cover object-center"
         alt="fishfin image upload"
       />
-      <div
-        className={`${
-          ["doc", "docx"].includes(fileType as string) ? "hidden" : "absolute"
-        } bottom-[24.5px] flex h-10 w-full cursor-pointer items-center justify-center bg-white bg-opacity-60 ${
-          isHover ? "opacity-100" : "opacity-0"
-        }`}
-        onClick={previewImageHandler.open}>
-        <Icon name="eyes-solid" color="gray500" />
-      </div>
+      {!isErrorImage ? (
+        <div
+          className={`${
+            ["doc", "docx"].includes(fileType as string) ? "hidden" : "absolute"
+          } bottom-0 flex h-10 w-full cursor-pointer items-center justify-center bg-white bg-opacity-60 ${
+            isHover ? "opacity-100" : "opacity-0"
+          }`}
+          onClick={previewImageHandler.open}>
+          <Icon name="eyes-solid" color="gray500" />
+        </div>
+      ) : null}
 
       <Transition
         appear
@@ -109,7 +133,7 @@ const DisplayImage = ({
               {["jpg", "jpeg", "png"].includes(fileType as string) ? (
                 <div className="flex h-screen w-screen flex-col items-center justify-center">
                   <Image
-                    src={`${googleApisFmsUrl}/attachment/fishfin/${fileId}`}
+                    src={`${googleApisFmsUrl}/attachment/${fileId}`}
                     width={300}
                     height={300}
                     alt=""
@@ -121,7 +145,7 @@ const DisplayImage = ({
                 <div className="flex h-screen w-screen flex-col items-center justify-center">
                   <iframe
                     className="h-[90vh] w-full max-w-[950px]"
-                    src={`${googleApisFmsUrl}/attachment/fishfin/${fileId}`}></iframe>
+                    src={`${googleApisFmsUrl}/attachment/${fileId}`}></iframe>
                 </div>
               )}
             </Dialog.Panel>

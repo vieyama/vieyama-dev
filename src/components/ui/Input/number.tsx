@@ -7,7 +7,7 @@ import {cva, type VariantProps} from "class-variance-authority";
 import {cn} from "~/utils/tailwind-utils";
 
 const inputVariants = cva(
-  "block w-full rounded-lg border focus:border-blue-500 outline-none border-gray-300 bg-white p-2.5 text-base text-gray-900 placeholder:text-gray-400",
+  "block w-full rounded-lg border disabled:bg-gray-200 focus:border-blue-500 outline-none border-gray-300 bg-white p-2.5 text-base text-gray-900 placeholder:text-gray-400",
   {
     variants: {
       extra: {
@@ -35,6 +35,8 @@ export interface InputProps
     VariantProps<typeof inputVariants> {
   isError?: boolean;
   onChangeValue?: (string: string) => void;
+  addBefore?: React.ReactNode;
+  addAfter?: React.ReactNode;
 }
 
 const InputNumber = forwardRef<HTMLInputElement, InputProps>(
@@ -64,9 +66,7 @@ const InputNumber = forwardRef<HTMLInputElement, InputProps>(
     };
     return (
       <div className="relative">
-        <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center rounded-s-lg bg-gray-200 px-4">
-          IDR
-        </div>
+        {props.addBefore ? props.addBefore : null}
         <input
           ref={ref}
           {...props}
@@ -75,12 +75,15 @@ const InputNumber = forwardRef<HTMLInputElement, InputProps>(
           className={cn(
             inputVariants({
               size,
-              className: `pl-16 ${
+              className: `${props.addBefore ? "pl-16" : ""} ${
+                props.addAfter ? "pr-16" : ""
+              } ${
                 isError ? "border-2 border-error focus:border-error" : ""
               } ${className}`,
             }),
           )}
         />
+        {props.addAfter ? props.addAfter : null}
       </div>
     );
   },

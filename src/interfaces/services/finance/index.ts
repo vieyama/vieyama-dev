@@ -1,4 +1,6 @@
-export interface ApplicationDetailParams {
+import type {Items} from "~/interfaces/form/detailItem";
+
+export interface FinancingParams {
   step?: string;
   uuid: string | null;
   partner_type?: string;
@@ -24,6 +26,31 @@ export interface ApplicationDetailParams {
   emergency_office_no_telp?: string;
   emergency_home_number?: string;
   directors?: Director[];
+
+  spouse_ktp_photo?: string[];
+  applicant_npwp_photo?: string[];
+  family_document_photo?: string[];
+  house_ownership_photo?: string[];
+  bin_or_bussines_photo?: string[];
+  bank_statement_photo?: string[];
+  house_photo?: string[];
+  selfie_pic_photo?: string[];
+
+  directors_ktp_photo?: string[];
+  directors_npwp_photo?: string[];
+  comisarist_npwp_photo?: string[];
+  comisarist_ktp_photo?: string[];
+  shareholders_npwp_photo?: string[];
+  shareholders_ktp_photo?: string[];
+  company_npwp_photo?: string[];
+  deed_of_incoraption_photo?: string[];
+  amendment_deed_photo?: string[];
+  sk_kemenkumham_photo?: string[];
+  sk_kemenkumham_changes_photo?: string[];
+  licensing_documents_photo?: string[];
+  financial_statement_photo?: string[];
+  selfie_comisarist_photo?: string[];
+  office_photo?: string[];
 }
 
 export interface Region {
@@ -84,7 +111,7 @@ export interface FinanceResponseData {
   domicile_province: Region;
   mothers_maiden_name: string;
   pob: string;
-  dob: string;
+  dob: number;
   house_ownership_status: string;
   length_of_stay: string;
   last_education: string;
@@ -116,30 +143,30 @@ export interface FinanceResponseData {
   emergency_no_hp: string;
   emergency_office_no_telp: string;
   emergency_home_number: string;
-  directors_ktp_photo: string;
-  comisarist_ktp_photo: string;
-  shareholders_ktp_photo: string;
-  directors_npwp_photo: string;
-  comisarist_npwp_photo: string;
-  shareholders_npwp_photo: string;
+  directors_ktp_photo: string[];
+  comisarist_ktp_photo: string[];
+  shareholders_ktp_photo: string[];
+  directors_npwp_photo: string[];
+  comisarist_npwp_photo: string[];
+  shareholders_npwp_photo: string[];
   company_npwp_photo: string[];
-  deed_of_incoraption_photo: string;
-  amendment_deed_photo: string;
-  sk_kemenkumham_photo: string;
-  sk_kemenkumham_changes_photo: string;
-  licensing_documents_photo: string;
-  financial_statement_photo: string;
+  deed_of_incoraption_photo: string[];
+  amendment_deed_photo: string[];
+  sk_kemenkumham_photo: string[];
+  sk_kemenkumham_changes_photo: string[];
+  licensing_documents_photo: string[];
+  financial_statement_photo: string[];
   selfie_pic_photo: string[];
-  selfie_comisarist_photo: string;
-  spouse_ktp_photo: string;
+  selfie_comisarist_photo: string[];
+  spouse_ktp_photo: string[];
   applicant_npwp_photo: string[];
-  family_document_photo: string;
-  house_ownership_photo: string;
-  bin_or_bussines_photo: string;
-  bank_statement_photo: string;
-  invoices_others_photo: string;
-  house_photo: string;
-  office_photo: string;
+  family_document_photo: string[];
+  house_ownership_photo: string[];
+  bin_or_bussines_photo: string[];
+  bank_statement_photo: string[];
+  invoices_others_photo: string[];
+  house_photo: string[];
+  office_photo: string[];
   created_by: number;
   updated_by: number;
   deleted_by: string;
@@ -152,9 +179,91 @@ export interface FinanceResponseData {
   created_at: Date;
   updated_at: Date;
   deleted_at: string;
-  items: string[];
+  items: Items[];
   directors: Director[];
   partner: Partner;
+  warehouse: Warehouse;
+}
+
+export interface Warehouse {
+  id62: string;
+  warehouse_name: string;
+  name: string;
+  code: string;
+  wh_type: Category;
+  capacity: number;
+  address: Address;
+  company: Category;
+  wh_owned_by: string;
+  is_available_for_rent: boolean;
+  rent_type: string;
+  status_capacity: string;
+  suppliers: Customer[];
+  customers: Customer[];
+  is_active: boolean;
+  inventory_capacity: number;
+  rental_capacity: number;
+  available_inventory_capacity: number;
+  available_rental_capacity: number;
+  total_available_capacity: number;
+  qr_stock_display: QrStockDisplay;
+  overviews: any[];
+  photo_profile: string;
+  category: Category;
+  join_date_timestamp: number;
+  termination_date_timestamp: number;
+  locations: Location[];
+}
+
+export interface Address {
+  address: string;
+  external_address: string;
+  state: Province;
+  province: Province;
+  regency: Province;
+  lat_lng: LatLng;
+  external_state: null;
+  external_province: string;
+  external_regency: string;
+}
+
+export interface LatLng {
+  latitude: number;
+  longitude: number;
+}
+
+export interface Province {
+  id: number;
+  text: string;
+}
+
+export interface Category {
+  id62: string;
+  name: string;
+}
+
+export interface Customer {
+  id62: string;
+  full_name: string;
+  phone_number: string;
+  email: null | string;
+}
+
+export interface Location {
+  name: string;
+  location_type: string;
+  category: string;
+  storage_category: Category;
+  barcode: string;
+  is_scrap_location: boolean;
+  is_return_location: boolean;
+  is_replenish_location: boolean;
+  note: null;
+}
+
+export interface QrStockDisplay {
+  value: number;
+  text: string;
 }
 
 export interface GetFinanceResponse {

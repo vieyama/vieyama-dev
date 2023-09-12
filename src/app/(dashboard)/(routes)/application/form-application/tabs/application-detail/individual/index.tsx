@@ -9,7 +9,7 @@ import {useSearchParams} from "next/navigation";
 import {useForm} from "react-hook-form";
 
 import useToast from "~/hooks/useToast";
-import {useInsertApplicationFinance} from "~/services/finance";
+import {useInsertFinance} from "~/services/finance";
 import {useGetPartnerDetail, useGetPartnerList} from "~/services/partner/list";
 import {
   mitraListSearchAtom,
@@ -27,11 +27,6 @@ import {
 import FooterButton from "../../../components/footer-button";
 import {EmergencyContactSection, FinancingDataSection} from "../global";
 
-import type {
-  UseFormGetValues,
-  UseFormRegister,
-  UseFormSetValue,
-} from "react-hook-form";
 import type {DetailApplicationIndividualType} from "~/interfaces/form/detailApplication";
 import type {Partner} from "~/interfaces/services/finance";
 import type {PartnerDetailData} from "~/interfaces/services/partner/detail";
@@ -45,11 +40,14 @@ const ApplicationDetailIndividualForm: React.FC<{
     handleSubmit,
     setValue,
     getValues,
+    watch,
     formState: {errors},
   } = useForm<DetailApplicationIndividualType>({
     resolver: yupResolver(DetailApplicationIndividualSchema),
     defaultValues: defaultValueForm,
   });
+
+  const maritalStatus = watch("marital_status");
 
   const searchParams = useSearchParams();
   const applicationType = searchParams.get("payment");
@@ -100,7 +98,7 @@ const ApplicationDetailIndividualForm: React.FC<{
     },
   });
 
-  const insertApplicationDetail = useInsertApplicationFinance();
+  const insertApplicationDetail = useInsertFinance();
 
   const onSubmit = (data: DetailApplicationIndividualType) => {
     const dob = dayjs(data?.dob).unix();
@@ -190,52 +188,26 @@ const ApplicationDetailIndividualForm: React.FC<{
         <ApplicantDataSection
           mitraData={data?.results}
           isLoadingMitra={isLoading}
-          getValues={
-            getValues as UseFormGetValues<DetailApplicationIndividualType>
-          }
-          register={
-            register as UseFormRegister<DetailApplicationIndividualType>
-          }
+          getValues={getValues}
+          register={register}
           errors={errors}
-          setValue={
-            setValue as UseFormSetValue<DetailApplicationIndividualType>
-          }
+          setValue={setValue}
           dataPartner={dataPartner}
         />
-        <AddressDataSection
-          register={
-            register as UseFormRegister<DetailApplicationIndividualType>
-          }
-          errors={errors}
-        />
-        <DomicileDataSection
-          register={
-            register as UseFormRegister<DetailApplicationIndividualType>
-          }
-          errors={errors}
-        />
-        <SpouseDataSection
-          register={
-            register as UseFormRegister<DetailApplicationIndividualType>
-          }
-          errors={errors}
-          setValue={
-            setValue as UseFormSetValue<DetailApplicationIndividualType>
-          }
-          getValues={
-            getValues as UseFormGetValues<DetailApplicationIndividualType>
-          }
-        />
+        <AddressDataSection register={register} errors={errors} />
+        <DomicileDataSection register={register} errors={errors} />
+        {maritalStatus === "Kawin" ? (
+          <SpouseDataSection
+            register={register}
+            errors={errors}
+            setValue={setValue}
+            getValues={getValues}
+          />
+        ) : null}
         <PersonalWorkplaceDataSection
-          register={
-            register as UseFormRegister<DetailApplicationIndividualType>
-          }
-          setValue={
-            setValue as UseFormSetValue<DetailApplicationIndividualType>
-          }
-          getValues={
-            getValues as UseFormGetValues<DetailApplicationIndividualType>
-          }
+          register={register}
+          setValue={setValue}
+          getValues={getValues}
           errors={errors}
         />
         <EmergencyContactSection register={register} errors={errors} />

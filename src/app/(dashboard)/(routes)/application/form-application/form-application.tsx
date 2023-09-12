@@ -22,6 +22,7 @@ const FormApplication = () => {
   const flowProccess = searchParams.get("process");
   const userType = searchParams.get("type");
   const applicationType = searchParams.get("payment");
+  const financeId = searchParams.get("uuid");
 
   const isMobile = useMediaLayout("sm");
 
@@ -65,7 +66,7 @@ const FormApplication = () => {
 
   const handleClickTabs = (type: string) => {
     router.push(
-      `/application/form-application?process=${type}&type=${userType}&payment=${applicationType}`,
+      `/application/form-application?process=${type}&type=${userType}&payment=${applicationType}&uuid=${financeId}`,
     );
   };
 

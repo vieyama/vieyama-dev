@@ -1,5 +1,8 @@
 import {atom} from "jotai";
 
+import type {Directors} from "~/interfaces/form/detailApplication";
+import type {Items} from "~/interfaces/form/detailItem";
+
 type TabsProps = {
   name: string;
   isDone: boolean;
@@ -13,6 +16,8 @@ export const applicationTabsAtom = atom<TabsProps>([
 
 export const mitraListSearchAtom = atom<string>("");
 export const selectedMitraIdAtom = atom<string | null>(null);
-export const selectedDomicileProvinceIdAtom = atom<number | null>(null);
-export const selectedDomicileCityIdAtom = atom<number | null>(null);
-export const selectedDomicileDistrictIdAtom = atom<number | null>(null);
+export const deletedDirectorAtom = atom<Directors[] | null>(null);
+export const deletedItemsAtom = atom<Items[] | null>(null);
+export const storedImageAtom = atom<
+  {formName: string; items: string[]}[] | null
+>(null);

@@ -13,13 +13,15 @@ import DisplayImage from "./DisplayImage";
 export type FilesType = string[];
 
 interface UploadProps {
-  onChange?: (value: {id: string}[]) => void;
+  onChange?: (value: string[]) => void;
   onDelete?: (value: string[]) => void;
   fileList: FilesType;
   maxFile?: number;
   maxFileSise?: number;
   accept?: string;
   fileTypeLimiter?: string[];
+  allowEmpty?: boolean;
+  id: string;
 }
 
 const Upload: React.FC<UploadProps> = ({
@@ -27,7 +29,9 @@ const Upload: React.FC<UploadProps> = ({
   onDelete,
   fileList,
   maxFile,
+  allowEmpty = true,
   maxFileSise = 5,
+  id,
   accept = ".doc, .docx, .pdf, .jpg, .jpeg, .png",
 }) => {
   const fileTypeLimiter = [
@@ -53,10 +57,9 @@ const Upload: React.FC<UploadProps> = ({
     setIsLoading(true);
     const filesData = event.target.files;
 
-    if (
-      maxFile &&
-      (filesData?.length as number) + (files?.length as number) > 5
-    ) {
+    if (maxFile && (filesData?.length || 0) + (files?.length || 0) > 5) {
+      setIsLoading(false);
+
       return toast({
         message: `Maksimal ${maxFile} File`,
         type: "warning",
@@ -93,7 +96,11 @@ const Upload: React.FC<UploadProps> = ({
     await Promise.all(promise)
       .then((resultUpload) => {
         setIsLoading(false);
-        return onChange?.(resultUpload.map((item) => item.data));
+        const result = resultUpload
+          .map((item) => item.data)
+          ?.map((item) => `fishfin/${item.id}`);
+
+        return onChange?.(result);
       })
       .catch(() => {
         return toast({
@@ -128,8 +135,10 @@ const Upload: React.FC<UploadProps> = ({
   return (
     <div className="flex gap-4">
       {files
-        ? files.map((file) => (
+        ? files.map((file, index) => (
             <DisplayImage
+              index={index}
+              allowEmpty={allowEmpty}
               handleDelete={handleDelete}
               key={file}
               fileId={file}
@@ -141,7 +150,7 @@ const Upload: React.FC<UploadProps> = ({
           displayUploadButton ? "flex" : "hidden"
         } w-[120px] select-none flex-col gap-2`}>
         <label
-          htmlFor="dropzone-file"
+          htmlFor={`dropzone-file-${id}`}
           className={`${
             isLoading ? "cursor-not-allowed" : "cursor-pointer"
           } flex h-[120px] w-full flex-col items-center justify-center rounded-lg border-2 border-dashed border-gray-300 bg-white hover:bg-gray-100`}>
@@ -175,7 +184,7 @@ const Upload: React.FC<UploadProps> = ({
             )}
           </div>
           <input
-            id="dropzone-file"
+            id={`dropzone-file-${id}`}
             accept={accept}
             onChange={handleGetFile}
             multiple={true}

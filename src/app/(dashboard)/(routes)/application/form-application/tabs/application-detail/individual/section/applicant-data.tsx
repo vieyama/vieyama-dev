@@ -2,6 +2,12 @@ import React from "react";
 
 import {useAtom} from "jotai";
 import {debounce} from "lodash";
+import {
+  type FieldErrors,
+  type UseFormGetValues,
+  type UseFormRegister,
+  type UseFormSetValue,
+} from "react-hook-form";
 import Select from "react-select";
 
 import {
@@ -15,12 +21,6 @@ import {
   selectedMitraIdAtom,
 } from "~/state/formApplication";
 
-import type {
-  FieldErrors,
-  UseFormGetValues,
-  UseFormRegister,
-  UseFormSetValue,
-} from "react-hook-form";
 import type {SingleValue} from "react-select";
 import type {DetailApplicationIndividualType} from "~/interfaces/form/detailApplication";
 import type {Partner} from "~/interfaces/services/finance";
@@ -66,6 +66,7 @@ const ApplicantDataSection = ({
       </Text>
 
       <FormItem
+        error={errors.partner_id}
         label="ID Mitra"
         className="flex flex-col gap-4 md:flex-row"
         childClassName="w-full"
@@ -92,7 +93,7 @@ const ApplicantDataSection = ({
           placeholder=""
           onInputChange={handleSearchMitra}
           onChange={handleChangeMitraId}
-          components={{IndicatorSeparator: null, DropdownIndicator: () => null}}
+          components={{IndicatorSeparator: null}}
           options={mitraData?.map((mitra) => ({
             value: mitra.uuid,
             label: `${mitra.no_registration} - ${mitra.name}`,

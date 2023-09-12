@@ -24,8 +24,8 @@ const FinanceDoc = ({
   setValue: UseFormSetValue<ReqruitmentDocIndividualType>;
   getValues: UseFormGetValues<ReqruitmentDocIndividualType>;
 }) => {
-  const onChangeUpload = (values: {id: string}[], formName: ValueFormName) => {
-    const images = values.map((item) => item.id);
+  const onChangeUpload = (values: string[], formName: ValueFormName) => {
+    const images = values;
     const currentImage = getValues(formName);
 
     const setImage = currentImage ? [...currentImage, ...images] : images;
@@ -49,18 +49,20 @@ const FinanceDoc = ({
         label="Rekening Koran / Buku Tabunngan 6 Bulan Terakhir"
         labelClassName="mb-3.5">
         <Upload
+          id="bank_statement_photo"
           fileList={getValues("bank_statement_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "bank_statement_photo")}
           onDelete={(value) => onDeleteFile(value, "bank_statement_photo")}
           maxFile={5}
         />
       </FormItem>
-      {applicationType !== "inventory" ? (
+      {applicationType !== "Inventory Financing" ? (
         <FormItem
           error={errors.invoices_others_photo as FieldError}
           label="Invoice dan lainnya (MOU / SPK / PO / Tanda Terima)"
           labelClassName="mb-3.5">
           <Upload
+            id="invoices_others_photo"
             fileList={getValues("invoices_others_photo") as FilesType}
             onChange={(value) => onChangeUpload(value, "invoices_others_photo")}
             onDelete={(value) => onDeleteFile(value, "invoices_others_photo")}

@@ -11,7 +11,6 @@ import type {
 } from "react-hook-form";
 import type {FilesType} from "~/components/ui/Upload";
 import type {ReqruitmentDocIndividualType} from "~/interfaces/form/reqruitmentDoc";
-
 type ValueFormName = keyof ReqruitmentDocIndividualType;
 
 const LegalDocs = ({
@@ -23,8 +22,8 @@ const LegalDocs = ({
   setValue: UseFormSetValue<ReqruitmentDocIndividualType>;
   getValues: UseFormGetValues<ReqruitmentDocIndividualType>;
 }) => {
-  const onChangeUpload = (values: {id: string}[], formName: ValueFormName) => {
-    const images = values.map((item) => item.id);
+  const onChangeUpload = (values: string[], formName: ValueFormName) => {
+    const images = values;
     const currentImage = getValues(formName);
 
     const setImage = currentImage ? [...currentImage, ...images] : images;
@@ -43,6 +42,7 @@ const LegalDocs = ({
         labelClassName="mb-3.5"
         className="mt-3.5">
         <Upload
+          id="spouse_ktp_photo"
           fileList={getValues("spouse_ktp_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "spouse_ktp_photo")}
           onDelete={(value) => onDeleteFile(value, "spouse_ktp_photo")}
@@ -55,6 +55,8 @@ const LegalDocs = ({
         labelClassName="mb-3.5"
         className="mt-3.5">
         <Upload
+          allowEmpty={false}
+          id="applicant_npwp_photo"
           fileList={getValues("applicant_npwp_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "applicant_npwp_photo")}
           onDelete={(value) => onDeleteFile(value, "applicant_npwp_photo")}
@@ -67,6 +69,7 @@ const LegalDocs = ({
         labelClassName="mb-3.5"
         className="mt-3.5">
         <Upload
+          id="family_document_photo"
           fileList={getValues("family_document_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "family_document_photo")}
           onDelete={(value) => onDeleteFile(value, "family_document_photo")}
@@ -79,6 +82,7 @@ const LegalDocs = ({
         labelClassName="mb-3.5"
         className="mt-3.5">
         <Upload
+          id="house_ownership_photo"
           fileList={getValues("house_ownership_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "house_ownership_photo")}
           onDelete={(value) => onDeleteFile(value, "house_ownership_photo")}
@@ -91,6 +95,7 @@ const LegalDocs = ({
         labelClassName="mb-3.5"
         className="mt-3.5">
         <Upload
+          id="bin_or_bussines_photo"
           fileList={getValues("bin_or_bussines_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "bin_or_bussines_photo")}
           onDelete={(value) => onDeleteFile(value, "bin_or_bussines_photo")}

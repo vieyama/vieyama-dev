@@ -10,6 +10,13 @@ type PaginateType = {
   country_id?: number;
   province_id?: number;
   city_id?: number;
+  warehouse_id62?: string;
+  product_id62?: string;
+  partner_id?: string;
+  sku_id62?: string;
+  product_type?: string;
+  owner_name?: string;
+  tenant_id62?: string;
 };
 
 export type {PaginateType};

@@ -64,6 +64,7 @@ const ApplicantDataSection = ({
         label="ID Mitra"
         className="flex flex-col gap-4 md:flex-row"
         childClassName="w-full"
+        error={errors.partner_id}
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
         <Select
           className="react-select"
@@ -75,9 +76,8 @@ const ApplicantDataSection = ({
           defaultValue={
             dataPartner
               ? {
-                  value: dataPartner?.partner_id as string,
-                  label:
-                    `${dataPartner?.no_registration} - ${dataPartner?.name}` as string,
+                  value: dataPartner?.partner_id,
+                  label: `${dataPartner?.no_registration} - ${dataPartner?.name}`,
                 }
               : null
           }
@@ -87,7 +87,7 @@ const ApplicantDataSection = ({
           placeholder=""
           onInputChange={handleSearchMitra}
           onChange={handleChangeMitraId}
-          components={{IndicatorSeparator: null, DropdownIndicator: () => null}}
+          components={{IndicatorSeparator: null}}
           options={mitraData?.map((mitra) => ({
             value: mitra.uuid,
             label: `${mitra.no_registration} - ${mitra.name}`,
