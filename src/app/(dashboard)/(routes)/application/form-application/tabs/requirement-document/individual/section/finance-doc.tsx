@@ -7,8 +7,8 @@ import {Text, Upload} from "~/components/ui";
 import type {
   FieldError,
   FieldErrors,
-  UseFormGetValues,
   UseFormSetValue,
+  UseFormWatch,
 } from "react-hook-form";
 import type {FilesType} from "~/components/ui/Upload";
 import type {ReqruitmentDocIndividualType} from "~/interfaces/form/reqruitmentDoc";
@@ -18,15 +18,15 @@ type ValueFormName = keyof ReqruitmentDocIndividualType;
 const FinanceDoc = ({
   errors,
   setValue,
-  getValues,
+  watch,
 }: {
   errors: FieldErrors<ReqruitmentDocIndividualType>;
   setValue: UseFormSetValue<ReqruitmentDocIndividualType>;
-  getValues: UseFormGetValues<ReqruitmentDocIndividualType>;
+  watch: UseFormWatch<ReqruitmentDocIndividualType>;
 }) => {
   const onChangeUpload = (values: string[], formName: ValueFormName) => {
     const images = values;
-    const currentImage = getValues(formName);
+    const currentImage = watch(formName);
 
     const setImage = currentImage ? [...currentImage, ...images] : images;
     setValue(formName, setImage);
@@ -50,7 +50,7 @@ const FinanceDoc = ({
         labelClassName="mb-3.5">
         <Upload
           id="bank_statement_photo"
-          fileList={getValues("bank_statement_photo") as FilesType}
+          fileList={watch("bank_statement_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "bank_statement_photo")}
           onDelete={(value) => onDeleteFile(value, "bank_statement_photo")}
           maxFile={5}
@@ -63,7 +63,7 @@ const FinanceDoc = ({
           labelClassName="mb-3.5">
           <Upload
             id="invoices_others_photo"
-            fileList={getValues("invoices_others_photo") as FilesType}
+            fileList={watch("invoices_others_photo") as FilesType}
             onChange={(value) => onChangeUpload(value, "invoices_others_photo")}
             onDelete={(value) => onDeleteFile(value, "invoices_others_photo")}
             maxFile={5}

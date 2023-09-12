@@ -6,8 +6,8 @@ import {Upload} from "~/components/ui";
 import type {
   FieldError,
   FieldErrors,
-  UseFormGetValues,
   UseFormSetValue,
+  UseFormWatch,
 } from "react-hook-form";
 import type {FilesType} from "~/components/ui/Upload";
 import type {ReqruitmentDocCorporateType} from "~/interfaces/form/reqruitmentDoc";
@@ -17,15 +17,15 @@ type ValueFormName = keyof ReqruitmentDocCorporateType;
 const LegalDocs = ({
   errors,
   setValue,
-  getValues,
+  watch,
 }: {
   errors: FieldErrors<ReqruitmentDocCorporateType>;
   setValue: UseFormSetValue<ReqruitmentDocCorporateType>;
-  getValues: UseFormGetValues<ReqruitmentDocCorporateType>;
+  watch: UseFormWatch<ReqruitmentDocCorporateType>;
 }) => {
   const onChangeUpload = (values: string[], formName: ValueFormName) => {
     const images = values;
-    const currentImage = getValues(formName);
+    const currentImage = watch(formName);
 
     const setImage = currentImage ? [...currentImage, ...images] : images;
     setValue(formName, setImage);
@@ -44,7 +44,7 @@ const LegalDocs = ({
         className="mt-3.5">
         <Upload
           id="directors_ktp_photo"
-          fileList={getValues("directors_ktp_photo") as FilesType}
+          fileList={watch("directors_ktp_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "directors_ktp_photo")}
           onDelete={(value) => onDeleteFile(value, "directors_ktp_photo")}
           maxFile={5}
@@ -57,7 +57,7 @@ const LegalDocs = ({
         className="mt-3.5">
         <Upload
           id="comisarist_ktp_photo"
-          fileList={getValues("comisarist_ktp_photo") as FilesType}
+          fileList={watch("comisarist_ktp_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "comisarist_ktp_photo")}
           onDelete={(value) => onDeleteFile(value, "comisarist_ktp_photo")}
           maxFile={3}
@@ -70,7 +70,7 @@ const LegalDocs = ({
         className="mt-3.5">
         <Upload
           id="shareholders_ktp_photo"
-          fileList={getValues("shareholders_ktp_photo") as FilesType}
+          fileList={watch("shareholders_ktp_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "shareholders_ktp_photo")}
           onDelete={(value) => onDeleteFile(value, "shareholders_ktp_photo")}
           maxFile={3}
@@ -83,7 +83,7 @@ const LegalDocs = ({
         className="mt-3.5">
         <Upload
           id="directors_npwp_photo"
-          fileList={getValues("directors_npwp_photo") as FilesType}
+          fileList={watch("directors_npwp_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "directors_npwp_photo")}
           onDelete={(value) => onDeleteFile(value, "directors_npwp_photo")}
           maxFile={3}
@@ -96,7 +96,7 @@ const LegalDocs = ({
         className="mt-3.5">
         <Upload
           id="comisarist_npwp_photo"
-          fileList={getValues("comisarist_npwp_photo") as FilesType}
+          fileList={watch("comisarist_npwp_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "comisarist_npwp_photo")}
           onDelete={(value) => onDeleteFile(value, "comisarist_npwp_photo")}
           maxFile={3}
@@ -109,7 +109,7 @@ const LegalDocs = ({
         className="mt-3.5">
         <Upload
           id="shareholders_npwp_photo"
-          fileList={getValues("shareholders_npwp_photo") as FilesType}
+          fileList={watch("shareholders_npwp_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "shareholders_npwp_photo")}
           onDelete={(value) => onDeleteFile(value, "shareholders_npwp_photo")}
           maxFile={3}
@@ -123,7 +123,7 @@ const LegalDocs = ({
         <Upload
           id="company_npwp_photo"
           allowEmpty={false}
-          fileList={getValues("company_npwp_photo") as FilesType}
+          fileList={watch("company_npwp_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "company_npwp_photo")}
           onDelete={(value) => onDeleteFile(value, "company_npwp_photo")}
           maxFile={3}
@@ -136,7 +136,7 @@ const LegalDocs = ({
         className="mt-3.5">
         <Upload
           id="deed_of_incoraption_photo"
-          fileList={getValues("deed_of_incoraption_photo") as FilesType}
+          fileList={watch("deed_of_incoraption_photo") as FilesType}
           onChange={(value) =>
             onChangeUpload(value, "deed_of_incoraption_photo")
           }
@@ -152,7 +152,7 @@ const LegalDocs = ({
         className="mt-3.5">
         <Upload
           id="amendment_deed_photo"
-          fileList={getValues("amendment_deed_photo") as FilesType}
+          fileList={watch("amendment_deed_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "amendment_deed_photo")}
           onDelete={(value) => onDeleteFile(value, "amendment_deed_photo")}
           maxFile={3}
@@ -165,7 +165,7 @@ const LegalDocs = ({
         className="mt-3.5">
         <Upload
           id="sk_kemenkumham_photo"
-          fileList={getValues("sk_kemenkumham_photo") as FilesType}
+          fileList={watch("sk_kemenkumham_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "sk_kemenkumham_photo")}
           onDelete={(value) => onDeleteFile(value, "sk_kemenkumham_photo")}
           maxFile={3}
@@ -179,7 +179,7 @@ const LegalDocs = ({
         className="mt-3.5">
         <Upload
           id="sk_kemenkumham_changes_photo"
-          fileList={getValues("sk_kemenkumham_changes_photo") as FilesType}
+          fileList={watch("sk_kemenkumham_changes_photo") as FilesType}
           onChange={(value) =>
             onChangeUpload(value, "sk_kemenkumham_changes_photo")
           }
@@ -196,7 +196,7 @@ const LegalDocs = ({
         className="mt-3.5">
         <Upload
           id="licensing_documents_photo"
-          fileList={getValues("licensing_documents_photo") as FilesType}
+          fileList={watch("licensing_documents_photo") as FilesType}
           onChange={(value) =>
             onChangeUpload(value, "licensing_documents_photo")
           }

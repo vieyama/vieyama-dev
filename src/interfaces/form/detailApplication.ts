@@ -19,7 +19,7 @@ type AddressType = {
 };
 
 export type Directors = {
-  id?: string;
+  id?: null | string;
   name?: string;
   email?: string;
   no_ktp?: string;

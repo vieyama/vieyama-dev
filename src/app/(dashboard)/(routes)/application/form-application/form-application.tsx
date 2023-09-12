@@ -3,7 +3,7 @@
 import React from "react";
 
 import {useAtom} from "jotai";
-import {useRouter, useSearchParams} from "next/navigation";
+import {useSearchParams} from "next/navigation";
 
 import {Text} from "~/components/ui";
 import {useMediaLayout} from "~/hooks";
@@ -18,11 +18,9 @@ import {
 
 const FormApplication = () => {
   const searchParams = useSearchParams();
-  const router = useRouter();
   const flowProccess = searchParams.get("process");
   const userType = searchParams.get("type");
   const applicationType = searchParams.get("payment");
-  const financeId = searchParams.get("uuid");
 
   const isMobile = useMediaLayout("sm");
 
@@ -64,12 +62,6 @@ const FormApplication = () => {
     });
   }
 
-  const handleClickTabs = (type: string) => {
-    router.push(
-      `/application/form-application?process=${type}&type=${userType}&payment=${applicationType}&uuid=${financeId}`,
-    );
-  };
-
   const Display = () => {
     let result = null;
     switch (flowProccess) {
@@ -95,8 +87,7 @@ const FormApplication = () => {
         {tabs.map((item, key) => (
           <div
             key={item?.name}
-            className="flex w-48 cursor-pointer flex-col items-center gap-3 text-center sm:w-auto"
-            onClick={() => handleClickTabs(item?.name as string)}>
+            className="flex w-48 cursor-default flex-col items-center gap-3 text-center sm:w-auto">
             <div
               className={`flex h-9 w-9 items-center justify-center rounded-full border-2 md:h-16 md:w-16 ${
                 item?.isActive ? "border-blue-600" : "border-stroke"

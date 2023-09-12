@@ -3,7 +3,6 @@ import React from "react";
 import {yupResolver} from "@hookform/resolvers/yup";
 import {useSearchParams} from "next/navigation";
 import {useForm} from "react-hook-form";
-import useFormPersist from "react-hook-form-persist";
 
 import useToast from "~/hooks/useToast";
 import {useInsertFinance} from "~/services/finance";
@@ -25,7 +24,6 @@ const RequirementDocumentCorporateForm: React.FC<{
   const {
     handleSubmit,
     setValue,
-    getValues,
     watch,
     formState: {errors},
   } = useForm<ReqruitmentDocCorporateType>({
@@ -36,12 +34,6 @@ const RequirementDocumentCorporateForm: React.FC<{
         invoices_others_photo: [],
       }),
     },
-  });
-
-  useFormPersist(`item-reqruitement-coporate-form-${financeId}`, {
-    watch,
-    setValue,
-    storage: window.localStorage, // default window.sessionStorage
   });
 
   const insertFinance = useInsertFinance();
@@ -73,21 +65,9 @@ const RequirementDocumentCorporateForm: React.FC<{
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <LegalDocSection
-        errors={errors}
-        setValue={setValue}
-        getValues={getValues}
-      />
-      <FinanceDocSection
-        errors={errors}
-        setValue={setValue}
-        getValues={getValues}
-      />
-      <PhotosDocSection
-        errors={errors}
-        setValue={setValue}
-        getValues={getValues}
-      />
+      <LegalDocSection errors={errors} setValue={setValue} watch={watch} />
+      <FinanceDocSection errors={errors} setValue={setValue} watch={watch} />
+      <PhotosDocSection errors={errors} setValue={setValue} watch={watch} />
       <FooterButton isLoading={false} />
     </form>
   );

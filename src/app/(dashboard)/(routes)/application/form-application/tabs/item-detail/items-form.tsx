@@ -10,7 +10,7 @@ import type {
   UseFormRegister,
   UseFormSetValue,
 } from "react-hook-form";
-import type {DetailItemType} from "~/interfaces/form/detailItem";
+import type {DetailItemType, Items} from "~/interfaces/form/detailItem";
 
 const ItemsForm: React.FC<{
   register: UseFormRegister<DetailItemType>;
@@ -18,7 +18,8 @@ const ItemsForm: React.FC<{
   errors: FieldErrors<DetailItemType>;
   setValue: UseFormSetValue<DetailItemType>;
   partnerId: string;
-}> = ({control, errors, register, setValue, partnerId}) => {
+  dataItems?: Items[];
+}> = ({control, errors, register, setValue, partnerId, dataItems}) => {
   const {fields, append, remove} = useFieldArray({
     control,
     name: "items",
@@ -34,6 +35,7 @@ const ItemsForm: React.FC<{
           fields={fields}
           remove={remove}
           index={index}
+          dataItem={dataItems?.[index]}
           errors={errors}
           setValue={setValue}
           control={control}
@@ -45,7 +47,7 @@ const ItemsForm: React.FC<{
       <Button
         variant="tertiary"
         type="button"
-        onClick={() => append({id: null})}>
+        onClick={() => append({id: null, product_id62: "", quantity: 0})}>
         + Tambah Barang
       </Button>
     </div>

@@ -6,8 +6,8 @@ import {Text, Upload} from "~/components/ui";
 import type {
   FieldError,
   FieldErrors,
-  UseFormGetValues,
   UseFormSetValue,
+  UseFormWatch,
 } from "react-hook-form";
 import type {FilesType} from "~/components/ui/Upload";
 import type {ReqruitmentDocCorporateType} from "~/interfaces/form/reqruitmentDoc";
@@ -17,15 +17,15 @@ type ValueFormName = keyof ReqruitmentDocCorporateType;
 const FinanceDoc = ({
   errors,
   setValue,
-  getValues,
+  watch,
 }: {
   errors: FieldErrors<ReqruitmentDocCorporateType>;
   setValue: UseFormSetValue<ReqruitmentDocCorporateType>;
-  getValues: UseFormGetValues<ReqruitmentDocCorporateType>;
+  watch: UseFormWatch<ReqruitmentDocCorporateType>;
 }) => {
   const onChangeUpload = (values: string[], formName: ValueFormName) => {
     const images = values;
-    const currentImage = getValues(formName);
+    const currentImage = watch(formName);
 
     const setImage = currentImage ? [...currentImage, ...images] : images;
     setValue(formName, setImage);
@@ -47,7 +47,7 @@ const FinanceDoc = ({
         labelClassName="mb-3.5">
         <Upload
           id="office_photo"
-          fileList={getValues("office_photo") as FilesType}
+          fileList={watch("office_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "office_photo")}
           onDelete={(value) => onDeleteFile(value, "office_photo")}
           maxFile={5}
@@ -60,7 +60,7 @@ const FinanceDoc = ({
         <Upload
           allowEmpty={false}
           id="selfie_pic_photo"
-          fileList={getValues("selfie_pic_photo") as FilesType}
+          fileList={watch("selfie_pic_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "selfie_pic_photo")}
           onDelete={(value) => onDeleteFile(value, "selfie_pic_photo")}
           maxFile={5}
@@ -72,7 +72,7 @@ const FinanceDoc = ({
         labelClassName="mb-3.5">
         <Upload
           id="selfie_comisarist_photo"
-          fileList={getValues("selfie_comisarist_photo") as FilesType}
+          fileList={watch("selfie_comisarist_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "selfie_comisarist_photo")}
           onDelete={(value) => onDeleteFile(value, "selfie_comisarist_photo")}
           maxFile={5}

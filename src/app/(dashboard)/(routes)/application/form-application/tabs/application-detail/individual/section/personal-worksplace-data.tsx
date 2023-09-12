@@ -146,7 +146,7 @@ const PersonalWorkplaceDataSection = ({
             setValue("personal_workplace_income", toNumber(value))
           }
           defaultValue={toNumber(getValues("personal_workplace_income"))}
-          addBefore={
+          customPrefix={
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center rounded-s-lg bg-gray-200 px-4">
               IDR
             </div>
@@ -166,7 +166,7 @@ const PersonalWorkplaceDataSection = ({
             setValue("personal_workplace_other_income", toNumber(value))
           }
           defaultValue={toNumber(getValues("personal_workplace_other_income"))}
-          addBefore={
+          customPrefix={
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center rounded-s-lg bg-gray-200 px-4">
               IDR
             </div>
@@ -186,7 +186,7 @@ const PersonalWorkplaceDataSection = ({
             setValue("personal_workplace_additional_income", toNumber(value))
           }
           defaultValue={getValues("personal_workplace_additional_income")}
-          addBefore={
+          customPrefix={
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center rounded-s-lg bg-gray-200 px-4">
               IDR
             </div>

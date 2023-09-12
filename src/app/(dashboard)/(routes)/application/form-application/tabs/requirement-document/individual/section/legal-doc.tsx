@@ -6,8 +6,8 @@ import {Upload} from "~/components/ui";
 import type {
   FieldError,
   FieldErrors,
-  UseFormGetValues,
   UseFormSetValue,
+  UseFormWatch,
 } from "react-hook-form";
 import type {FilesType} from "~/components/ui/Upload";
 import type {ReqruitmentDocIndividualType} from "~/interfaces/form/reqruitmentDoc";
@@ -16,15 +16,15 @@ type ValueFormName = keyof ReqruitmentDocIndividualType;
 const LegalDocs = ({
   errors,
   setValue,
-  getValues,
+  watch,
 }: {
   errors: FieldErrors<ReqruitmentDocIndividualType>;
   setValue: UseFormSetValue<ReqruitmentDocIndividualType>;
-  getValues: UseFormGetValues<ReqruitmentDocIndividualType>;
+  watch: UseFormWatch<ReqruitmentDocIndividualType>;
 }) => {
   const onChangeUpload = (values: string[], formName: ValueFormName) => {
     const images = values;
-    const currentImage = getValues(formName);
+    const currentImage = watch(formName);
 
     const setImage = currentImage ? [...currentImage, ...images] : images;
     setValue(formName, setImage);
@@ -43,7 +43,7 @@ const LegalDocs = ({
         className="mt-3.5">
         <Upload
           id="spouse_ktp_photo"
-          fileList={getValues("spouse_ktp_photo") as FilesType}
+          fileList={watch("spouse_ktp_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "spouse_ktp_photo")}
           onDelete={(value) => onDeleteFile(value, "spouse_ktp_photo")}
           maxFile={5}
@@ -57,7 +57,7 @@ const LegalDocs = ({
         <Upload
           allowEmpty={false}
           id="applicant_npwp_photo"
-          fileList={getValues("applicant_npwp_photo") as FilesType}
+          fileList={watch("applicant_npwp_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "applicant_npwp_photo")}
           onDelete={(value) => onDeleteFile(value, "applicant_npwp_photo")}
           maxFile={5}
@@ -70,7 +70,7 @@ const LegalDocs = ({
         className="mt-3.5">
         <Upload
           id="family_document_photo"
-          fileList={getValues("family_document_photo") as FilesType}
+          fileList={watch("family_document_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "family_document_photo")}
           onDelete={(value) => onDeleteFile(value, "family_document_photo")}
           maxFile={5}
@@ -83,7 +83,7 @@ const LegalDocs = ({
         className="mt-3.5">
         <Upload
           id="house_ownership_photo"
-          fileList={getValues("house_ownership_photo") as FilesType}
+          fileList={watch("house_ownership_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "house_ownership_photo")}
           onDelete={(value) => onDeleteFile(value, "house_ownership_photo")}
           maxFile={5}
@@ -96,7 +96,7 @@ const LegalDocs = ({
         className="mt-3.5">
         <Upload
           id="bin_or_bussines_photo"
-          fileList={getValues("bin_or_bussines_photo") as FilesType}
+          fileList={watch("bin_or_bussines_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "bin_or_bussines_photo")}
           onDelete={(value) => onDeleteFile(value, "bin_or_bussines_photo")}
           maxFile={5}

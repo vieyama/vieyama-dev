@@ -1,9 +1,10 @@
+import {useEffect} from "react";
+
 import {yupResolver} from "@hookform/resolvers/yup";
 import {useAtom} from "jotai";
 import {isEmpty, toNumber} from "lodash";
 import {useSearchParams} from "next/navigation";
 import {useForm} from "react-hook-form";
-import useFormPersist from "react-hook-form-persist";
 
 import useToast from "~/hooks/useToast";
 import {useGetFinancingById, useInsertFinance} from "~/services/finance";
@@ -32,7 +33,6 @@ const ItemDetailsForm = () => {
     setValue,
     control,
     getValues,
-    watch,
     formState: {errors},
   } = useForm<DetailItemType>({
     resolver: yupResolver(DetailItemSchema),
@@ -54,13 +54,18 @@ const ItemDetailsForm = () => {
     },
   });
 
-  useFormPersist(`item-detail-form-${financeId}`, {
-    watch,
-    setValue,
-    storage: window.localStorage, // default window.sessionStorage
-  });
-
   const [deletedItems, setDeletedItems] = useAtom(deletedItemsAtom);
+
+  useEffect(() => {
+    let isMounted = true;
+    if (isMounted) {
+      setDeletedItems(null);
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [setDeletedItems]);
 
   const insertItemsDetail = useInsertFinance();
 
@@ -131,12 +136,13 @@ const ItemDetailsForm = () => {
       />
       <ItemsForm
         partnerId={data?.partner_id as string}
+        dataItems={data?.items}
         register={register}
         setValue={setValue}
         control={control}
         errors={errors}
       />
-      <FooterButton isLoading={false} />
+      <FooterButton isLoading={insertItemsDetail.isLoading} />
     </form>
   );
 };

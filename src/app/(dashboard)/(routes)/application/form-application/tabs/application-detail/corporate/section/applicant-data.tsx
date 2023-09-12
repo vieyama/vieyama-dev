@@ -77,7 +77,7 @@ const ApplicantDataSection = ({
             dataPartner
               ? {
                   value: dataPartner?.partner_id,
-                  label: `${dataPartner?.no_registration} - ${dataPartner?.name}`,
+                  label: `${dataPartner?.no_registration} - ${dataPartner?.company_name}`,
                 }
               : null
           }
@@ -90,7 +90,7 @@ const ApplicantDataSection = ({
           components={{IndicatorSeparator: null}}
           options={mitraData?.map((mitra) => ({
             value: mitra.uuid,
-            label: `${mitra.no_registration} - ${mitra.name}`,
+            label: `${mitra.no_registration} - ${mitra.company_name}`,
           }))}
         />
       </FormItem>
@@ -103,6 +103,7 @@ const ApplicantDataSection = ({
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
         <Input
           disabled
+          autoComplete="off"
           isError={!!errors.applicant_name}
           {...register("applicant_name")}
         />

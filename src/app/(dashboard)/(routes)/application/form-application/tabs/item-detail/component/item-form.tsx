@@ -1,11 +1,12 @@
 "use client";
 
-import {useState} from "react";
+import {useEffect, useState} from "react";
 
 import {useAtom} from "jotai";
 import debounce from "lodash/debounce";
 import find from "lodash/find";
 import isEmpty from "lodash/isEmpty";
+import omit from "lodash/omit";
 import toNumber from "lodash/toNumber";
 import {
   type Control,
@@ -40,6 +41,7 @@ interface ItemFormProps {
   register: UseFormRegister<DetailItemType>;
   warehouseId62: string;
   control: Control<DetailItemType>;
+  dataItem?: Items;
 }
 
 const ItemForm: React.FC<ItemFormProps> = ({
@@ -52,6 +54,7 @@ const ItemForm: React.FC<ItemFormProps> = ({
   warehouseId62,
   partnerId,
   control,
+  dataItem,
 }) => {
   const [searchProduct, setSearchProduct] = useState("");
   const [searchInventory, setSearchInventory] = useState("");
@@ -68,6 +71,21 @@ const ItemForm: React.FC<ItemFormProps> = ({
     productType: string;
     tenan: string;
   }>();
+
+  useEffect(() => {
+    let isMounted = true;
+    if (isMounted) {
+      setSelectedInventory({
+        skuId: dataItem?.batch?.sku.id62 as string,
+        owner: dataItem?.batch?.owner_name as string,
+        productType: dataItem?.batch?.product_type as string,
+        tenan: dataItem?.batch?.tenant?.id62 as string,
+      });
+    }
+    return () => {
+      isMounted = false;
+    };
+  }, [dataItem]);
 
   const {data: dataProduct} = useGetProductList({
     page: 1,
@@ -158,7 +176,7 @@ const ItemForm: React.FC<ItemFormProps> = ({
     index: number,
   ) => {
     setValue(`items.${index}.batch_number`, eventChange?.value);
-    setValue(`items.${index}.quantity`, eventChange?.quantity);
+    setValue(`items.${index}.quantity`, toNumber(eventChange?.quantity));
   };
 
   const onChangeUpload = (values: string[], index: number) => {
@@ -182,12 +200,13 @@ const ItemForm: React.FC<ItemFormProps> = ({
             size="icon"
             variant="transparent"
             onClick={() => {
-              if (productId !== "") {
+              if (!!dataItem) {
                 const deletedData = !isEmpty(deletedItem)
                   ? [...(deletedItem as Items[]), dataItems?.[index]]
                   : [dataItems?.[index]];
-
-                setDeletedItem(deletedData as Items[]);
+                setDeletedItem(
+                  deletedData.map((item) => omit(item, "id")) as Items[],
+                );
               }
               return remove(index);
             }}>
@@ -227,6 +246,10 @@ const ItemForm: React.FC<ItemFormProps> = ({
           onInputChange={handleSearchProduct}
           onChange={(event) => handleChangeProduct(event, index)}
           components={{IndicatorSeparator: null}}
+          defaultValue={{
+            label: dataItem?.batch?.product?.name as string,
+            value: dataItem?.batch?.product?.id62 as string,
+          }}
           options={dataProduct?.results?.map((item) => ({
             label: item?.name,
             value: item?.id62,
@@ -253,6 +276,13 @@ const ItemForm: React.FC<ItemFormProps> = ({
           onInputChange={handleSearchInventory}
           onChange={(event) => handleChangeInventory(event, index)}
           components={{IndicatorSeparator: null}}
+          defaultValue={{
+            label: dataItem?.batch?.sku?.SKU as string,
+            value: dataItem?.batch?.sku?.id62 as string,
+            owner: dataItem?.batch?.owner_name as string,
+            productType: dataItem?.batch?.product_type as string,
+            tenan: dataItem?.batch?.tenant?.id62 as string,
+          }}
           options={dataInventory?.results?.map((item) => ({
             label: item?.sku.SKU,
             value: item?.sku.id62,
@@ -307,6 +337,11 @@ const ItemForm: React.FC<ItemFormProps> = ({
             );
             return isSame?.batch_number === items.value;
           }}
+          defaultValue={{
+            label: dataItem?.batch?.batch_number as string,
+            value: dataItem?.batch?.batch_number as string,
+            quantity: dataItem?.batch?.stock as number,
+          }}
           options={dataBatch?.results?.map((item) => ({
             label: item?.batch_number,
             value: item?.batch_number,
@@ -329,7 +364,7 @@ const ItemForm: React.FC<ItemFormProps> = ({
             setValue(`items.${index}.quantity`, toNumber(value))
           }
           defaultValue={toNumber(dataItems?.[index]?.quantity)}
-          addAfter={
+          customSuffix={
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center rounded-e-lg bg-gray-200 px-4">
               Kg
             </div>

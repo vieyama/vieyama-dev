@@ -82,7 +82,7 @@ const SpouseDataSection = ({
           isError={!!errors.spouse_income}
           onChangeValue={(value) => setValue("spouse_income", toNumber(value))}
           defaultValue={toNumber(getValues("spouse_income"))}
-          addBefore={
+          customPrefix={
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center rounded-s-lg bg-gray-200 px-4">
               IDR
             </div>

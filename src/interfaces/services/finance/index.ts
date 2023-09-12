@@ -77,6 +77,7 @@ export interface Director {
 
 export type Partner = {
   name: string;
+  company_name: string;
   no_registration: string;
   partner_id: string;
 };
