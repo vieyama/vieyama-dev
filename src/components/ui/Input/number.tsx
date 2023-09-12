@@ -35,8 +35,8 @@ export interface InputProps
     VariantProps<typeof inputVariants> {
   isError?: boolean;
   onChangeValue?: (string: string) => void;
-  addBefore?: React.ReactNode;
-  addAfter?: React.ReactNode;
+  customPrefix?: React.ReactNode;
+  customSuffix?: React.ReactNode;
 }
 
 const InputNumber = forwardRef<HTMLInputElement, InputProps>(
@@ -66,7 +66,7 @@ const InputNumber = forwardRef<HTMLInputElement, InputProps>(
     };
     return (
       <div className="relative">
-        {props.addBefore ? props.addBefore : null}
+        {props.customPrefix ? props.customPrefix : null}
         <input
           ref={ref}
           {...props}
@@ -75,15 +75,15 @@ const InputNumber = forwardRef<HTMLInputElement, InputProps>(
           className={cn(
             inputVariants({
               size,
-              className: `${props.addBefore ? "pl-16" : ""} ${
-                props.addAfter ? "pr-16" : ""
+              className: `${props.customPrefix ? "pl-16" : ""} ${
+                props.customSuffix ? "pr-16" : ""
               } ${
                 isError ? "border-2 border-error focus:border-error" : ""
               } ${className}`,
             }),
           )}
         />
-        {props.addAfter ? props.addAfter : null}
+        {props.customSuffix ? props.customSuffix : null}
       </div>
     );
   },

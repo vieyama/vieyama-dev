@@ -1,3 +1,5 @@
+import {useEffect} from "react";
+
 import {yupResolver} from "@hookform/resolvers/yup";
 import dayjs from "dayjs";
 import {useAtom} from "jotai";
@@ -37,6 +39,11 @@ const ApplicationDetailCorporateForm: React.FC<{
   defaultValueForm?: DetailApplicationCorporateType;
   dataPartner?: Partner;
 }> = ({defaultValueForm, dataPartner}) => {
+  const searchParams = useSearchParams();
+  const dataId = searchParams.get("uuid");
+  const applicationType = searchParams.get("payment");
+  const {toast} = useToast();
+
   const {
     control,
     register,
@@ -49,14 +56,18 @@ const ApplicationDetailCorporateForm: React.FC<{
     defaultValues: defaultValueForm,
   });
 
-  const searchParams = useSearchParams();
-  const dataId = searchParams.get("uuid");
-  const applicationType = searchParams.get("payment");
-  const {toast} = useToast();
-
   const [mitraListSearch] = useAtom(mitraListSearchAtom);
-  const [selectedMitraId] = useAtom(selectedMitraIdAtom);
+  const [selectedMitraId, setSelectedMitraId] = useAtom(selectedMitraIdAtom);
   const [deletedDirector, setDeletedDirector] = useAtom(deletedDirectorAtom);
+
+  useEffect(() => {
+    let isMounted = true;
+    if (isMounted) setSelectedMitraId(null);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [setSelectedMitraId]);
 
   const {data, isLoading} = useGetPartnerList({
     page: 1,

@@ -1,4 +1,4 @@
-import React from "react";
+import {useEffect} from "react";
 
 import {yupResolver} from "@hookform/resolvers/yup";
 import dayjs from "dayjs";
@@ -55,7 +55,16 @@ const ApplicationDetailIndividualForm: React.FC<{
   const {toast} = useToast();
 
   const [mitraListSearch] = useAtom(mitraListSearchAtom);
-  const [selectedMitraId] = useAtom(selectedMitraIdAtom);
+  const [selectedMitraId, setSelectedMitraId] = useAtom(selectedMitraIdAtom);
+
+  useEffect(() => {
+    let isMounted = true;
+    if (isMounted) setSelectedMitraId(null);
+
+    return () => {
+      isMounted = false;
+    };
+  }, [setSelectedMitraId]);
 
   const {data, isLoading} = useGetPartnerList({
     page: 1,

@@ -6,8 +6,8 @@ import {Text, Upload} from "~/components/ui";
 import type {
   FieldError,
   FieldErrors,
-  UseFormGetValues,
   UseFormSetValue,
+  UseFormWatch,
 } from "react-hook-form";
 import type {FilesType} from "~/components/ui/Upload";
 import type {ReqruitmentDocIndividualType} from "~/interfaces/form/reqruitmentDoc";
@@ -17,15 +17,15 @@ type ValueFormName = keyof ReqruitmentDocIndividualType;
 const FinanceDoc = ({
   errors,
   setValue,
-  getValues,
+  watch,
 }: {
   errors: FieldErrors<ReqruitmentDocIndividualType>;
   setValue: UseFormSetValue<ReqruitmentDocIndividualType>;
-  getValues: UseFormGetValues<ReqruitmentDocIndividualType>;
+  watch: UseFormWatch<ReqruitmentDocIndividualType>;
 }) => {
   const onChangeUpload = (values: string[], formName: ValueFormName) => {
     const images = values;
-    const currentImage = getValues(formName);
+    const currentImage = watch(formName);
 
     const setImage = currentImage ? [...currentImage, ...images] : images;
     setValue(formName, setImage);
@@ -47,7 +47,7 @@ const FinanceDoc = ({
         labelClassName="mb-3.5">
         <Upload
           id="house_photo"
-          fileList={getValues("house_photo") as FilesType}
+          fileList={watch("house_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "house_photo")}
           onDelete={(value) => onDeleteFile(value, "house_photo")}
           maxFile={5}
@@ -60,7 +60,7 @@ const FinanceDoc = ({
         <Upload
           id="selfie_pic_photo"
           allowEmpty={false}
-          fileList={getValues("selfie_pic_photo") as FilesType}
+          fileList={watch("selfie_pic_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "selfie_pic_photo")}
           onDelete={(value) => onDeleteFile(value, "selfie_pic_photo")}
           maxFile={5}
