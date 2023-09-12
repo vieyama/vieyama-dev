@@ -1,75 +1,89 @@
-import React, {useState} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 
 import Select from "react-select";
 
 import FormItem from "~/components/form";
 import {Input, InputTextArea, Text} from "~/components/ui";
 import GoogleMaps from "~/components/ui/Map";
+import {useGetWarehouseList} from "~/services/warehouse/list";
 
 import type {
   FieldErrors,
+  UseFormGetValues,
   UseFormRegister,
   UseFormSetValue,
 } from "react-hook-form";
 import type {SingleValue} from "react-select";
 import type {LatlongType} from "~/components/ui/Map";
 import type {DetailItemType} from "~/interfaces/form/detailItem";
-
-type WarehouseType = {
-  id: string;
-  value: string;
-  latlong: {
-    lat: number;
-    long: number;
-  };
-  address: string;
-};
+import type {Warehouse} from "~/interfaces/services/finance";
+import type {WarehouseData} from "~/interfaces/services/warehouse";
 
 const WarehouseForm: React.FC<{
   register: UseFormRegister<DetailItemType>;
   setValue: UseFormSetValue<DetailItemType>;
+  getValues: UseFormGetValues<DetailItemType>;
   errors: FieldErrors<DetailItemType>;
-}> = ({register, setValue, errors}) => {
-  const [selectedWarehouse, setSelectedWarehouse] = useState<WarehouseType>();
+  partnerId: string;
+  warehouseData?: Warehouse;
+}> = ({register, setValue, errors, partnerId, warehouseData}) => {
+  const [selectedWarehouse, setSelectedWarehouse] = useState<WarehouseData>();
 
-  const dummyGudang = [
-    {
-      id: "1",
-      value: "1",
-      label: "Gudang Jakarta",
-      latlong: {lat: -6.17511, long: 106.865036},
-      address:
-        "Jl. Re. Martadinata No.33, RT.01/RW.09, Ciwaringin, Kecamatan Bogor Tengah, Kota Bogor, Jawa Barat",
-    },
-    {
-      id: "2",
-      value: "2",
-      label: "Gudang Bogor",
-      latlong: {lat: -6.597147, long: 106.806038},
-      address:
-        "Jl. Re. Martadinata No.33, RT.01/RW.09, Ciwaringin, Kecamatan Bogor Tengah, Kota Bogor, Jawa Barat",
-    },
-    {
-      id: "3",
-      value: "3",
-      label: "Gudang Pantai Indah Kapuk",
-      latlong: {lat: -6.11153, long: 106.752571},
-      address:
-        "Jl. Re. Martadinata No.33, RT.01/RW.09, Ciwaringin, Kecamatan Bogor Tengah, Kota Bogor, Jawa Barat",
-    },
-    {
-      id: "4",
-      value: "4",
-      label: "Gudang Cilacap",
-      latlong: {lat: -7.74202, long: 109.014519},
-      address:
-        "Jl. Re. Martadinata No.33, RT.01/RW.09, Ciwaringin, Kecamatan Bogor Tengah, Kota Bogor, Jawa Barat",
-    },
-  ];
+  const editData = useMemo(
+    () => ({
+      id62: warehouseData?.id62,
+      name: warehouseData?.name,
+      label: warehouseData?.name,
+      address: {
+        address: warehouseData?.address?.address,
+        external_address: warehouseData?.address?.external_address,
+        state: warehouseData?.address?.state,
+        province: warehouseData?.address?.province,
+        regency: warehouseData?.address?.regency,
+        lat_lng: warehouseData?.address?.lat_lng,
+      },
+    }),
+    [
+      warehouseData?.address?.address,
+      warehouseData?.address?.external_address,
+      warehouseData?.address?.lat_lng,
+      warehouseData?.address?.province,
+      warehouseData?.address?.regency,
+      warehouseData?.address?.state,
+      warehouseData?.id62,
+      warehouseData?.name,
+    ],
+  );
 
-  const handleSelectWarehouse = (event: SingleValue<WarehouseType>) => {
-    setSelectedWarehouse(event as WarehouseType);
-    setValue("warehouse_address", event?.address);
+  useEffect(() => {
+    let isMounted = true;
+    if (isMounted) {
+      if (editData?.name && editData?.id62) {
+        setSelectedWarehouse(editData as unknown as WarehouseData);
+      }
+    }
+
+    return () => {
+      isMounted = false;
+    };
+  }, [editData, warehouseData]);
+
+  const {data: dataWareHouse} = useGetWarehouseList(
+    {partner_id: partnerId},
+    {
+      enabled: !!partnerId,
+    },
+  );
+
+  const handleSelectWarehouse = (event: SingleValue<WarehouseData>) => {
+    setSelectedWarehouse(event as WarehouseData);
+    setValue("warehouse_address", event?.address?.address);
+    setValue("warehouse_id62", event?.id62);
+  };
+
+  const latlong = {
+    lat: selectedWarehouse?.address?.lat_lng?.latitude,
+    long: selectedWarehouse?.address?.lat_lng?.longitude,
   };
 
   return (
@@ -91,7 +105,8 @@ const WarehouseForm: React.FC<{
           })}
           placeholder="Pilih Gudang"
           components={{IndicatorSeparator: null}}
-          options={dummyGudang}
+          options={dataWareHouse}
+          defaultValue={editData as unknown as WarehouseData}
           onChange={handleSelectWarehouse}
           styles={{
             menu: (provided) => ({...provided, zIndex: 9999}),
@@ -100,20 +115,20 @@ const WarehouseForm: React.FC<{
       </FormItem>
       {selectedWarehouse ? (
         <>
-          <GoogleMaps latlong={selectedWarehouse?.latlong as LatlongType} />
+          <GoogleMaps latlong={latlong as LatlongType} />
           <FormItem
             label="Longtitude"
             className="flex flex-col gap-4 md:flex-row"
             childClassName="w-full"
             labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-            <Input disabled value={selectedWarehouse?.latlong.lat} />
+            <Input disabled value={latlong.long} />
           </FormItem>
           <FormItem
             label="Latitude"
             className="flex flex-col gap-4 md:flex-row"
             childClassName="w-full"
             labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-            <Input disabled value={selectedWarehouse?.latlong.lat} />
+            <Input disabled value={latlong.long} />
           </FormItem>
           <FormItem
             label="Alamat Lengkap"
@@ -122,6 +137,7 @@ const WarehouseForm: React.FC<{
             childClassName="w-full"
             labelClassName="md:min-w-[250px] lg:min-w-[250px]">
             <InputTextArea
+              disabled
               isError={!!errors.warehouse_address}
               {...register("warehouse_address")}
             />

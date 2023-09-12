@@ -1,17 +1,18 @@
 import {yupResolver} from "@hookform/resolvers/yup";
 import dayjs from "dayjs";
 import {useAtom} from "jotai";
+import isEmpty from "lodash/isEmpty";
 import isNumber from "lodash/isNumber";
 import omit from "lodash/omit";
 import toNumber from "lodash/toNumber";
 import {useSearchParams} from "next/navigation";
 import {useForm} from "react-hook-form";
-import useFormPersist from "react-hook-form-persist";
 
 import useToast from "~/hooks/useToast";
-import {useInsertApplicationFinance} from "~/services/finance";
+import {useInsertFinance} from "~/services/finance";
 import {useGetPartnerDetail, useGetPartnerList} from "~/services/partner/list";
 import {
+  deletedDirectorAtom,
   mitraListSearchAtom,
   selectedMitraIdAtom,
 } from "~/state/formApplication";
@@ -41,18 +42,11 @@ const ApplicationDetailCorporateForm: React.FC<{
     register,
     handleSubmit,
     setValue,
-    watch,
     getValues,
     formState: {errors},
   } = useForm<FormValueType>({
     resolver: yupResolver(DetailApplicationCorporateSchema),
     defaultValues: defaultValueForm,
-  });
-
-  useFormPersist("application-detail-coporate-form", {
-    watch,
-    setValue,
-    storage: window.localStorage, // default window.sessionStorage
   });
 
   const searchParams = useSearchParams();
@@ -62,6 +56,7 @@ const ApplicationDetailCorporateForm: React.FC<{
 
   const [mitraListSearch] = useAtom(mitraListSearchAtom);
   const [selectedMitraId] = useAtom(selectedMitraIdAtom);
+  const [deletedDirector, setDeletedDirector] = useAtom(deletedDirectorAtom);
 
   const {data, isLoading} = useGetPartnerList({
     page: 1,
@@ -84,7 +79,7 @@ const ApplicationDetailCorporateForm: React.FC<{
     },
   });
 
-  const insertApplicationDetail = useInsertApplicationFinance();
+  const insertApplicationDetail = useInsertFinance();
 
   const onSubmit = (data: DetailApplicationCorporateType) => {
     const province = {
@@ -127,6 +122,39 @@ const ApplicationDetailCorporateForm: React.FC<{
       },
       postal_code: item?.postal_code,
     }));
+    const deletedDirectors = deletedDirector?.map((deleted) => {
+      const result = {
+        ...deleted,
+        province: {
+          id: deleted?.province_id,
+          name: deleted?.province_name,
+        },
+        city: {
+          id: deleted?.city_id,
+          name: deleted?.city_name,
+        },
+        district: {
+          id: deleted?.district_id,
+          name: deleted?.district_name,
+        },
+        share_ownership: isNumber(deleted?.share_ownership)
+          ? `${deleted?.share_ownership}%`
+          : deleted?.share_ownership,
+        dob: dayjs(deleted?.dob).unix(),
+        ktp: deleted?.no_ktp,
+      };
+      return omit(
+        result,
+        "no_ktp",
+        "id",
+        "province_id",
+        "province_name",
+        "city_id",
+        "city_name",
+        "district_id",
+        "district_name",
+      );
+    });
 
     const removedData = omit(
       data,
@@ -143,7 +171,9 @@ const ApplicationDetailCorporateForm: React.FC<{
       step: "application_details",
       partner_type: "corporate",
       uuid: dataId,
-      directors,
+      directors: isEmpty(deletedDirector)
+        ? directors
+        : [...(directors as []), ...(deletedDirectors as [])],
       tenor: toNumber(data.tenor),
       province,
       city,
@@ -154,6 +184,7 @@ const ApplicationDetailCorporateForm: React.FC<{
     insertApplicationDetail
       .mutateAsync(dataSave)
       .then(() => {
+        setDeletedDirector(null);
         return toast({
           message: `Berhasil menyimpan data`,
           type: "success",

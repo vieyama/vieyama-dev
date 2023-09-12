@@ -60,6 +60,9 @@ const CompanyDirectionData = ({
             position: "",
             share_ownership: "",
             address: "",
+            no_ktp: "",
+            no_hp: "",
+            postal_code: 0,
           })
         }>
         + Tambah Pemegang Saham / Direksi

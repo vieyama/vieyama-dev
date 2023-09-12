@@ -18,7 +18,7 @@ type AddressType = {
   postal_code?: number;
 };
 
-type directors = {
+export type Directors = {
   id?: string;
   name?: string;
   email?: string;
@@ -45,7 +45,7 @@ export type DetailApplicationCorporateType = {
   no_telp?: string;
   email?: string;
   number_of_employees?: number;
-  directors?: directors[];
+  directors?: Directors[];
 } & EmergencyType &
   AddressType;
 

@@ -54,6 +54,11 @@ const FinancingDataSection = ({
           isError={!!errors.proposed_value}
           defaultValue={toNumber(getValues("proposed_value"))}
           onChangeValue={(value) => setValue("proposed_value", toNumber(value))}
+          addBefore={
+            <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center rounded-s-lg bg-gray-200 px-4">
+              IDR
+            </div>
+          }
         />
       </FormItem>
       <FormItem

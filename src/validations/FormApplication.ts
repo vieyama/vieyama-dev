@@ -8,14 +8,8 @@ import type {
 const requiredMessage = "This field is required.";
 
 const addressYup = {
-  address: Yup.string(),
-  province_id: Yup.number(),
-  province_name: Yup.string(),
-  city_id: Yup.number(),
-  city_name: Yup.string(),
-  district_id: Yup.number(),
-  district_name: Yup.string(),
-  postal_code: Yup.number().nullable(),
+  address: Yup.string().nullable(),
+  province_id: Yup.number().required(requiredMessage),
 };
 
 const emergencyYup = {
@@ -27,22 +21,28 @@ const emergencyYup = {
 
 const DetailApplicationCorporateSchema =
   Yup.object<DetailApplicationCorporateType>({
-    proposed_value: Yup.number().required(requiredMessage),
-    tenor: Yup.string().required(requiredMessage).oneOf(["1", "2", "3"]),
+    proposed_value: Yup.number()
+      .min(1, requiredMessage)
+      .required(requiredMessage),
+    tenor: Yup.string()
+      .required(requiredMessage)
+      .oneOf(["1", "2", "3"], requiredMessage),
     payment_method: Yup.string()
       .required(requiredMessage)
-      .oneOf(["installment", "end-of-tenor"]),
+      .oneOf(["installment", "end-of-tenor"], requiredMessage),
     loan_purposes: Yup.string().required(requiredMessage),
     storage: Yup.string().required(requiredMessage),
     partner_id: Yup.string().required(requiredMessage),
-    applicant_name: Yup.string().required(requiredMessage),
-    company_name: Yup.string().required(requiredMessage),
-    company_npwp: Yup.string().required(requiredMessage),
+    applicant_name: Yup.string().nullable(),
+    company_name: Yup.string().nullable(),
+    company_npwp: Yup.string().nullable(),
     applicant_npwp: Yup.string().required(requiredMessage),
-    business_fields: Yup.string().required(requiredMessage),
-    no_telp: Yup.string().notRequired(),
-    email: Yup.string().email("Email is Invalid").required(requiredMessage),
-    number_of_employees: Yup.number().required(requiredMessage),
+    business_fields: Yup.string().nullable(),
+    no_telp: Yup.string().nullable(),
+    email: Yup.string().email("Email is Invalid").nullable(),
+    number_of_employees: Yup.number()
+      .min(1, requiredMessage)
+      .required(requiredMessage),
     ...addressYup,
     directors: Yup.array()
       .of(
@@ -62,13 +62,21 @@ const DetailApplicationCorporateSchema =
       )
       .required(requiredMessage),
     ...emergencyYup,
-    emergency_office_no_telp: Yup.string(),
-    emergency_home_number: Yup.string(),
+    emergency_office_no_telp: Yup.string().nullable(),
+    emergency_home_number: Yup.string().nullable(),
+    province_name: Yup.string().required(requiredMessage),
+    city_id: Yup.number().required(requiredMessage),
+    city_name: Yup.string().required(requiredMessage),
+    district_id: Yup.number().required(requiredMessage),
+    district_name: Yup.string().required(requiredMessage),
+    postal_code: Yup.number().min(1, requiredMessage).required(requiredMessage),
   });
 
 const DetailApplicationIndividualSchema =
   Yup.object<DetailApplicationIndividualType>({
-    proposed_value: Yup.number().required(requiredMessage),
+    proposed_value: Yup.number()
+      .min(1, requiredMessage)
+      .required(requiredMessage),
     tenor: Yup.number()
       .required(requiredMessage)
       .oneOf([1, 2, 3], requiredMessage),
@@ -101,6 +109,12 @@ const DetailApplicationIndividualSchema =
     domicile_district_name: Yup.string().nullable(),
     domicile_postal_code: Yup.string().nullable(),
     ...addressYup,
+    province_name: Yup.string().nullable(),
+    city_id: Yup.number().nullable(),
+    city_name: Yup.string().nullable(),
+    district_id: Yup.number().nullable(),
+    district_name: Yup.string().nullable(),
+    postal_code: Yup.number().min(1, requiredMessage).nullable(),
     spouse_name: Yup.string().when(
       "marital_status",
       ([maritalStatus], schema) =>
@@ -134,14 +148,14 @@ const DetailApplicationIndividualSchema =
       ([maritalStatus], schema) =>
         maritalStatus !== "Kawin"
           ? schema.notRequired()
-          : schema.required(requiredMessage),
+          : schema.required(requiredMessage).min(1, requiredMessage),
     ),
     spouse_number_of_dependents: Yup.number().when(
       "marital_status",
       ([maritalStatus], schema) =>
         maritalStatus !== "Kawin"
           ? schema.notRequired()
-          : schema.required(requiredMessage),
+          : schema.required(requiredMessage).min(1, requiredMessage),
     ),
     personal_workplace_name: Yup.string().required(requiredMessage),
     personal_workplace_address: Yup.string().required(requiredMessage),

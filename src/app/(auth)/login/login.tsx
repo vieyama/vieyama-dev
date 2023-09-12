@@ -6,6 +6,7 @@ import {useForm} from "react-hook-form";
 
 import FormItem from "~/components/form";
 import {Button, Input, InputPassword, Text} from "~/components/ui";
+import useToast from "~/hooks/useToast";
 import {useLogin} from "~/services/auth/login";
 import {setCookieAuth} from "~/utils/setCookieAuth";
 import {LoginSchema} from "~/validations/AuthValidation";
@@ -22,12 +23,21 @@ const LoginComponent = () => {
   });
 
   const handleLogin = useLogin();
+  const {toast} = useToast();
 
   const onSubmit = (data: {email: string; password: string}) => {
-    handleLogin.mutateAsync(data).then((res) => {
-      setCookieAuth(res);
-      replace("/workspace");
-    });
+    handleLogin
+      .mutateAsync(data)
+      .then((res) => {
+        setCookieAuth(res);
+        replace("/workspace");
+      })
+      .catch((err) => {
+        return toast({
+          message: err.response.data.errors.error_description,
+          type: "error",
+        });
+      });
   };
 
   return (

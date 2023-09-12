@@ -3,7 +3,7 @@ import {getCookie} from "cookies-next";
 
 import {fmsApiUrl} from "~/constants/globals";
 
-const token = getCookie("fms-token");
+const token = getCookie("wmsToken");
 
 const clientUpload = axios.create({
   baseURL: fmsApiUrl,

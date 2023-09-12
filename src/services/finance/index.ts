@@ -7,16 +7,16 @@ import type {UseMutationResult, UseQueryResult} from "@tanstack/react-query";
 import type {AxiosError} from "axios";
 import type {PaginateType} from "~/interfaces/components/pagination";
 import type {
-  ApplicationDetailParams,
   DataFinances,
   FinanceResponseData,
+  FinancingParams,
   GetFinanceByIdResponse,
   GetFinanceResponse,
   InsertFinanceResponse,
 } from "~/interfaces/services/finance";
 
-const handleInsertApplicationFinance = async (
-  params: ApplicationDetailParams,
+const handleInsertFinance = async (
+  params: FinancingParams,
 ): Promise<FinanceResponseData> => {
   const response = await customAxios.post<InsertFinanceResponse>(
     `${baseApiUrl}/v1/financing`,
@@ -71,25 +71,22 @@ const useGetFinancingById = (
   );
 };
 
-const useInsertApplicationFinance = (
+const useInsertFinance = (
   extraParams = {},
 ): UseMutationResult<
   FinanceResponseData,
   AxiosError,
-  ApplicationDetailParams,
+  FinancingParams,
   () => void
 > => {
   return useMutation<
     FinanceResponseData,
     AxiosError,
-    ApplicationDetailParams,
+    FinancingParams,
     () => void
-  >(
-    (params: ApplicationDetailParams) => handleInsertApplicationFinance(params),
-    {
-      ...extraParams,
-    },
-  );
+  >((params: FinancingParams) => handleInsertFinance(params), {
+    ...extraParams,
+  });
 };
 
-export {useInsertApplicationFinance, useGetFinancingList, useGetFinancingById};
+export {useInsertFinance, useGetFinancingList, useGetFinancingById};

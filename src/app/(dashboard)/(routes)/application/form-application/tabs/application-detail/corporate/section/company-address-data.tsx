@@ -1,16 +1,11 @@
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect} from "react";
 
-import {useAtom} from "jotai";
 import {toNumber, toString} from "lodash";
 import Select from "react-select";
 
 import FormItem from "~/components/form";
 import {Input, InputTextArea, Text} from "~/components/ui";
-import {useGetRegionList} from "~/services/region/list";
-import {
-  selectedDomicileCityIdAtom,
-  selectedDomicileProvinceIdAtom,
-} from "~/state/formApplication";
+import {useGetRegion} from "~/hooks/useGetRegion";
 
 import type {
   FieldErrors,
@@ -32,84 +27,73 @@ const CompanyAddressData = ({
   getValues: UseFormGetValues<DetailApplicationCorporateType>;
   setValue: UseFormSetValue<DetailApplicationCorporateType>;
 }) => {
-  const [searchCity, setSearchCity] = useState("");
-  const [searchDistrict, setSearchDistrict] = useState("");
-  const [selectedDomicileProvinceId, setSelectedDomicileProvinceId] = useAtom(
-    selectedDomicileProvinceIdAtom,
-  );
-  const [selectedDomicileCityId, setSelectedDomicileCityId] = useAtom(
-    selectedDomicileCityIdAtom,
-  );
+  const {
+    setSearchCity,
+    setSearchDistrict,
+    selectedProvince,
+    setSelectedProvince,
+    selectedCity,
+    setSelectedCity,
+    selectedDistrict,
+    setSelectedDistrict,
+    provinceOption,
+    cityOption,
+    districtOption,
+  } = useGetRegion();
 
-  const {data: dataProvince} = useGetRegionList({
-    url: "province",
-    page: 1,
-    per_page: 34,
-    country_id: 105,
-    search: "",
-  });
-
-  const {data: dataCity} = useGetRegionList(
-    {
-      url: "city",
-      page: 1,
-      per_page: 10,
-      province_id: selectedDomicileProvinceId as number,
-      search: searchCity,
+  const handleChangeProvince = useCallback(
+    (
+      eventChange: SingleValue<{
+        value: string;
+        label: string;
+      }>,
+    ) => {
+      setSelectedProvince({
+        value: eventChange?.value as string,
+        label: eventChange?.label as string,
+      });
+      setValue("province_id", toNumber(eventChange?.value));
+      setValue("province_name", eventChange?.label);
     },
-    {
-      enabled: !!selectedDomicileProvinceId,
-    },
-  );
-
-  const {data: dataDistrict} = useGetRegionList(
-    {
-      url: "district",
-      page: 1,
-      per_page: 10,
-      city_id: selectedDomicileCityId as number,
-      search: searchDistrict,
-    },
-    {
-      enabled: !!selectedDomicileCityId,
-    },
+    [setSelectedProvince, setValue],
   );
 
-  const handleChangeProvince = (
-    eventChange: SingleValue<{
-      value: string;
-      label: string;
-    }>,
-  ) => {
-    setSelectedDomicileProvinceId(toNumber(eventChange?.value));
-    setValue("province_id", toNumber(eventChange?.value));
-    setValue("province_name", eventChange?.label);
-  };
+  const handleChangeCity = useCallback(
+    (
+      eventChange: SingleValue<{
+        value: string;
+        label: string;
+      }>,
+    ) => {
+      setSelectedCity({
+        value: eventChange?.value as string,
+        label: eventChange?.label as string,
+      });
+      setValue("city_id", toNumber(eventChange?.value));
+      setValue("city_name", eventChange?.label);
+    },
+    [setSelectedCity, setValue],
+  );
 
-  const handleChangeCity = (
-    eventChange: SingleValue<{
-      value: string;
-      label: string;
-    }>,
-  ) => {
-    setSelectedDomicileCityId(toNumber(eventChange?.value));
-    setValue("city_id", toNumber(eventChange?.value));
-    setValue("city_name", eventChange?.label);
-  };
+  const handleChangeDistrict = useCallback(
+    (
+      eventChange: SingleValue<{
+        value: string;
+        label: string;
+      }>,
+    ) => {
+      setSelectedDistrict({
+        value: eventChange?.value as string,
+        label: eventChange?.label as string,
+      });
+      setValue("district_id", toNumber(eventChange?.value));
+      setValue("district_name", eventChange?.label);
+    },
+    [setSelectedDistrict, setValue],
+  );
 
-  const handleChangeDistrict = (
-    eventChange: SingleValue<{
-      value: string;
-      label: string;
-    }>,
-  ) => {
-    setValue("district_id", toNumber(eventChange?.value));
-    setValue("district_name", eventChange?.label);
-  };
-
+  const data = getValues();
   useEffect(() => {
-    const data = getValues();
-
     if (data.province_id) {
       handleChangeProvince({
         value: toString(data.province_id),
@@ -130,7 +114,17 @@ const CompanyAddressData = ({
         label: data.district_name as string,
       });
     }
-  }, []);
+  }, [
+    data.city_id,
+    data.city_name,
+    data.district_id,
+    data.district_name,
+    data.province_id,
+    data.province_name,
+    handleChangeCity,
+    handleChangeDistrict,
+    handleChangeProvince,
+  ]);
 
   return (
     <div className="mt-5 flex flex-col gap-y-5">
@@ -159,8 +153,8 @@ const CompanyAddressData = ({
         <Select
           className="react-select"
           value={{
-            value: toString(getValues("province_id")),
-            label: getValues("province_name") as string,
+            value: toString(selectedProvince?.value),
+            label: selectedProvince?.label as string,
           }}
           theme={(theme) => ({
             ...theme,
@@ -174,10 +168,7 @@ const CompanyAddressData = ({
           components={{
             IndicatorSeparator: null,
           }}
-          options={dataProvince?.results?.map((mitra) => ({
-            value: mitra.id.toString(),
-            label: mitra.name,
-          }))}
+          options={provinceOption}
         />
       </FormItem>
 
@@ -190,8 +181,8 @@ const CompanyAddressData = ({
         <Select
           className="react-select"
           value={{
-            value: toString(getValues("city_id")),
-            label: getValues("city_name") as string,
+            value: toString(selectedCity?.value),
+            label: selectedCity?.label as string,
           }}
           theme={(theme) => ({
             ...theme,
@@ -206,10 +197,7 @@ const CompanyAddressData = ({
           components={{
             IndicatorSeparator: null,
           }}
-          options={dataCity?.results?.map((mitra) => ({
-            value: mitra.id.toString(),
-            label: mitra.name,
-          }))}
+          options={cityOption}
         />
       </FormItem>
       <FormItem
@@ -221,8 +209,8 @@ const CompanyAddressData = ({
         <Select
           className="react-select"
           value={{
-            value: toString(getValues("district_id")),
-            label: getValues("district_name") as string,
+            value: toString(selectedDistrict?.value),
+            label: selectedDistrict?.label as string,
           }}
           theme={(theme) => ({
             ...theme,
@@ -237,10 +225,7 @@ const CompanyAddressData = ({
           components={{
             IndicatorSeparator: null,
           }}
-          options={dataDistrict?.results?.map((mitra) => ({
-            value: mitra.id.toString(),
-            label: mitra.name,
-          }))}
+          options={districtOption}
         />
       </FormItem>
 

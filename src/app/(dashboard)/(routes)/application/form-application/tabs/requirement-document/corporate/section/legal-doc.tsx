@@ -23,8 +23,8 @@ const LegalDocs = ({
   setValue: UseFormSetValue<ReqruitmentDocCorporateType>;
   getValues: UseFormGetValues<ReqruitmentDocCorporateType>;
 }) => {
-  const onChangeUpload = (values: {id: string}[], formName: ValueFormName) => {
-    const images = values.map((item) => item.id);
+  const onChangeUpload = (values: string[], formName: ValueFormName) => {
+    const images = values;
     const currentImage = getValues(formName);
 
     const setImage = currentImage ? [...currentImage, ...images] : images;
@@ -43,6 +43,7 @@ const LegalDocs = ({
         error={errors.directors_ktp_photo as FieldError}
         className="mt-3.5">
         <Upload
+          id="directors_ktp_photo"
           fileList={getValues("directors_ktp_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "directors_ktp_photo")}
           onDelete={(value) => onDeleteFile(value, "directors_ktp_photo")}
@@ -55,6 +56,7 @@ const LegalDocs = ({
         labelClassName="mb-3.5"
         className="mt-3.5">
         <Upload
+          id="comisarist_ktp_photo"
           fileList={getValues("comisarist_ktp_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "comisarist_ktp_photo")}
           onDelete={(value) => onDeleteFile(value, "comisarist_ktp_photo")}
@@ -67,6 +69,7 @@ const LegalDocs = ({
         labelClassName="mb-3.5"
         className="mt-3.5">
         <Upload
+          id="shareholders_ktp_photo"
           fileList={getValues("shareholders_ktp_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "shareholders_ktp_photo")}
           onDelete={(value) => onDeleteFile(value, "shareholders_ktp_photo")}
@@ -79,6 +82,7 @@ const LegalDocs = ({
         labelClassName="mb-3.5"
         className="mt-3.5">
         <Upload
+          id="directors_npwp_photo"
           fileList={getValues("directors_npwp_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "directors_npwp_photo")}
           onDelete={(value) => onDeleteFile(value, "directors_npwp_photo")}
@@ -91,6 +95,7 @@ const LegalDocs = ({
         labelClassName="mb-3.5"
         className="mt-3.5">
         <Upload
+          id="comisarist_npwp_photo"
           fileList={getValues("comisarist_npwp_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "comisarist_npwp_photo")}
           onDelete={(value) => onDeleteFile(value, "comisarist_npwp_photo")}
@@ -103,6 +108,7 @@ const LegalDocs = ({
         labelClassName="mb-3.5"
         className="mt-3.5">
         <Upload
+          id="shareholders_npwp_photo"
           fileList={getValues("shareholders_npwp_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "shareholders_npwp_photo")}
           onDelete={(value) => onDeleteFile(value, "shareholders_npwp_photo")}
@@ -115,6 +121,8 @@ const LegalDocs = ({
         labelClassName="mb-3.5"
         className="mt-3.5">
         <Upload
+          id="company_npwp_photo"
+          allowEmpty={false}
           fileList={getValues("company_npwp_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "company_npwp_photo")}
           onDelete={(value) => onDeleteFile(value, "company_npwp_photo")}
@@ -127,6 +135,7 @@ const LegalDocs = ({
         labelClassName="mb-3.5"
         className="mt-3.5">
         <Upload
+          id="deed_of_incoraption_photo"
           fileList={getValues("deed_of_incoraption_photo") as FilesType}
           onChange={(value) =>
             onChangeUpload(value, "deed_of_incoraption_photo")
@@ -142,6 +151,7 @@ const LegalDocs = ({
         labelClassName="mb-3.5"
         className="mt-3.5">
         <Upload
+          id="amendment_deed_photo"
           fileList={getValues("amendment_deed_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "amendment_deed_photo")}
           onDelete={(value) => onDeleteFile(value, "amendment_deed_photo")}
@@ -154,6 +164,7 @@ const LegalDocs = ({
         labelClassName="mb-3.5"
         className="mt-3.5">
         <Upload
+          id="sk_kemenkumham_photo"
           fileList={getValues("sk_kemenkumham_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "sk_kemenkumham_photo")}
           onDelete={(value) => onDeleteFile(value, "sk_kemenkumham_photo")}
@@ -167,6 +178,7 @@ const LegalDocs = ({
         labelClassName="mb-3.5"
         className="mt-3.5">
         <Upload
+          id="sk_kemenkumham_changes_photo"
           fileList={getValues("sk_kemenkumham_changes_photo") as FilesType}
           onChange={(value) =>
             onChangeUpload(value, "sk_kemenkumham_changes_photo")
@@ -183,6 +195,7 @@ const LegalDocs = ({
         labelClassName="mb-3.5"
         className="mt-3.5">
         <Upload
+          id="licensing_documents_photo"
           fileList={getValues("licensing_documents_photo") as FilesType}
           onChange={(value) =>
             onChangeUpload(value, "licensing_documents_photo")

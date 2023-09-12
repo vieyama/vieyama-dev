@@ -23,8 +23,8 @@ const FinanceDoc = ({
   setValue: UseFormSetValue<ReqruitmentDocCorporateType>;
   getValues: UseFormGetValues<ReqruitmentDocCorporateType>;
 }) => {
-  const onChangeUpload = (values: {id: string}[], formName: ValueFormName) => {
-    const images = values.map((item) => item.id);
+  const onChangeUpload = (values: string[], formName: ValueFormName) => {
+    const images = values;
     const currentImage = getValues(formName);
 
     const setImage = currentImage ? [...currentImage, ...images] : images;
@@ -46,6 +46,7 @@ const FinanceDoc = ({
         label="Kantor Beserta Aktifitasnya"
         labelClassName="mb-3.5">
         <Upload
+          id="office_photo"
           fileList={getValues("office_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "office_photo")}
           onDelete={(value) => onDeleteFile(value, "office_photo")}
@@ -57,6 +58,8 @@ const FinanceDoc = ({
         label="Foto Selfie Penanggung Jawab"
         labelClassName="mb-3.5">
         <Upload
+          allowEmpty={false}
+          id="selfie_pic_photo"
           fileList={getValues("selfie_pic_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "selfie_pic_photo")}
           onDelete={(value) => onDeleteFile(value, "selfie_pic_photo")}
@@ -68,6 +71,7 @@ const FinanceDoc = ({
         label="Foto Selfie Komisaris"
         labelClassName="mb-3.5">
         <Upload
+          id="selfie_comisarist_photo"
           fileList={getValues("selfie_comisarist_photo") as FilesType}
           onChange={(value) => onChangeUpload(value, "selfie_comisarist_photo")}
           onDelete={(value) => onDeleteFile(value, "selfie_comisarist_photo")}
