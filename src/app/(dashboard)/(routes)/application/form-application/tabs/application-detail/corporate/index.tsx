@@ -1,4 +1,4 @@
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 
 import {yupResolver} from "@hookform/resolvers/yup";
 import dayjs from "dayjs";
@@ -10,6 +10,7 @@ import toNumber from "lodash/toNumber";
 import {useSearchParams} from "next/navigation";
 import {useForm} from "react-hook-form";
 
+import {useNext} from "~/hooks/useNext";
 import useToast from "~/hooks/useToast";
 import {useInsertFinance} from "~/services/finance";
 import {useGetPartnerDetail, useGetPartnerList} from "~/services/partner/list";
@@ -28,7 +29,7 @@ import {
 import FooterButton from "../../../components/footer-button";
 import {EmergencyContactSection, FinancingDataSection} from "../global";
 
-import type {Control, UseFormRegister, UseFormSetValue} from "react-hook-form";
+import type {Control} from "react-hook-form";
 import type {DetailApplicationCorporateType} from "~/interfaces/form/detailApplication";
 import type {Partner} from "~/interfaces/services/finance";
 import type {PartnerDetailData} from "~/interfaces/services/partner/detail";
@@ -47,9 +48,9 @@ const ApplicationDetailCorporateForm: React.FC<{
   const {
     control,
     register,
-    handleSubmit,
     setValue,
     getValues,
+    handleSubmit,
     formState: {errors},
   } = useForm<FormValueType>({
     resolver: yupResolver(DetailApplicationCorporateSchema),
@@ -90,8 +91,9 @@ const ApplicationDetailCorporateForm: React.FC<{
     },
   });
 
+  const [saveType, setSaveType] = useState<"save" | "next">("save");
   const insertApplicationDetail = useInsertFinance();
-
+  const {handleNext} = useNext();
   const onSubmit = (data: DetailApplicationCorporateType) => {
     const province = {
       id: data.province_id,
@@ -192,10 +194,13 @@ const ApplicationDetailCorporateForm: React.FC<{
       financing_type: applicationType,
     };
 
-    insertApplicationDetail
+    return insertApplicationDetail
       .mutateAsync(dataSave)
       .then(() => {
         setDeletedDirector(null);
+        if (saveType === "next") {
+          handleNext();
+        }
         return toast({
           message: `Berhasil menyimpan data`,
           type: "success",
@@ -222,18 +227,19 @@ const ApplicationDetailCorporateForm: React.FC<{
           mitraData={data?.results}
           dataPartner={dataPartner}
           isLoadingMitra={isLoading}
-          register={register as UseFormRegister<DetailApplicationCorporateType>}
+          getValues={getValues}
+          register={register}
           errors={errors}
-          setValue={setValue as UseFormSetValue<DetailApplicationCorporateType>}
+          setValue={setValue}
         />
         <CompanyAddressDataSection
-          register={register as UseFormRegister<DetailApplicationCorporateType>}
+          register={register}
           errors={errors}
           setValue={setValue}
           getValues={getValues}
         />
         <CompanyDirectionDataSection
-          register={register as UseFormRegister<DetailApplicationCorporateType>}
+          register={register}
           errors={errors}
           control={control as Control<DetailApplicationCorporateType>}
           setValue={setValue}
@@ -242,7 +248,10 @@ const ApplicationDetailCorporateForm: React.FC<{
       </div>
       <div className="mt-4 bg-white p-6">
         <EmergencyContactSection register={register} errors={errors} />
-        <FooterButton isLoading={insertApplicationDetail.isLoading} />
+        <FooterButton
+          isLoading={insertApplicationDetail.isLoading}
+          setSaveType={setSaveType}
+        />
       </div>
     </form>
   );

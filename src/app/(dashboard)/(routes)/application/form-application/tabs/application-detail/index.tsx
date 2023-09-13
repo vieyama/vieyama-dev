@@ -41,7 +41,7 @@ const ApplicationDetails = ({userType}: {userType: string}) => {
     last_education: data?.last_education,
     marital_status: data?.marital_status,
     no_hp: data?.no_hp,
-    no_hp2: toNumber(data?.no_hp_other),
+    no_hp2: data?.no_hp_other,
     email: data?.email,
     domicile_address: data?.domicile_address ?? "",
     domicile_province_id: data?.domicile_province?.id,
@@ -50,7 +50,7 @@ const ApplicationDetails = ({userType}: {userType: string}) => {
     domicile_city_name: data?.domicile_city?.name ?? "",
     domicile_district_id: data?.domicile_district?.id,
     domicile_district_name: data?.domicile_district?.name ?? "",
-    domicile_postal_code: toString(data?.domicile_postal_code),
+    domicile_postal_code: data?.domicile_postal_code,
     address: data?.address ?? "",
     province_id: data?.province?.id,
     province_name: data?.province?.name ?? "",
@@ -123,7 +123,7 @@ const ApplicationDetails = ({userType}: {userType: string}) => {
     city_name: data?.city?.name ?? "",
     district_id: data?.district?.id,
     district_name: data?.district?.name ?? "",
-    postal_code: toNumber(data?.postal_code),
+    postal_code: data?.postal_code ? toNumber(data?.postal_code) : 0,
     emergency_name: data?.emergency_name ?? "",
     emergency_relationship: data?.emergency_relationship ?? "",
     emergency_address: data?.emergency_address ?? "",
@@ -149,9 +149,9 @@ const ApplicationDetails = ({userType}: {userType: string}) => {
             city_name: item?.city?.name,
             district_id: item?.district?.id,
             district_name: item?.district?.name,
-            postal_code: toNumber(item?.postal_code),
+            postal_code: item?.postal_code ? toNumber(item?.postal_code) : 0,
           }))
-        : [{id: null, name: ""}],
+        : [{id: null, name: "", postal_code: 0}],
   };
 
   if (isLoading) {

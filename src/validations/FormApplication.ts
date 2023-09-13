@@ -58,6 +58,14 @@ const DetailApplicationCorporateSchema =
           no_hp: Yup.string().required(requiredMessage),
           share_ownership: Yup.string().required(requiredMessage),
           ...addressYup,
+          province_name: Yup.string().required(requiredMessage),
+          city_id: Yup.number().required(requiredMessage),
+          city_name: Yup.string().required(requiredMessage),
+          district_id: Yup.number().required(requiredMessage),
+          district_name: Yup.string().required(requiredMessage),
+          postal_code: Yup.number()
+            .min(1, requiredMessage)
+            .required(requiredMessage),
         }),
       )
       .required(requiredMessage),

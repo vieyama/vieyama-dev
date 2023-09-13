@@ -1,4 +1,4 @@
-import {useEffect} from "react";
+import {useEffect, useState} from "react";
 
 import {yupResolver} from "@hookform/resolvers/yup";
 import dayjs from "dayjs";
@@ -8,6 +8,7 @@ import toNumber from "lodash/toNumber";
 import {useSearchParams} from "next/navigation";
 import {useForm} from "react-hook-form";
 
+import {useNext} from "~/hooks/useNext";
 import useToast from "~/hooks/useToast";
 import {useInsertFinance} from "~/services/finance";
 import {useGetPartnerDetail, useGetPartnerList} from "~/services/partner/list";
@@ -37,10 +38,10 @@ const ApplicationDetailIndividualForm: React.FC<{
 }> = ({defaultValueForm, dataPartner}) => {
   const {
     register,
-    handleSubmit,
     setValue,
     getValues,
     watch,
+    handleSubmit,
     formState: {errors},
   } = useForm<DetailApplicationIndividualType>({
     resolver: yupResolver(DetailApplicationIndividualSchema),
@@ -107,7 +108,9 @@ const ApplicationDetailIndividualForm: React.FC<{
     },
   });
 
+  const [saveType, setSaveType] = useState<"save" | "next">("save");
   const insertApplicationDetail = useInsertFinance();
+  const {handleNext} = useNext();
 
   const onSubmit = (data: DetailApplicationIndividualType) => {
     const dob = dayjs(data?.dob).unix();
@@ -172,6 +175,9 @@ const ApplicationDetailIndividualForm: React.FC<{
     insertApplicationDetail
       .mutateAsync(dataSave)
       .then(() => {
+        if (saveType === "next") {
+          handleNext();
+        }
         return toast({
           message: `Berhasil menyimpan data`,
           type: "success",
@@ -220,7 +226,10 @@ const ApplicationDetailIndividualForm: React.FC<{
           errors={errors}
         />
         <EmergencyContactSection register={register} errors={errors} />
-        <FooterButton isLoading={insertApplicationDetail.isLoading} />
+        <FooterButton
+          isLoading={insertApplicationDetail.isLoading}
+          setSaveType={setSaveType}
+        />
       </div>
     </form>
   );
