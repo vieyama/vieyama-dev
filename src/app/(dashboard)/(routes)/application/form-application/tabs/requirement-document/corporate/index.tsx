@@ -1,9 +1,10 @@
-import React from "react";
+import React, {useState} from "react";
 
 import {yupResolver} from "@hookform/resolvers/yup";
 import {useSearchParams} from "next/navigation";
 import {useForm} from "react-hook-form";
 
+import {useNext} from "~/hooks/useNext";
 import useToast from "~/hooks/useToast";
 import {useInsertFinance} from "~/services/finance";
 import {FormReqruitmentDocCorporateSchema} from "~/validations/FormReqruitmentDoc";
@@ -22,9 +23,9 @@ const RequirementDocumentCorporateForm: React.FC<{
   const {toast} = useToast();
 
   const {
-    handleSubmit,
     setValue,
     watch,
+    handleSubmit,
     formState: {errors},
   } = useForm<ReqruitmentDocCorporateType>({
     resolver: yupResolver(FormReqruitmentDocCorporateSchema),
@@ -36,7 +37,9 @@ const RequirementDocumentCorporateForm: React.FC<{
     },
   });
 
+  const [saveType, setSaveType] = useState<"save" | "next">("save");
   const insertFinance = useInsertFinance();
+  const {handleNext} = useNext();
 
   const onSubmit = (data: object) => {
     const dataSave = {
@@ -50,6 +53,9 @@ const RequirementDocumentCorporateForm: React.FC<{
     insertFinance
       .mutateAsync(dataSave)
       .then(() => {
+        if (saveType === "next") {
+          handleNext();
+        }
         return toast({
           message: `Berhasil menyimpan data`,
           type: "success",
@@ -68,7 +74,10 @@ const RequirementDocumentCorporateForm: React.FC<{
       <LegalDocSection errors={errors} setValue={setValue} watch={watch} />
       <FinanceDocSection errors={errors} setValue={setValue} watch={watch} />
       <PhotosDocSection errors={errors} setValue={setValue} watch={watch} />
-      <FooterButton isLoading={false} />
+      <FooterButton
+        isLoading={insertFinance.isLoading}
+        setSaveType={setSaveType}
+      />
     </form>
   );
 };

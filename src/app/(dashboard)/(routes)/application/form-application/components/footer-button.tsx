@@ -1,28 +1,19 @@
+import type {Dispatch, SetStateAction} from "react";
+
 import {useRouter, useSearchParams} from "next/navigation";
 
 import {Button} from "~/components/ui";
 
-const FooterButton = ({isLoading}: {isLoading: boolean}) => {
+const FooterButton = ({
+  isLoading,
+  setSaveType,
+}: {
+  isLoading: boolean;
+  setSaveType: Dispatch<SetStateAction<"save" | "next">>;
+}) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const process = searchParams.get("process");
-  const type = searchParams.get("type");
-  const payment = searchParams.get("payment");
-  const uuid = searchParams.get("uuid");
-
-  const tabs = ["application-details", "requirement-document", "confirmation"];
-  if (payment === "Inventory Financing") {
-    tabs.splice(1, 0, "item-details");
-  }
-
-  const currentIndex = tabs.findIndex((item) => item === process);
-
-  const handleNext = () => {
-    const nextTabs = currentIndex + 1;
-    router.push(
-      `/application/form-application?process=${tabs[nextTabs]}&type=${type}&payment=${payment}&uuid=${uuid}`,
-    );
-  };
 
   const handleBack = () => {
     return process === "application-details"
@@ -45,12 +36,13 @@ const FooterButton = ({isLoading}: {isLoading: boolean}) => {
           variant="tertiary"
           isLoading={isLoading}
           className="w-full"
-          type="submit">
+          type="submit"
+          onClick={() => setSaveType("save")}>
           Simpan
         </Button>
         <Button
           type="submit"
-          onClick={handleNext}
+          onClick={() => setSaveType("next")}
           isLoading={isLoading}
           className="w-full">
           Lanjut

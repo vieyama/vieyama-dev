@@ -1,103 +1,17 @@
-import {useEffect} from "react";
-
-import {yupResolver} from "@hookform/resolvers/yup";
-import {useAtom} from "jotai";
-import {isEmpty, toNumber} from "lodash";
 import {useSearchParams} from "next/navigation";
-import {useForm} from "react-hook-form";
 
-import useToast from "~/hooks/useToast";
-import {useGetFinancingById, useInsertFinance} from "~/services/finance";
-import {deletedItemsAtom} from "~/state/formApplication";
-import {DetailItemSchema} from "~/validations/FormItemDetail";
+import {useGetFinancingById} from "~/services/finance";
 
-import ItemsForm from "./items-form";
-import WarehouseForm from "./warehouse-form";
-import FooterButton from "../../components/footer-button";
+import ItemDetailsForm from "./item-detail";
 
-import type {DetailItemType} from "~/interfaces/form/detailItem";
+import type {FinanceResponseData} from "~/interfaces/services/finance";
 
-const ItemDetailsForm = () => {
+const ItemDetails = () => {
   const searchParams = useSearchParams();
 
   const financeId = searchParams.get("uuid");
-  const applicationType = searchParams.get("payment");
-  const userType = searchParams.get("type");
-  const {toast} = useToast();
 
   const {data, isLoading} = useGetFinancingById(financeId as string);
-
-  const {
-    handleSubmit,
-    register,
-    setValue,
-    control,
-    getValues,
-    formState: {errors},
-  } = useForm<DetailItemType>({
-    resolver: yupResolver(DetailItemSchema),
-    defaultValues: {
-      warehouse_id62: data?.warehouse_id62,
-      warehouse_address: data?.warehouse_address,
-      items:
-        (data?.items?.length ?? 0) > 0
-          ? data?.items?.map((item) => ({
-              id: item?.id,
-              photos: item?.photos,
-              product_id62: item?.product_id62,
-              stock_id62: item?.stock_id62,
-              batch_number: item?.batch_number,
-              selected_stock: item?.selected_stock,
-              quantity: toNumber(item?.quantity),
-            }))
-          : [{id: null, photos: []}],
-    },
-  });
-
-  const [deletedItems, setDeletedItems] = useAtom(deletedItemsAtom);
-
-  useEffect(() => {
-    let isMounted = true;
-    if (isMounted) {
-      setDeletedItems(null);
-    }
-
-    return () => {
-      isMounted = false;
-    };
-  }, [setDeletedItems]);
-
-  const insertItemsDetail = useInsertFinance();
-
-  const onSubmit = (data: DetailItemType) => {
-    const dataSave = {
-      step: "item_details",
-      uuid: financeId,
-      partner_type: userType as string,
-      financing_type: applicationType,
-      warehouse_id62: data?.warehouse_id62,
-      warehouse_address: data?.warehouse_address,
-      items: isEmpty(deletedItems)
-        ? data?.items
-        : [...(data?.items as []), ...(deletedItems as [])],
-    };
-
-    insertItemsDetail
-      .mutateAsync(dataSave)
-      .then(() => {
-        setDeletedItems(null);
-        return toast({
-          message: `Berhasil menyimpan data`,
-          type: "success",
-        });
-      })
-      .catch(() => {
-        return toast({
-          message: "Terjadi kesalahan, silahkan coba kembali!",
-          type: "error",
-        });
-      });
-  };
 
   if (isLoading) {
     return (
@@ -124,27 +38,7 @@ const ItemDetailsForm = () => {
     );
   }
 
-  return (
-    <form onSubmit={handleSubmit(onSubmit)}>
-      <WarehouseForm
-        partnerId={data?.partner_id as string}
-        register={register}
-        setValue={setValue}
-        getValues={getValues}
-        errors={errors}
-        warehouseData={data?.warehouse}
-      />
-      <ItemsForm
-        partnerId={data?.partner_id as string}
-        dataItems={data?.items}
-        register={register}
-        setValue={setValue}
-        control={control}
-        errors={errors}
-      />
-      <FooterButton isLoading={insertItemsDetail.isLoading} />
-    </form>
-  );
+  return <ItemDetailsForm data={data as FinanceResponseData} />;
 };
 
-export default ItemDetailsForm;
+export default ItemDetails;

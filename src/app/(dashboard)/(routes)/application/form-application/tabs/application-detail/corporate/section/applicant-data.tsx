@@ -3,10 +3,11 @@ import React from "react";
 
 import {useAtom} from "jotai";
 import debounce from "lodash/debounce";
+import toNumber from "lodash/toNumber";
 import Select from "react-select";
 
 import FormItem from "~/components/form";
-import {Input, Text} from "~/components/ui";
+import {Input, InputNumber, Text} from "~/components/ui";
 import {
   mitraListSearchAtom,
   selectedMitraIdAtom,
@@ -14,6 +15,7 @@ import {
 
 import type {
   FieldErrors,
+  UseFormGetValues,
   UseFormRegister,
   UseFormSetValue,
 } from "react-hook-form";
@@ -26,6 +28,7 @@ const ApplicantDataSection = ({
   errors,
   register,
   setValue,
+  getValues,
   mitraData,
   isLoadingMitra,
   dataPartner,
@@ -33,6 +36,7 @@ const ApplicantDataSection = ({
   register: UseFormRegister<DetailApplicationCorporateType>;
   errors: FieldErrors<DetailApplicationCorporateType>;
   setValue: UseFormSetValue<DetailApplicationCorporateType>;
+  getValues: UseFormGetValues<DetailApplicationCorporateType>;
   mitraData?: PartnerResult[];
   isLoadingMitra?: boolean;
   dataPartner?: Partner;
@@ -188,11 +192,14 @@ const ApplicantDataSection = ({
         className="flex flex-col gap-4 md:flex-row"
         childClassName="w-full"
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-        <Input
+        <InputNumber
           min={0}
           type="number"
+          defaultValue={toNumber(getValues("number_of_employees"))}
+          onChangeValue={(value) =>
+            setValue("number_of_employees", toNumber(value))
+          }
           isError={!!errors.number_of_employees}
-          {...register("number_of_employees")}
         />
       </FormItem>
     </div>
