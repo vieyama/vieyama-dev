@@ -29,7 +29,7 @@ const ApplicationDetails = ({userType}: {userType: string}) => {
     mothers_maiden_name: data?.mothers_maiden_name ?? "",
     pob: data?.pob,
     ...(data?.dob && {
-      dob: dayjs(data?.dob).format("YYYY-MM-DD"),
+      dob: dayjs(toNumber(data?.dob)).format("YYYY-MM-DD"),
     }),
     house_ownership_status: data?.house_ownership_status,
     length_of_stay_year: data?.length_of_stay
@@ -138,7 +138,7 @@ const ApplicationDetails = ({userType}: {userType: string}) => {
             email: item?.email,
             no_ktp: item?.ktp,
             pob: item?.pob,
-            dob: dayjs(item?.dob).format("YYYY-MM-DD"),
+            dob: dayjs(toNumber(item?.dob)).format("YYYY-MM-DD"),
             position: item?.position,
             no_hp: item?.no_hp,
             share_ownership: item?.share_ownership,

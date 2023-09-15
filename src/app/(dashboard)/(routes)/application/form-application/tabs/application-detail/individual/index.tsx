@@ -102,7 +102,7 @@ const ApplicationDetailIndividualForm: React.FC<{
       setValue("applicant_name", result.applicant_name);
       mitraKtp.onChange(result.no_ktp);
       setValue("pob", result.pob);
-      setValue("dob", dayjs(result.dob).format("YYYY-MM-DD"));
+      setValue("dob", dayjs(toNumber(result.dob)).format("YYYY-MM-DD"));
       setValue("no_telp", result.no_telp);
       setValue("no_hp", result.no_hp_other);
       setValue("email", result.email);

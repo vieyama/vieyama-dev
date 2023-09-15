@@ -17,7 +17,6 @@ import {useGetPartnerDetail, useGetPartnerList} from "~/services/partner/list";
 import {
   deletedDirectorAtom,
   mitraListSearchAtom,
-  selectedMitraIdAtom,
 } from "~/state/formApplication";
 import {DetailApplicationCorporateSchema} from "~/validations/FormApplication";
 
@@ -51,14 +50,15 @@ const ApplicationDetailCorporateForm: React.FC<{
     setValue,
     getValues,
     handleSubmit,
+    watch,
     formState: {errors, isDirty},
   } = useForm<FormValueType>({
     resolver: yupResolver(DetailApplicationCorporateSchema),
     defaultValues: defaultValueForm,
   });
 
+  const selectedMitraId = watch("partner_id");
   const [mitraListSearch] = useAtom(mitraListSearchAtom);
-  const [selectedMitraId, setSelectedMitraId] = useAtom(selectedMitraIdAtom);
   const [deletedDirector, setDeletedDirector] = useAtom(deletedDirectorAtom);
 
   const handleBeforeUnload = (e: {
@@ -76,15 +76,6 @@ const ApplicationDetailCorporateForm: React.FC<{
         window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [isDirty]);
-
-  useEffect(() => {
-    let isMounted = true;
-    if (isMounted) setSelectedMitraId(null);
-
-    return () => {
-      isMounted = false;
-    };
-  }, [setSelectedMitraId]);
 
   const {data, isLoading} = useGetPartnerList({
     page: 1,

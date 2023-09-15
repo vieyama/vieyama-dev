@@ -11,17 +11,21 @@ const ControllerWrapper: React.FC<{
   fieldName: string;
   children: ({
     onChange,
+    onBlur,
     value,
-  }: Pick<ControllerRenderProps, "onChange" | "value">) =>
-    | JSX.Element
-    | JSX.Element;
+  }: Pick<
+    ControllerRenderProps,
+    "onChange" | "value" | "onBlur"
+  >) => JSX.Element;
 }> = ({control, fieldName, children}) => {
   return (
     <Controller
       control={control}
       name={fieldName}
-      render={({field: {onChange, value}}) =>
-        typeof children === "function" ? children({onChange, value}) : children
+      render={({field: {onChange, onBlur, value}}) =>
+        typeof children === "function"
+          ? children({onChange, onBlur, value})
+          : children
       }
     />
   );

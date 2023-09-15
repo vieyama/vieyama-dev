@@ -1,4 +1,4 @@
-import UploadComponent from "~/dashboard/(routes)/application/form-application/components/upload-component";
+import UploadComponent from "~/app/(dashboard)/(routes)/application/components/upload-component";
 
 import type {
   Control,

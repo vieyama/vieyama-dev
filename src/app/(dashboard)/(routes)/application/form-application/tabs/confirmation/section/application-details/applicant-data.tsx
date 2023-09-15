@@ -1,4 +1,5 @@
 import dayjs from "dayjs";
+import toNumber from "lodash/toNumber";
 import toString from "lodash/toString";
 import {useSearchParams} from "next/navigation";
 
@@ -30,7 +31,9 @@ const ApplicantData: React.FC<{
         <InputDisplay label="Tempat Lahir" value={financeData?.pob ?? ""} />
         <InputDisplay
           label="Tanggal Lahir"
-          value={dayjs(financeData?.dob).format("DD / MMMM / YYYY") ?? ""}
+          value={
+            dayjs(toNumber(financeData?.dob)).format("DD / MMMM / YYYY") ?? ""
+          }
         />
         <InputDisplay
           label="Nama Gadis Ibu Kandung"
