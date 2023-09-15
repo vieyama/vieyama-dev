@@ -5,7 +5,7 @@ export type Items = {
   stock_id62?: string;
   batch_number?: string;
   selected_stock?: string;
-  quantity?: number;
+  quantity?: number | null;
   batch?: {
     id62: string;
     sku: Sku;

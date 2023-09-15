@@ -11,7 +11,7 @@ import {Button} from "~/components/ui";
 
 import CompanyDirectionForm from "./company-direction-form";
 
-import type {Control, UseFormGetValues, UseFormSetValue} from "react-hook-form";
+import type {Control, UseFormGetValues} from "react-hook-form";
 import type {DetailApplicationCorporateType} from "~/interfaces/form/detailApplication";
 
 const CompanyDirectionData = ({
@@ -19,13 +19,11 @@ const CompanyDirectionData = ({
   register,
   control,
   getValues,
-  setValue,
 }: {
   register: UseFormRegister<DetailApplicationCorporateType>;
   errors: FieldErrors<DetailApplicationCorporateType>;
   control: Control<DetailApplicationCorporateType>;
   getValues: UseFormGetValues<DetailApplicationCorporateType>;
-  setValue: UseFormSetValue<DetailApplicationCorporateType>;
 }) => {
   const {fields, append, remove} = useFieldArray({
     control,
@@ -44,7 +42,7 @@ const CompanyDirectionData = ({
           fieldsLength={fields.length}
           remove={remove}
           getValues={getValues}
-          setValue={setValue}
+          control={control}
         />
       ))}
 

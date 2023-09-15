@@ -51,7 +51,7 @@ const ApplicationDetailCorporateForm: React.FC<{
     setValue,
     getValues,
     handleSubmit,
-    formState: {errors},
+    formState: {errors, isDirty},
   } = useForm<FormValueType>({
     resolver: yupResolver(DetailApplicationCorporateSchema),
     defaultValues: defaultValueForm,
@@ -60,6 +60,22 @@ const ApplicationDetailCorporateForm: React.FC<{
   const [mitraListSearch] = useAtom(mitraListSearchAtom);
   const [selectedMitraId, setSelectedMitraId] = useAtom(selectedMitraIdAtom);
   const [deletedDirector, setDeletedDirector] = useAtom(deletedDirectorAtom);
+
+  const handleBeforeUnload = (e: {
+    preventDefault: () => void;
+    returnValue: string;
+  }) => {
+    e.preventDefault();
+    e.returnValue = "";
+  };
+
+  useEffect(() => {
+    if (isDirty) window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      if (isDirty)
+        window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [isDirty]);
 
   useEffect(() => {
     let isMounted = true;
@@ -94,6 +110,7 @@ const ApplicationDetailCorporateForm: React.FC<{
   const [saveType, setSaveType] = useState<"save" | "next">("save");
   const insertApplicationDetail = useInsertFinance();
   const {handleNext} = useNext();
+
   const onSubmit = (data: DetailApplicationCorporateType) => {
     const province = {
       id: data.province_id,
@@ -194,24 +211,25 @@ const ApplicationDetailCorporateForm: React.FC<{
       financing_type: applicationType,
     };
 
-    return insertApplicationDetail
-      .mutateAsync(dataSave)
-      .then(() => {
-        setDeletedDirector(null);
-        if (saveType === "next") {
-          handleNext();
-        }
-        return toast({
-          message: `Berhasil menyimpan data`,
-          type: "success",
+    if (!isDirty && saveType === "next") {
+      return handleNext();
+    }
+    if (isDirty) {
+      insertApplicationDetail
+        .mutateAsync(dataSave)
+        .then(() => {
+          setDeletedDirector(null);
+          if (saveType === "next") {
+            return handleNext();
+          }
+        })
+        .catch(() => {
+          return toast({
+            message: "Terjadi kesalahan, silahkan coba kembali!",
+            type: "error",
+          });
         });
-      })
-      .catch(() => {
-        return toast({
-          message: "Terjadi kesalahan, silahkan coba kembali!",
-          type: "error",
-        });
-      });
+    }
   };
 
   return (
@@ -220,7 +238,7 @@ const ApplicationDetailCorporateForm: React.FC<{
         <FinancingDataSection
           register={register}
           errors={errors}
-          setValue={setValue}
+          control={control}
           getValues={getValues}
         />
         <ApplicantDataSection
@@ -230,19 +248,18 @@ const ApplicationDetailCorporateForm: React.FC<{
           getValues={getValues}
           register={register}
           errors={errors}
-          setValue={setValue}
+          control={control}
         />
         <CompanyAddressDataSection
           register={register}
           errors={errors}
-          setValue={setValue}
           getValues={getValues}
+          control={control}
         />
         <CompanyDirectionDataSection
           register={register}
           errors={errors}
           control={control as Control<DetailApplicationCorporateType>}
-          setValue={setValue}
           getValues={getValues}
         />
       </div>
@@ -251,6 +268,7 @@ const ApplicationDetailCorporateForm: React.FC<{
         <FooterButton
           isLoading={insertApplicationDetail.isLoading}
           setSaveType={setSaveType}
+          isDirty={isDirty}
         />
       </div>
     </form>

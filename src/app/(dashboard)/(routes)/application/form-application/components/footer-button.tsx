@@ -1,24 +1,35 @@
-import type {Dispatch, SetStateAction} from "react";
+import {type Dispatch, type SetStateAction, useState} from "react";
 
 import {useRouter, useSearchParams} from "next/navigation";
 
-import {Button} from "~/components/ui";
+import {Button, Modal, Text} from "~/components/ui";
 
 const FooterButton = ({
   isLoading,
   setSaveType,
+  isDirty,
+  onConfirm,
 }: {
+  isDirty?: boolean;
   isLoading: boolean;
-  setSaveType: Dispatch<SetStateAction<"save" | "next">>;
+  setSaveType?: Dispatch<SetStateAction<"save" | "next">>;
+  onConfirm?: () => void;
 }) => {
   const router = useRouter();
   const searchParams = useSearchParams();
   const process = searchParams.get("process");
+  const [isOpen, setIsOpen] = useState(false);
 
-  const handleBack = () => {
+  const handleRouteBack = () => {
     return process === "application-details"
       ? router.push("/workspace")
       : router.back();
+  };
+  const handleBack = () => {
+    if (isDirty) {
+      return setIsOpen(true);
+    }
+    return handleRouteBack();
   };
 
   return (
@@ -33,21 +44,55 @@ const FooterButton = ({
           Kembali
         </Button>
         <Button
-          variant="tertiary"
+          variant={process !== "confirmation" ? "tertiary" : "primary"}
           isLoading={isLoading}
           className="w-full"
           type="submit"
-          onClick={() => setSaveType("save")}>
-          Simpan
+          onClick={() =>
+            process !== "confirmation" ? setSaveType?.("save") : onConfirm?.()
+          }>
+          {process !== "confirmation" ? "Simpan" : "Kirim"}
         </Button>
-        <Button
-          type="submit"
-          onClick={() => setSaveType("next")}
-          isLoading={isLoading}
-          className="w-full">
-          Lanjut
-        </Button>
+        {process !== "confirmation" ? (
+          <Button
+            type="submit"
+            onClick={() => setSaveType?.("next")}
+            isLoading={isLoading}
+            className="w-full">
+            Lanjut
+          </Button>
+        ) : null}
       </div>
+      <Modal
+        isOpen={isOpen}
+        onClose={() => setIsOpen(!isOpen)}
+        title="Anda yakin ingin meninggalkan halaman ini?"
+        closable={false}
+        className="m-5 max-h-[600px] overflow-y-auto md:max-h-max"
+        footer={
+          <div className="flex gap-4">
+            <Button
+              size="sm"
+              onClick={() => setIsOpen(!isOpen)}
+              variant="secondary"
+              className="mb-2 mt-5 w-full">
+              Batal
+            </Button>
+
+            <Button
+              variant="danger"
+              size="sm"
+              onClick={handleRouteBack}
+              className="mb-2 mt-5 w-full">
+              Keluar
+            </Button>
+          </div>
+        }>
+        <Text align="text-justify">
+          Perubahan yang anda masukan akan hilang ketika anda meninggalkan
+          halaman ini tanpa menyimpannya terlebih dahulu
+        </Text>
+      </Modal>
     </div>
   );
 };

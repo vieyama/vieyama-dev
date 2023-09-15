@@ -1,32 +1,58 @@
 import React, {useCallback, useEffect} from "react";
 
 import {toNumber, toString} from "lodash";
+import {
+  type FieldErrors,
+  useController,
+  type UseFormGetValues,
+  type UseFormRegister,
+} from "react-hook-form";
 import Select from "react-select";
 
 import FormItem from "~/components/form";
 import {Input, InputTextArea, Text} from "~/components/ui";
 import {useGetRegion} from "~/hooks/useGetRegion";
 
-import type {
-  FieldErrors,
-  UseFormGetValues,
-  UseFormRegister,
-  UseFormSetValue,
-} from "react-hook-form";
+import type {Control, FieldValues} from "react-hook-form";
 import type {SingleValue} from "react-select";
 import type {DetailApplicationCorporateType} from "~/interfaces/form/detailApplication";
 
 const CompanyAddressData = ({
   errors,
   register,
-  setValue,
   getValues,
+  control,
 }: {
   register: UseFormRegister<DetailApplicationCorporateType>;
   errors: FieldErrors<DetailApplicationCorporateType>;
   getValues: UseFormGetValues<DetailApplicationCorporateType>;
-  setValue: UseFormSetValue<DetailApplicationCorporateType>;
+  control: Control<FieldValues>;
 }) => {
+  const {field: provinceId} = useController({
+    control,
+    name: `province_id`,
+  });
+  const {field: provinceName} = useController({
+    control,
+    name: `province_name`,
+  });
+  const {field: cityId} = useController({
+    control,
+    name: `city_id`,
+  });
+  const {field: cityName} = useController({
+    control,
+    name: `city_name`,
+  });
+  const {field: districtId} = useController({
+    control,
+    name: `district_id`,
+  });
+  const {field: districtName} = useController({
+    control,
+    name: `district_name`,
+  });
+
   const {
     setSearchCity,
     setSearchDistrict,
@@ -52,10 +78,10 @@ const CompanyAddressData = ({
         value: eventChange?.value as string,
         label: eventChange?.label as string,
       });
-      setValue("province_id", toNumber(eventChange?.value));
-      setValue("province_name", eventChange?.label);
+      provinceId.onChange(toNumber(eventChange?.value));
+      provinceName.onChange(eventChange?.label);
     },
-    [setSelectedProvince, setValue],
+    [setSelectedProvince],
   );
 
   const handleChangeCity = useCallback(
@@ -69,10 +95,10 @@ const CompanyAddressData = ({
         value: eventChange?.value as string,
         label: eventChange?.label as string,
       });
-      setValue("city_id", toNumber(eventChange?.value));
-      setValue("city_name", eventChange?.label);
+      cityId.onChange(toNumber(eventChange?.value));
+      cityName.onChange(eventChange?.label);
     },
-    [setSelectedCity, setValue],
+    [setSelectedCity],
   );
 
   const handleChangeDistrict = useCallback(
@@ -86,10 +112,10 @@ const CompanyAddressData = ({
         value: eventChange?.value as string,
         label: eventChange?.label as string,
       });
-      setValue("district_id", toNumber(eventChange?.value));
-      setValue("district_name", eventChange?.label);
+      districtId.onChange(toNumber(eventChange?.value));
+      districtName.onChange(eventChange?.label);
     },
-    [setSelectedDistrict, setValue],
+    [setSelectedDistrict],
   );
 
   const data = getValues();

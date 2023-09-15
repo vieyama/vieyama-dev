@@ -13,9 +13,9 @@ import {
   type FieldArrayWithId,
   type FieldError,
   type FieldErrors,
+  useController,
   type UseFieldArrayRemove,
   type UseFormRegister,
-  type UseFormSetValue,
   useWatch,
 } from "react-hook-form";
 import Select from "react-select";
@@ -36,7 +36,6 @@ interface ItemFormProps {
   remove: UseFieldArrayRemove;
   index: number;
   errors: FieldErrors<DetailItemType>;
-  setValue: UseFormSetValue<DetailItemType>;
   partnerId: string;
   register: UseFormRegister<DetailItemType>;
   warehouseId62: string;
@@ -49,13 +48,33 @@ const ItemForm: React.FC<ItemFormProps> = ({
   remove,
   index,
   errors,
-  setValue,
   register,
   warehouseId62,
   partnerId,
   control,
   dataItem,
 }) => {
+  const {field: productIdField} = useController({
+    control,
+    name: `items.${index}.product_id62`,
+  });
+  const {field: stockIdField} = useController({
+    control,
+    name: `items.${index}.stock_id62`,
+  });
+  const {field: batchNumberField} = useController({
+    control,
+    name: `items.${index}.batch_number`,
+  });
+  const {field: quantityField} = useController({
+    control,
+    name: `items.${index}.quantity`,
+  });
+  const {field: photosField} = useController({
+    control,
+    name: `items.${index}.photos`,
+  });
+
   const [searchProduct, setSearchProduct] = useState("");
   const [searchInventory, setSearchInventory] = useState("");
   const [searchBatch, setSearchBatch] = useState("");
@@ -143,9 +162,8 @@ const ItemForm: React.FC<ItemFormProps> = ({
       value: string;
       label: string;
     }>,
-    index: number,
   ) => {
-    setValue(`items.${index}.product_id62`, eventChange?.value);
+    productIdField.onChange(eventChange?.value);
   };
 
   const handleChangeInventory = (
@@ -156,7 +174,6 @@ const ItemForm: React.FC<ItemFormProps> = ({
       productType: string;
       tenan: string;
     }>,
-    index: number,
   ) => {
     setSelectedInventory({
       skuId: eventChange?.value as string,
@@ -164,7 +181,7 @@ const ItemForm: React.FC<ItemFormProps> = ({
       productType: eventChange?.productType as string,
       tenan: eventChange?.tenan as string,
     });
-    setValue(`items.${index}.stock_id62`, eventChange?.value);
+    stockIdField.onChange(eventChange?.value);
   };
 
   const handleChangeBatch = (
@@ -173,10 +190,9 @@ const ItemForm: React.FC<ItemFormProps> = ({
       label: string;
       quantity: number;
     }>,
-    index: number,
   ) => {
-    setValue(`items.${index}.batch_number`, eventChange?.value);
-    setValue(`items.${index}.quantity`, toNumber(eventChange?.quantity));
+    batchNumberField.onChange(eventChange?.value);
+    quantityField.onChange(toNumber(eventChange?.quantity));
   };
 
   const onChangeUpload = (values: string[], index: number) => {
@@ -184,11 +200,11 @@ const ItemForm: React.FC<ItemFormProps> = ({
     const currentImage = dataItems?.[index].photos;
 
     const setImage = currentImage ? [...currentImage, ...images] : images;
-    setValue(`items.${index}.photos`, setImage);
+    photosField.onChange(setImage);
   };
 
-  const onDeleteFile = (files: string[], index: number) => {
-    setValue(`items.${index}.photos`, isEmpty(files) ? [] : files);
+  const onDeleteFile = (files: string[]) => {
+    photosField.onChange(isEmpty(files) ? [] : files);
   };
 
   return (
@@ -220,10 +236,10 @@ const ItemForm: React.FC<ItemFormProps> = ({
           id={`items.${index}.photos`}
           fileList={dataItems?.[index]?.photos as FilesType}
           onChange={(value) => onChangeUpload(value, index)}
-          onDelete={(value) => onDeleteFile(value, index)}
+          onDelete={(value) => onDeleteFile(value)}
           accept=".jpg, .png, .jpeg"
           fileTypeLimiter={["image/jpeg", "image/jpg", "image/png"]}
-          maxFile={3}
+          maxFile={5}
         />
       </FormItem>
 
@@ -244,7 +260,7 @@ const ItemForm: React.FC<ItemFormProps> = ({
           }}
           placeholder=""
           onInputChange={handleSearchProduct}
-          onChange={(event) => handleChangeProduct(event, index)}
+          onChange={(event) => handleChangeProduct(event)}
           components={{IndicatorSeparator: null}}
           defaultValue={{
             label: dataItem?.batch?.product?.name as string,
@@ -274,7 +290,7 @@ const ItemForm: React.FC<ItemFormProps> = ({
           }}
           placeholder=""
           onInputChange={handleSearchInventory}
-          onChange={(event) => handleChangeInventory(event, index)}
+          onChange={(event) => handleChangeInventory(event)}
           components={{IndicatorSeparator: null}}
           defaultValue={{
             label: dataItem?.batch?.sku?.SKU as string,
@@ -328,7 +344,7 @@ const ItemForm: React.FC<ItemFormProps> = ({
           }}
           placeholder=""
           onInputChange={handleSearchBatch}
-          onChange={(event) => handleChangeBatch(event, index)}
+          onChange={(event) => handleChangeBatch(event)}
           components={{IndicatorSeparator: null}}
           isOptionDisabled={(items) => {
             const isSame = find(
@@ -360,9 +376,9 @@ const ItemForm: React.FC<ItemFormProps> = ({
           className="text-end"
           disabled={selectedStock === "all"}
           {...register(`items.${index}.quantity`)}
-          onChangeValue={(value) =>
-            setValue(`items.${index}.quantity`, toNumber(value))
-          }
+          onChangeValue={(value) => {
+            quantityField.onChange(toNumber(value));
+          }}
           defaultValue={toNumber(dataItems?.[index]?.quantity)}
           customSuffix={
             <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center rounded-e-lg bg-gray-200 px-4">

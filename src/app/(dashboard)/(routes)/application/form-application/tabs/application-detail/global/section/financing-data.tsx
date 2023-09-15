@@ -1,6 +1,12 @@
 import React from "react";
 
 import toNumber from "lodash/toNumber";
+import {
+  type FieldErrors,
+  useController,
+  type UseFormGetValues,
+  type UseFormRegister,
+} from "react-hook-form";
 
 import {
   loadPurposeList,
@@ -9,12 +15,7 @@ import {
 import FormItem from "~/components/form";
 import {InputNumber, Radio, Text} from "~/components/ui";
 
-import type {
-  FieldErrors,
-  UseFormGetValues,
-  UseFormRegister,
-  UseFormSetValue,
-} from "react-hook-form";
+import type {Control, FieldValues} from "react-hook-form";
 import type {
   DetailApplicationCorporateType,
   DetailApplicationIndividualType,
@@ -23,22 +24,22 @@ import type {
 const FinancingDataSection = ({
   errors,
   register,
-  setValue,
   getValues,
+  control,
 }: {
+  control: Control<FieldValues>;
   register: UseFormRegister<
     DetailApplicationCorporateType | DetailApplicationIndividualType
   >;
   errors: FieldErrors<
     DetailApplicationCorporateType | DetailApplicationIndividualType
   >;
-  setValue: UseFormSetValue<
-    DetailApplicationCorporateType | DetailApplicationIndividualType
-  >;
   getValues: UseFormGetValues<
     DetailApplicationIndividualType | DetailApplicationCorporateType
   >;
 }) => {
+  const {field} = useController({control, name: "proposed_value"});
+
   return (
     <div className="flex flex-col gap-y-5">
       <Text className="text-blue-600" weight="semi-bold">
@@ -53,7 +54,7 @@ const FinancingDataSection = ({
         <InputNumber
           isError={!!errors.proposed_value}
           defaultValue={toNumber(getValues("proposed_value"))}
-          onChangeValue={(value) => setValue("proposed_value", toNumber(value))}
+          onChangeValue={(value) => field.onChange(toNumber(value))}
           customPrefix={
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center rounded-s-lg bg-gray-200 px-4">
               IDR

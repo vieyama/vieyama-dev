@@ -1,5 +1,11 @@
 import React, {useEffect, useMemo, useState} from "react";
 
+import {
+  type FieldErrors,
+  useController,
+  type UseFormGetValues,
+  type UseFormRegister,
+} from "react-hook-form";
 import Select from "react-select";
 
 import FormItem from "~/components/form";
@@ -7,12 +13,7 @@ import {Input, InputTextArea, Text} from "~/components/ui";
 import GoogleMaps from "~/components/ui/Map";
 import {useGetWarehouseList} from "~/services/warehouse/list";
 
-import type {
-  FieldErrors,
-  UseFormGetValues,
-  UseFormRegister,
-  UseFormSetValue,
-} from "react-hook-form";
+import type {Control, FieldValues} from "react-hook-form";
 import type {SingleValue} from "react-select";
 import type {LatlongType} from "~/components/ui/Map";
 import type {DetailItemType} from "~/interfaces/form/detailItem";
@@ -21,13 +22,19 @@ import type {WarehouseData} from "~/interfaces/services/warehouse";
 
 const WarehouseForm: React.FC<{
   register: UseFormRegister<DetailItemType>;
-  setValue: UseFormSetValue<DetailItemType>;
   getValues: UseFormGetValues<DetailItemType>;
   errors: FieldErrors<DetailItemType>;
   partnerId: string;
   warehouseData?: Warehouse;
-}> = ({register, setValue, errors, partnerId, warehouseData}) => {
+  control: Control<FieldValues>;
+}> = ({register, errors, partnerId, warehouseData, control}) => {
   const [selectedWarehouse, setSelectedWarehouse] = useState<WarehouseData>();
+
+  const {field: warehouseAddress} = useController({
+    control,
+    name: "warehouse_address",
+  });
+  const {field: warehouseId} = useController({control, name: "warehouse_id62"});
 
   const editData = useMemo(
     () => ({
@@ -77,8 +84,8 @@ const WarehouseForm: React.FC<{
 
   const handleSelectWarehouse = (event: SingleValue<WarehouseData>) => {
     setSelectedWarehouse(event as WarehouseData);
-    setValue("warehouse_address", event?.address?.address);
-    setValue("warehouse_id62", event?.id62);
+    warehouseAddress.onChange(event?.address?.address);
+    warehouseId.onChange(event?.id62);
   };
 
   const latlong = {
@@ -93,7 +100,7 @@ const WarehouseForm: React.FC<{
       </Text>
       <FormItem
         label="Nama Gudang"
-        error={undefined}
+        error={errors.warehouse_id62}
         className="flex flex-col gap-4 md:flex-row"
         childClassName="w-full"
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">

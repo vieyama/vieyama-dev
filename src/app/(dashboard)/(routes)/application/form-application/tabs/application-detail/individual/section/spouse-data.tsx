@@ -1,29 +1,37 @@
 import React from "react";
 
 import {toNumber} from "lodash";
+import {
+  type Control,
+  type FieldErrors,
+  type FieldValues,
+  useController,
+  type UseFormGetValues,
+  type UseFormRegister,
+  type UseFormSetValue,
+} from "react-hook-form";
 
 import FormItem from "~/components/form";
 import {Input, InputNumber, Text} from "~/components/ui";
 
-import type {
-  FieldErrors,
-  UseFormGetValues,
-  UseFormRegister,
-  UseFormSetValue,
-} from "react-hook-form";
 import type {DetailApplicationIndividualType} from "~/interfaces/form/detailApplication";
 
 const SpouseDataSection = ({
   errors,
   register,
-  setValue,
   getValues,
+  control,
 }: {
   register: UseFormRegister<DetailApplicationIndividualType>;
   errors: FieldErrors<DetailApplicationIndividualType>;
   setValue: UseFormSetValue<DetailApplicationIndividualType>;
   getValues: UseFormGetValues<DetailApplicationIndividualType>;
+  control: Control<FieldValues>;
 }) => {
+  const {field: monthlyIncome} = useController({
+    control,
+    name: "spouse_income",
+  });
   return (
     <div className="mt-5 flex flex-col gap-y-5">
       <Text className="text-blue-600" weight="semi-bold">
@@ -80,7 +88,7 @@ const SpouseDataSection = ({
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
         <InputNumber
           isError={!!errors.spouse_income}
-          onChangeValue={(value) => setValue("spouse_income", toNumber(value))}
+          onChangeValue={(value) => monthlyIncome.onChange(toNumber(value))}
           defaultValue={toNumber(getValues("spouse_income"))}
           customPrefix={
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center rounded-s-lg bg-gray-200 px-4">
