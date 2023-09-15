@@ -4,9 +4,9 @@ import {useAtom} from "jotai";
 import {debounce} from "lodash";
 import {
   type FieldErrors,
+  useController,
   type UseFormGetValues,
   type UseFormRegister,
-  type UseFormSetValue,
 } from "react-hook-form";
 import Select from "react-select";
 
@@ -21,6 +21,7 @@ import {
   selectedMitraIdAtom,
 } from "~/state/formApplication";
 
+import type {Control, FieldValues} from "react-hook-form";
 import type {SingleValue} from "react-select";
 import type {DetailApplicationIndividualType} from "~/interfaces/form/detailApplication";
 import type {Partner} from "~/interfaces/services/finance";
@@ -29,19 +30,22 @@ import type {PartnerResult} from "~/interfaces/services/partner/list";
 const ApplicantDataSection = ({
   errors,
   register,
-  setValue,
   mitraData,
   isLoadingMitra,
   dataPartner,
+  control,
 }: {
   register: UseFormRegister<DetailApplicationIndividualType>;
   errors: FieldErrors<DetailApplicationIndividualType>;
-  setValue: UseFormSetValue<DetailApplicationIndividualType>;
   getValues: UseFormGetValues<DetailApplicationIndividualType>;
   mitraData?: PartnerResult[];
   isLoadingMitra?: boolean;
   dataPartner?: Partner;
+  control?: Control<FieldValues>;
 }) => {
+  const {field: mitraField} = useController({control, name: "partner_id"});
+  const {field: mitraKtp} = useController({control, name: "no_ktp"});
+
   const [, setMitraListSearch] = useAtom(mitraListSearchAtom);
   const [, setSelectedMitraId] = useAtom(selectedMitraIdAtom);
 
@@ -51,7 +55,7 @@ const ApplicantDataSection = ({
       label: string;
     }>,
   ) => {
-    setValue("partner_id", eventChange?.value);
+    mitraField.onChange(eventChange?.value);
     setSelectedMitraId(eventChange?.value as string);
   };
 
@@ -124,7 +128,7 @@ const ApplicantDataSection = ({
           disabled
           min={0}
           isError={!!errors.no_ktp}
-          {...register("no_ktp")}
+          {...mitraKtp}
         />
       </FormItem>
       <FormItem
@@ -196,7 +200,6 @@ const ApplicantDataSection = ({
                 isError={!!errors.length_of_stay_year}
                 {...register("length_of_stay_year")}
                 type="number"
-                min={0}
                 inputWrapperClassName="w-full"
                 className="w-full rounded-e-none text-end"
               />
@@ -215,7 +218,6 @@ const ApplicantDataSection = ({
                 inputWrapperClassName="w-full"
                 {...register("length_of_stay_month")}
                 type="number"
-                min={0}
                 className="w-full rounded-e-none text-end"
               />
               <div className="flex select-none items-center bg-gray-200 p-1.5">

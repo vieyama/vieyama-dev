@@ -6,7 +6,7 @@ import {useAtom} from "jotai";
 import omit from "lodash/omit";
 import toNumber from "lodash/toNumber";
 import {useSearchParams} from "next/navigation";
-import {useForm} from "react-hook-form";
+import {useController, useForm} from "react-hook-form";
 
 import {useNext} from "~/hooks/useNext";
 import useToast from "~/hooks/useToast";
@@ -42,12 +42,12 @@ const ApplicationDetailIndividualForm: React.FC<{
     getValues,
     watch,
     handleSubmit,
-    formState: {errors},
+    control,
+    formState: {errors, isDirty},
   } = useForm<DetailApplicationIndividualType>({
     resolver: yupResolver(DetailApplicationIndividualSchema),
     defaultValues: defaultValueForm,
   });
-
   const maritalStatus = watch("marital_status");
 
   const searchParams = useSearchParams();
@@ -57,6 +57,22 @@ const ApplicationDetailIndividualForm: React.FC<{
 
   const [mitraListSearch] = useAtom(mitraListSearchAtom);
   const [selectedMitraId, setSelectedMitraId] = useAtom(selectedMitraIdAtom);
+
+  const handleBeforeUnload = (e: {
+    preventDefault: () => void;
+    returnValue: string;
+  }) => {
+    e.preventDefault();
+    e.returnValue = "";
+  };
+
+  useEffect(() => {
+    if (isDirty) window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      if (isDirty)
+        window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [isDirty]);
 
   useEffect(() => {
     let isMounted = true;
@@ -74,12 +90,17 @@ const ApplicationDetailIndividualForm: React.FC<{
     assign_to_me: 1,
     partner_type: "individual",
   });
+  const {field: mitraKtp} = useController({control, name: "no_ktp"});
+  const {field: bussinesField} = useController({
+    control,
+    name: "personal_workplace_business_fields",
+  });
 
   useGetPartnerDetail(selectedMitraId as string, {
     enabled: !!selectedMitraId,
     onSuccess: (result: PartnerDetailData) => {
       setValue("applicant_name", result.applicant_name);
-      setValue("no_ktp", result.no_ktp);
+      mitraKtp.onChange(result.no_ktp);
       setValue("pob", result.pob);
       setValue("dob", dayjs(result.dob).format("YYYY-MM-DD"));
       setValue("no_telp", result.no_telp);
@@ -92,10 +113,7 @@ const ApplicationDetailIndividualForm: React.FC<{
       setValue("city_name", result.city.name);
       setValue("district_id", result.district.id);
       setValue("district_name", result.district.name);
-      setValue(
-        "personal_workplace_business_fields",
-        result.personal_workplace_business_fields?.[0],
-      );
+      bussinesField.onChange(result.personal_workplace_business_fields?.[0]);
       setValue("postal_code", toNumber(result.postal_code));
       setValue("domicile_address", result.domicile_address);
       setValue("domicile_province_id", result.domicile_province?.id);
@@ -172,23 +190,24 @@ const ApplicationDetailIndividualForm: React.FC<{
       directors: [],
     };
 
-    insertApplicationDetail
-      .mutateAsync(dataSave)
-      .then(() => {
-        if (saveType === "next") {
-          handleNext();
-        }
-        return toast({
-          message: `Berhasil menyimpan data`,
-          type: "success",
+    if (!isDirty && saveType === "next") {
+      return handleNext();
+    }
+    if (isDirty) {
+      insertApplicationDetail
+        .mutateAsync(dataSave)
+        .then(() => {
+          if (saveType === "next") {
+            handleNext();
+          }
+        })
+        .catch(() => {
+          return toast({
+            message: "Terjadi kesalahan, silahkan coba kembali!",
+            type: "error",
+          });
         });
-      })
-      .catch(() => {
-        return toast({
-          message: "Terjadi kesalahan, silahkan coba kembali!",
-          type: "error",
-        });
-      });
+    }
   };
 
   return (
@@ -197,16 +216,16 @@ const ApplicationDetailIndividualForm: React.FC<{
         <FinancingDataSection
           register={register}
           errors={errors}
-          setValue={setValue}
           getValues={getValues}
+          control={control}
         />
         <ApplicantDataSection
           mitraData={data?.results}
+          control={control}
           isLoadingMitra={isLoading}
           getValues={getValues}
           register={register}
           errors={errors}
-          setValue={setValue}
           dataPartner={dataPartner}
         />
         <AddressDataSection register={register} errors={errors} />
@@ -217,16 +236,18 @@ const ApplicationDetailIndividualForm: React.FC<{
             errors={errors}
             setValue={setValue}
             getValues={getValues}
+            control={control}
           />
         ) : null}
         <PersonalWorkplaceDataSection
           register={register}
-          setValue={setValue}
           getValues={getValues}
           errors={errors}
+          control={control}
         />
         <EmergencyContactSection register={register} errors={errors} />
         <FooterButton
+          isDirty={isDirty}
           isLoading={insertApplicationDetail.isLoading}
           setSaveType={setSaveType}
         />

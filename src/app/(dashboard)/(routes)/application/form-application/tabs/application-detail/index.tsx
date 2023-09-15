@@ -24,24 +24,24 @@ const ApplicationDetails = ({userType}: {userType: string}) => {
     storage: data?.storage,
     partner_id: data?.partner_id ?? "",
     applicant_name: data?.applicant_name ?? "",
-    no_ktp: data?.no_ktp ?? "",
+    no_ktp: data?.no_ktp ?? undefined,
     no_telp: data?.no_telp ?? "",
     mothers_maiden_name: data?.mothers_maiden_name ?? "",
     pob: data?.pob,
     ...(data?.dob && {
-      dob: dayjs(data?.dob * 1000).format("YYYY-MM-DD"),
+      dob: dayjs(data?.dob).format("YYYY-MM-DD"),
     }),
     house_ownership_status: data?.house_ownership_status,
-    length_of_stay_year: toString(
-      getLengthOfStay(toNumber(data?.length_of_stay)).year,
-    ),
-    length_of_stay_month: toString(
-      getLengthOfStay(toNumber(data?.length_of_stay)).month,
-    ),
+    length_of_stay_year: data?.length_of_stay
+      ? toString(getLengthOfStay(toNumber(data?.length_of_stay)).year)
+      : undefined,
+    length_of_stay_month: data?.length_of_stay
+      ? toString(getLengthOfStay(toNumber(data?.length_of_stay)).month)
+      : undefined,
     last_education: data?.last_education,
     marital_status: data?.marital_status,
     no_hp: data?.no_hp,
-    no_hp2: data?.no_hp_other,
+    no_hp2: toNumber(data?.no_hp_other),
     email: data?.email,
     domicile_address: data?.domicile_address ?? "",
     domicile_province_id: data?.domicile_province?.id,
@@ -138,7 +138,7 @@ const ApplicationDetails = ({userType}: {userType: string}) => {
             email: item?.email,
             no_ktp: item?.ktp,
             pob: item?.pob,
-            dob: dayjs((item?.dob as number) * 1000).format("YYYY-MM-DD"),
+            dob: dayjs(item?.dob).format("YYYY-MM-DD"),
             position: item?.position,
             no_hp: item?.no_hp,
             share_ownership: item?.share_ownership,

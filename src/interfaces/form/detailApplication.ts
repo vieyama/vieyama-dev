@@ -69,7 +69,7 @@ export type DetailApplicationIndividualType = {
   marital_status?: string;
   no_telp?: string;
   no_hp?: string;
-  no_hp2?: string;
+  no_hp2?: number;
   email?: string;
   domicile_address?: string;
   domicile_province_id?: number;

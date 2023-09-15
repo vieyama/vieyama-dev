@@ -5,6 +5,14 @@ import {useAtom} from "jotai";
 import isEmpty from "lodash/isEmpty";
 import toNumber from "lodash/toNumber";
 import toString from "lodash/toString";
+import {
+  type FieldArrayWithId,
+  type FieldErrors,
+  useController,
+  type UseFieldArrayRemove,
+  type UseFormGetValues,
+  type UseFormRegister,
+} from "react-hook-form";
 import Select from "react-select";
 
 import FormItem from "~/components/form";
@@ -12,14 +20,7 @@ import {Button, Icon, Input, InputTextArea, Text} from "~/components/ui";
 import {useGetRegion} from "~/hooks/useGetRegion";
 import {deletedDirectorAtom} from "~/state/formApplication";
 
-import type {
-  FieldArrayWithId,
-  FieldErrors,
-  UseFieldArrayRemove,
-  UseFormGetValues,
-  UseFormRegister,
-  UseFormSetValue,
-} from "react-hook-form";
+import type {Control, FieldValues} from "react-hook-form";
 import type {SingleValue} from "react-select";
 import type {
   DetailApplicationCorporateType,
@@ -34,7 +35,7 @@ const CompanyDirectionForm: React.FC<{
   fieldsLength: number;
   remove: UseFieldArrayRemove;
   getValues: UseFormGetValues<DetailApplicationCorporateType>;
-  setValue: UseFormSetValue<DetailApplicationCorporateType>;
+  control: Control<FieldValues>;
 }> = ({
   field,
   index,
@@ -43,8 +44,33 @@ const CompanyDirectionForm: React.FC<{
   fieldsLength,
   remove,
   getValues,
-  setValue,
+  control,
 }) => {
+  const {field: provinceId} = useController({
+    control,
+    name: `directors.${index}.province_id`,
+  });
+  const {field: provinceName} = useController({
+    control,
+    name: `directors.${index}.province_name`,
+  });
+  const {field: cityId} = useController({
+    control,
+    name: `directors.${index}.city_id`,
+  });
+  const {field: cityName} = useController({
+    control,
+    name: `directors.${index}.city_name`,
+  });
+  const {field: districtId} = useController({
+    control,
+    name: `directors.${index}.district_id`,
+  });
+  const {field: districtName} = useController({
+    control,
+    name: `directors.${index}.district_name`,
+  });
+
   const {
     setSearchCity,
     setSearchDistrict,
@@ -72,10 +98,10 @@ const CompanyDirectionForm: React.FC<{
         value: eventChange?.value as string,
         label: eventChange?.label as string,
       });
-      setValue(`directors.${index}.province_id`, toNumber(eventChange?.value));
-      setValue(`directors.${index}.province_name`, eventChange?.label);
+      provinceId.onChange(toNumber(eventChange?.value));
+      provinceName.onChange(eventChange?.label);
     },
-    [index, setSelectedProvince, setValue],
+    [setSelectedProvince],
   );
 
   const handleChangeCity = useCallback(
@@ -89,10 +115,10 @@ const CompanyDirectionForm: React.FC<{
         value: eventChange?.value as string,
         label: eventChange?.label as string,
       });
-      setValue(`directors.${index}.city_id`, toNumber(eventChange?.value));
-      setValue(`directors.${index}.city_name`, eventChange?.label);
+      cityId.onChange(toNumber(eventChange?.value));
+      cityName.onChange(eventChange?.label);
     },
-    [index, setSelectedCity, setValue],
+    [setSelectedCity],
   );
 
   const handleChangeDistrict = useCallback(
@@ -106,10 +132,10 @@ const CompanyDirectionForm: React.FC<{
         value: eventChange?.value as string,
         label: eventChange?.label as string,
       });
-      setValue(`directors.${index}.district_id`, toNumber(eventChange?.value));
-      setValue(`directors.${index}.district_name`, eventChange?.label);
+      districtId.onChange(toNumber(eventChange?.value));
+      districtName.onChange(eventChange?.label);
     },
-    [index, setSelectedDistrict, setValue],
+    [setSelectedDistrict],
   );
 
   const data = getValues();

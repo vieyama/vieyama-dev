@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import {useEffect, useState} from "react";
 
 import {yupResolver} from "@hookform/resolvers/yup";
 import {useSearchParams} from "next/navigation";
@@ -24,9 +24,8 @@ const RequirementDocumentIndividualForm: React.FC<{
 
   const {
     handleSubmit,
-    setValue,
-    watch,
-    formState: {errors},
+    control,
+    formState: {errors, isDirty},
   } = useForm<ReqruitmentDocIndividualType>({
     resolver: yupResolver(FormReqruitmentDocIndividualSchema),
     defaultValues: {
@@ -36,6 +35,22 @@ const RequirementDocumentIndividualForm: React.FC<{
       }),
     },
   });
+
+  const handleBeforeUnload = (e: {
+    preventDefault: () => void;
+    returnValue: string;
+  }) => {
+    e.preventDefault();
+    e.returnValue = "";
+  };
+
+  useEffect(() => {
+    if (isDirty) window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      if (isDirty)
+        window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [isDirty]);
 
   const [saveType, setSaveType] = useState<"save" | "next">("save");
 
@@ -50,31 +65,32 @@ const RequirementDocumentIndividualForm: React.FC<{
       financing_type: applicationType,
       uuid: financeId,
     };
+    if (!isDirty && saveType === "next") {
+      return handleNext();
+    }
 
-    insertFinance
-      .mutateAsync(dataSave)
-      .then(() => {
-        if (saveType === "next") {
-          handleNext();
-        }
-        return toast({
-          message: `Berhasil menyimpan data`,
-          type: "success",
+    if (isDirty) {
+      insertFinance
+        .mutateAsync(dataSave)
+        .then(() => {
+          if (saveType === "next") {
+            return handleNext();
+          }
+        })
+        .catch(() => {
+          return toast({
+            message: "Terjadi kesalahan, silahkan coba kembali!",
+            type: "error",
+          });
         });
-      })
-      .catch(() => {
-        return toast({
-          message: "Terjadi kesalahan, silahkan coba kembali!",
-          type: "error",
-        });
-      });
+    }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
-      <LegalDocSection errors={errors} setValue={setValue} watch={watch} />
-      <FinanceDocSection errors={errors} setValue={setValue} watch={watch} />
-      <PhotosDocSection errors={errors} setValue={setValue} watch={watch} />
+      <LegalDocSection errors={errors} control={control} />
+      <FinanceDocSection errors={errors} control={control} />
+      <PhotosDocSection errors={errors} control={control} />
       <FooterButton
         isLoading={insertFinance.isLoading}
         setSaveType={setSaveType}

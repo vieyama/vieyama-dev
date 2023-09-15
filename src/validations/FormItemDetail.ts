@@ -11,12 +11,12 @@ const DetailItemSchema = Yup.object<DetailItemType>({
     .of(
       Yup.object().shape({
         id: Yup.string().nullable(),
-        photos: Yup.array().required(requiredMessage),
+        photos: Yup.array().nonNullable().required(requiredMessage),
         product_id62: Yup.string().required(requiredMessage),
         stock_id62: Yup.string().required(requiredMessage),
         batch_number: Yup.string().required(requiredMessage),
         selected_stock: Yup.string().required(requiredMessage),
-        quantity: Yup.number()
+        quantity: Yup.string()
           .min(1, requiredMessage)
           .required(requiredMessage),
       }),

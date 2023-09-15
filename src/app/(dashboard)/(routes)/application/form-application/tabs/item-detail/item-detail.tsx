@@ -33,7 +33,7 @@ const ItemDetailsForm = ({data}: {data: FinanceResponseData}) => {
     control,
     handleSubmit,
     getValues,
-    formState: {errors},
+    formState: {errors, isDirty},
   } = useForm<DetailItemType>({
     resolver: yupResolver(DetailItemSchema),
     defaultValues: {
@@ -50,9 +50,25 @@ const ItemDetailsForm = ({data}: {data: FinanceResponseData}) => {
               selected_stock: item?.selected_stock,
               quantity: toNumber(item?.quantity),
             }))
-          : [{id: null, photos: []}],
+          : [{id: null, photos: undefined, quantity: null}],
     },
   });
+
+  const handleBeforeUnload = (e: {
+    preventDefault: () => void;
+    returnValue: string;
+  }) => {
+    e.preventDefault();
+    e.returnValue = "";
+  };
+
+  useEffect(() => {
+    if (isDirty) window.addEventListener("beforeunload", handleBeforeUnload);
+    return () => {
+      if (isDirty)
+        window.removeEventListener("beforeunload", handleBeforeUnload);
+    };
+  }, [isDirty]);
 
   const [deletedItems, setDeletedItems] = useAtom(deletedItemsAtom);
 
@@ -85,41 +101,43 @@ const ItemDetailsForm = ({data}: {data: FinanceResponseData}) => {
       items: items?.map((item) => ({
         ...item,
         ...(item?.id && {id: toNumber(item?.id)}),
+        quantity: toNumber(item.quantity),
       })),
     };
 
-    insertItemsDetail
-      .mutateAsync(dataSave)
-      .then(() => {
-        setDeletedItems(null);
-        if (saveType === "next") {
-          handleNext();
-        }
-        return toast({
-          message: `Berhasil menyimpan data`,
-          type: "success",
+    if (!isDirty && saveType === "next") {
+      return handleNext();
+    }
+    if (isDirty) {
+      insertItemsDetail
+        .mutateAsync(dataSave)
+        .then(() => {
+          setDeletedItems(null);
+          if (saveType === "next") {
+            return handleNext();
+          }
+        })
+        .catch(() => {
+          return toast({
+            message: "Terjadi kesalahan, silahkan coba kembali!",
+            type: "error",
+          });
         });
-      })
-      .catch(() => {
-        return toast({
-          message: "Terjadi kesalahan, silahkan coba kembali!",
-          type: "error",
-        });
-      });
+    }
   };
 
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <WarehouseForm
-        partnerId={data?.partner_id as string}
+        partnerId={data?.partner_id}
         register={register}
-        setValue={setValue}
+        control={control}
         getValues={getValues}
         errors={errors}
         warehouseData={data?.warehouse}
       />
       <ItemsForm
-        partnerId={data?.partner_id as string}
+        partnerId={data?.partner_id}
         dataItems={data?.items}
         register={register}
         setValue={setValue}
@@ -129,6 +147,7 @@ const ItemDetailsForm = ({data}: {data: FinanceResponseData}) => {
       <FooterButton
         isLoading={insertItemsDetail.isLoading}
         setSaveType={setSaveType}
+        isDirty={isDirty}
       />
     </form>
   );

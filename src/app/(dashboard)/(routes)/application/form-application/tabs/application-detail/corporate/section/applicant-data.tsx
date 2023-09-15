@@ -4,6 +4,12 @@ import React from "react";
 import {useAtom} from "jotai";
 import debounce from "lodash/debounce";
 import toNumber from "lodash/toNumber";
+import {
+  type FieldErrors,
+  useController,
+  type UseFormGetValues,
+  type UseFormRegister,
+} from "react-hook-form";
 import Select from "react-select";
 
 import FormItem from "~/components/form";
@@ -13,12 +19,7 @@ import {
   selectedMitraIdAtom,
 } from "~/state/formApplication";
 
-import type {
-  FieldErrors,
-  UseFormGetValues,
-  UseFormRegister,
-  UseFormSetValue,
-} from "react-hook-form";
+import type {Control, FieldValues} from "react-hook-form";
 import type {SingleValue} from "react-select";
 import type {DetailApplicationCorporateType} from "~/interfaces/form/detailApplication";
 import type {Partner} from "~/interfaces/services/finance";
@@ -27,20 +28,26 @@ import type {PartnerResult} from "~/interfaces/services/partner/list";
 const ApplicantDataSection = ({
   errors,
   register,
-  setValue,
   getValues,
   mitraData,
   isLoadingMitra,
   dataPartner,
+  control,
 }: {
   register: UseFormRegister<DetailApplicationCorporateType>;
   errors: FieldErrors<DetailApplicationCorporateType>;
-  setValue: UseFormSetValue<DetailApplicationCorporateType>;
   getValues: UseFormGetValues<DetailApplicationCorporateType>;
   mitraData?: PartnerResult[];
   isLoadingMitra?: boolean;
   dataPartner?: Partner;
+  control: Control<FieldValues>;
 }) => {
+  const {field: mitraField} = useController({control, name: "partner_id"});
+  const {field: numberOfEmployee} = useController({
+    control,
+    name: "number_of_employees",
+  });
+
   const [, setMitraListSearch] = useAtom(mitraListSearchAtom);
   const [, setSelectedMitraId] = useAtom(selectedMitraIdAtom);
 
@@ -50,7 +57,7 @@ const ApplicantDataSection = ({
       label: string;
     }>,
   ) => {
-    setValue("partner_id", eventChange?.value);
+    mitraField.onChange(eventChange?.value);
     setSelectedMitraId(eventChange?.value as string);
   };
 
@@ -196,9 +203,7 @@ const ApplicantDataSection = ({
           min={0}
           type="number"
           defaultValue={toNumber(getValues("number_of_employees"))}
-          onChangeValue={(value) =>
-            setValue("number_of_employees", toNumber(value))
-          }
+          onChangeValue={(value) => numberOfEmployee.onChange(toNumber(value))}
           isError={!!errors.number_of_employees}
         />
       </FormItem>

@@ -114,7 +114,7 @@ export interface FinanceResponseData {
   pob: string;
   dob: number;
   house_ownership_status: string;
-  length_of_stay: string;
+  length_of_stay: number;
   last_education: string;
   marital_status: string;
   no_hp: string;
@@ -133,7 +133,7 @@ export interface FinanceResponseData {
   personal_workplace_name: string;
   personal_workplace_address: string;
   personal_workplace_position: string;
-  personal_workplace_length_of_work: string;
+  personal_workplace_length_of_work: number;
   personal_workplace_income: string;
   personal_workplace_other_income: string;
   personal_workplace_additional_income: string;

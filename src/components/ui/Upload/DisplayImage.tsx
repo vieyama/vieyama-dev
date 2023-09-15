@@ -18,8 +18,8 @@ const DisplayImage = ({
 }: {
   index: number;
   allowEmpty?: boolean;
-  fileId: string;
-  handleDelete: (file: string) => void;
+  fileId: string | null;
+  handleDelete?: (file: string) => void;
 }) => {
   const hoverRef = useRef(null);
   const isHover = useHover(hoverRef);
@@ -49,7 +49,7 @@ const DisplayImage = ({
       srcFile = "/assets/preview-docx.svg";
       break;
     default:
-      srcFile = "/assets/preview-image.svg";
+      srcFile = "/assets/no-images.svg";
       break;
   }
 
@@ -58,6 +58,9 @@ const DisplayImage = ({
   if (!allowEmpty) {
     if (!isErrorImage) {
       allowDelete = index !== 0;
+    }
+    if (!handleDelete) {
+      allowDelete = false;
     }
   }
 
@@ -70,7 +73,7 @@ const DisplayImage = ({
           className={`absolute right-0 top-0 flex h-10 w-10 cursor-pointer items-center justify-center rounded-s-lg rounded-t-none bg-white bg-opacity-60 ${
             isHover ? "opacity-100" : "opacity-0"
           }`}
-          onClick={() => handleDelete(fileId)}>
+          onClick={() => handleDelete?.(fileId as string)}>
           <Icon name="trash" color="gray500" size={21} />
         </div>
       ) : null}
@@ -86,7 +89,7 @@ const DisplayImage = ({
         className="h-full w-full object-cover object-center"
         alt="fishfin image upload"
       />
-      {!isErrorImage ? (
+      {!isErrorImage && fileType ? (
         <div
           className={`${
             ["doc", "docx"].includes(fileType as string) ? "hidden" : "absolute"

@@ -19,7 +19,7 @@ const ItemsForm: React.FC<{
   setValue: UseFormSetValue<DetailItemType>;
   partnerId: string;
   dataItems?: Items[];
-}> = ({control, errors, register, setValue, partnerId, dataItems}) => {
+}> = ({control, errors, register, partnerId, dataItems}) => {
   const {fields, append, remove} = useFieldArray({
     control,
     name: "items",
@@ -37,7 +37,6 @@ const ItemsForm: React.FC<{
           index={index}
           dataItem={dataItems?.[index]}
           errors={errors}
-          setValue={setValue}
           control={control}
           partnerId={partnerId}
           register={register}
