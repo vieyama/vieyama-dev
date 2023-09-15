@@ -273,6 +273,9 @@ const CompanyDirectionForm: React.FC<{
               childClassName="w-full"
               labelClassName="md:min-w-[250px] lg:min-w-[250px]">
               <Input
+                type="number"
+                min={0}
+                max={100}
                 isError={!!errors.directors?.[index]?.share_ownership}
                 {...register(`directors.${index}.share_ownership`)}
               />

@@ -1,5 +1,6 @@
 import {Disclosure} from "@headlessui/react";
 import dayjs from "dayjs";
+import toNumber from "lodash/toNumber";
 
 import {Icon, Text} from "~/components/ui";
 
@@ -33,7 +34,9 @@ const DirectorData = ({
             <InputDisplay label="Tempat Lahir" value={director?.pob ?? ""} />
             <InputDisplay
               label="Tanggal Lahir"
-              value={dayjs(director?.dob).format("DD / MMMM / YYYY") ?? ""}
+              value={
+                dayjs(toNumber(director?.dob)).format("DD / MMMM / YYYY") ?? ""
+              }
             />{" "}
             <InputDisplay label="Jabatan" value={director?.position ?? ""} />
             <InputDisplay label="No. Handphone" value={director?.no_hp ?? ""} />

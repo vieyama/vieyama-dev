@@ -10,17 +10,13 @@ import {
   type UseFormGetValues,
   type UseFormRegister,
 } from "react-hook-form";
-import Select from "react-select";
 
+import SelectComponent from "~/app/(dashboard)/(routes)/application/components/select-component";
 import FormItem from "~/components/form";
 import {Input, InputNumber, Text} from "~/components/ui";
-import {
-  mitraListSearchAtom,
-  selectedMitraIdAtom,
-} from "~/state/formApplication";
+import {mitraListSearchAtom} from "~/state/formApplication";
 
-import type {Control, FieldValues} from "react-hook-form";
-import type {SingleValue} from "react-select";
+import type {Control, FieldError, FieldValues} from "react-hook-form";
 import type {DetailApplicationCorporateType} from "~/interfaces/form/detailApplication";
 import type {Partner} from "~/interfaces/services/finance";
 import type {PartnerResult} from "~/interfaces/services/partner/list";
@@ -42,24 +38,12 @@ const ApplicantDataSection = ({
   dataPartner?: Partner;
   control: Control<FieldValues>;
 }) => {
-  const {field: mitraField} = useController({control, name: "partner_id"});
   const {field: numberOfEmployee} = useController({
     control,
     name: "number_of_employees",
   });
 
   const [, setMitraListSearch] = useAtom(mitraListSearchAtom);
-  const [, setSelectedMitraId] = useAtom(selectedMitraIdAtom);
-
-  const handleChangeMitraId = (
-    eventChange: SingleValue<{
-      value: string;
-      label: string;
-    }>,
-  ) => {
-    mitraField.onChange(eventChange?.value);
-    setSelectedMitraId(eventChange?.value as string);
-  };
 
   const handleSearchMitra = debounce((search: string) => {
     setMitraListSearch(search);
@@ -71,40 +55,26 @@ const ApplicantDataSection = ({
         Data Pemohon
       </Text>
 
-      <FormItem
+      <SelectComponent
+        control={control}
+        errorMessage={errors.partner_id as FieldError}
         label="ID Mitra"
-        className="flex flex-col gap-4 md:flex-row"
-        childClassName="w-full"
-        error={errors.partner_id}
-        labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-        <Select
-          className="react-select"
-          isLoading={isLoadingMitra}
-          theme={(theme) => ({
-            ...theme,
-            borderRadius: 8,
-          })}
-          defaultValue={
-            dataPartner
-              ? {
-                  value: dataPartner?.partner_id,
-                  label: `${dataPartner?.no_registration} - ${dataPartner?.company_name}`,
-                }
-              : null
-          }
-          styles={{
-            menu: (provided) => ({...provided, zIndex: 9999}),
-          }}
-          placeholder=""
-          onInputChange={handleSearchMitra}
-          onChange={handleChangeMitraId}
-          components={{IndicatorSeparator: null}}
-          options={mitraData?.map((mitra) => ({
-            value: mitra.uuid,
-            label: `${mitra.no_registration} - ${mitra.company_name}`,
-          }))}
-        />
-      </FormItem>
+        fieldName="partner_id"
+        isLoading={isLoadingMitra}
+        defaultValue={
+          dataPartner
+            ? {
+                value: dataPartner?.partner_id,
+                label: `${dataPartner?.no_registration} - ${dataPartner?.company_name}`,
+              }
+            : null
+        }
+        onInputChange={handleSearchMitra}
+        options={mitraData?.map((mitra) => ({
+          value: mitra.uuid,
+          label: `${mitra.no_registration} - ${mitra.company_name}`,
+        }))}
+      />
 
       <FormItem
         label="Nama Pemohon"

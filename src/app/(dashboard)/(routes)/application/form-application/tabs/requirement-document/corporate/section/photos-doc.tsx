@@ -1,5 +1,5 @@
+import UploadComponent from "~/app/(dashboard)/(routes)/application/components/upload-component";
 import {Text} from "~/components/ui";
-import UploadComponent from "~/dashboard/(routes)/application/form-application/components/upload-component";
 
 import type {
   Control,

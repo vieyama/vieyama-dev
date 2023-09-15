@@ -1,6 +1,6 @@
 import {type FieldErrors, type UseFormClearErrors} from "react-hook-form";
 
-import UploadComponent from "~/dashboard/(routes)/application/form-application/components/upload-component";
+import UploadComponent from "~/app/(dashboard)/(routes)/application/components/upload-component";
 
 import type {Control, FieldError, FieldValues} from "react-hook-form";
 import type {ReqruitmentDocCorporateType} from "~/interfaces/form/reqruitmentDoc";

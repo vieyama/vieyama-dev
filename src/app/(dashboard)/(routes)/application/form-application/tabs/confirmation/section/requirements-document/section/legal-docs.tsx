@@ -1,7 +1,7 @@
 import {useSearchParams} from "next/navigation";
 
+import ImageDisplay from "~/app/(dashboard)/(routes)/application/components/image-display";
 import {Icon, Text} from "~/components/ui";
-import ImageDisplay from "~/dashboard/(routes)/application/form-application/components/image-display";
 
 import type {FinanceResponseData} from "~/interfaces/services/finance";
 

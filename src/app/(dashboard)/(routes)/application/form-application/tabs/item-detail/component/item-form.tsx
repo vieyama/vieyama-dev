@@ -21,6 +21,7 @@ import {
 import Select from "react-select";
 
 import FormItem from "~/components/form";
+import ControllerWrapper from "~/components/form/Controller";
 import {Button, Icon, InputNumber, Text, Upload} from "~/components/ui";
 import {useGetBatchList} from "~/services/batch/list";
 import {useGetInventoryList} from "~/services/inventory/list";
@@ -88,7 +89,7 @@ const ItemForm: React.FC<ItemFormProps> = ({
     skuId: string;
     owner: string;
     productType: string;
-    tenan: string;
+    tenant: string;
   }>();
 
   useEffect(() => {
@@ -98,7 +99,7 @@ const ItemForm: React.FC<ItemFormProps> = ({
         skuId: dataItem?.batch?.sku.id62 as string,
         owner: dataItem?.batch?.owner_name as string,
         productType: dataItem?.batch?.product_type as string,
-        tenan: dataItem?.batch?.tenant?.id62 as string,
+        tenant: dataItem?.batch?.tenant?.id62 as string,
       });
     }
     return () => {
@@ -133,14 +134,14 @@ const ItemForm: React.FC<ItemFormProps> = ({
       sku_id62: selectedInventory?.skuId,
       product_type: selectedInventory?.productType,
       owner_name: selectedInventory?.owner,
-      tenant_id62: selectedInventory?.tenan,
+      tenant_id62: selectedInventory?.tenant,
     },
     {
       enabled:
         !!warehouseId62 &&
         !!selectedInventory?.skuId &&
         !!selectedInventory?.owner &&
-        !!selectedInventory?.tenan &&
+        !!selectedInventory?.tenant &&
         !!selectedInventory?.productType,
     },
   );
@@ -172,14 +173,15 @@ const ItemForm: React.FC<ItemFormProps> = ({
       label: string;
       owner: string;
       productType: string;
-      tenan: string;
+      tenant: string;
+      skuId: string;
     }>,
   ) => {
     setSelectedInventory({
-      skuId: eventChange?.value as string,
+      skuId: eventChange?.skuId as string,
       owner: eventChange?.owner as string,
       productType: eventChange?.productType as string,
-      tenan: eventChange?.tenan as string,
+      tenant: eventChange?.tenant as string,
     });
     stockIdField.onChange(eventChange?.value);
   };
@@ -223,6 +225,7 @@ const ItemForm: React.FC<ItemFormProps> = ({
                 setDeletedItem(
                   deletedData.map((item) => omit(item, "id")) as Items[],
                 );
+                photosField.onChange([]);
               }
               return remove(index);
             }}>
@@ -290,21 +293,23 @@ const ItemForm: React.FC<ItemFormProps> = ({
           }}
           placeholder=""
           onInputChange={handleSearchInventory}
-          onChange={(event) => handleChangeInventory(event)}
+          onChange={handleChangeInventory}
           components={{IndicatorSeparator: null}}
           defaultValue={{
             label: dataItem?.batch?.sku?.SKU as string,
-            value: dataItem?.batch?.sku?.id62 as string,
+            value: dataItem?.batch?.id62 as string,
             owner: dataItem?.batch?.owner_name as string,
             productType: dataItem?.batch?.product_type as string,
-            tenan: dataItem?.batch?.tenant?.id62 as string,
+            tenant: dataItem?.batch?.tenant?.id62 as string,
+            skuId: dataItem?.batch?.sku?.id62 as string,
           }}
           options={dataInventory?.results?.map((item) => ({
             label: item?.sku.SKU,
-            value: item?.sku.id62,
+            value: item?.id62,
             owner: item?.owner_name,
             productType: item?.product_type,
-            tenan: item?.tenant.id62,
+            tenant: item?.tenant.id62,
+            skuId: item?.sku?.id62,
           }))}
         />
       </FormItem>
@@ -372,20 +377,27 @@ const ItemForm: React.FC<ItemFormProps> = ({
         className="mt-5 flex flex-col gap-4 md:flex-row"
         childClassName="w-full"
         labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-        <InputNumber
-          className="text-end"
-          disabled={selectedStock === "all"}
-          {...register(`items.${index}.quantity`)}
-          onChangeValue={(value) => {
-            quantityField.onChange(toNumber(value));
+        <ControllerWrapper
+          fieldName={`items.${index}.quantity`}
+          control={control}>
+          {({onChange, value, onBlur}) => {
+            return (
+              <InputNumber
+                className="text-end"
+                disabled={selectedStock === "all"}
+                {...register(`items.${index}.quantity`)}
+                onChangeValue={onChange}
+                onBlur={onBlur}
+                defaultValue={value}
+                customSuffix={
+                  <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center rounded-e-lg bg-gray-200 px-4">
+                    Kg
+                  </div>
+                }
+              />
+            );
           }}
-          defaultValue={toNumber(dataItems?.[index]?.quantity)}
-          customSuffix={
-            <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center rounded-e-lg bg-gray-200 px-4">
-              Kg
-            </div>
-          }
-        />
+        </ControllerWrapper>
       </FormItem>
     </>
   );

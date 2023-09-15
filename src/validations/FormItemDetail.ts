@@ -16,7 +16,7 @@ const DetailItemSchema = Yup.object<DetailItemType>({
         stock_id62: Yup.string().required(requiredMessage),
         batch_number: Yup.string().required(requiredMessage),
         selected_stock: Yup.string().required(requiredMessage),
-        quantity: Yup.string()
+        quantity: Yup.number()
           .min(1, requiredMessage)
           .required(requiredMessage),
       }),

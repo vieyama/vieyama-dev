@@ -91,6 +91,7 @@ const ItemDetailsForm = ({data}: {data: FinanceResponseData}) => {
     const items = isEmpty(deletedItems)
       ? data?.items
       : [...(data?.items as []), ...(deletedItems as [])];
+
     const dataSave = {
       step: "item_details",
       uuid: financeId,
@@ -101,7 +102,7 @@ const ItemDetailsForm = ({data}: {data: FinanceResponseData}) => {
       items: items?.map((item) => ({
         ...item,
         ...(item?.id && {id: toNumber(item?.id)}),
-        quantity: toNumber(item.quantity),
+        quantity: item.quantity,
       })),
     };
 
