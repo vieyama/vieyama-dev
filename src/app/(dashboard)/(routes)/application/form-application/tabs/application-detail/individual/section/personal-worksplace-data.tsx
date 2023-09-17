@@ -85,7 +85,6 @@ const PersonalWorkplaceDataSection = ({
                 : "border-gray-300"
             } p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
             {...bussinesField}
-            defaultValue=""
             placeholder="Bidang Usaha">
             <option value="">Pilih Bidang Usaha</option>
             {businessFieldList.map((business) => (

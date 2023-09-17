@@ -122,7 +122,6 @@ const FinancingDataSection = ({
               errors.loan_purposes ? "border-error" : "border-gray-300"
             } p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
             {...register("loan_purposes")}
-            defaultValue=""
             placeholder="Tujuan Pinjaman">
             <option value="">Pilih Tujuan Pinjaman</option>
             {loadPurposeList.map((loan) => (
@@ -145,7 +144,6 @@ const FinancingDataSection = ({
               errors.storage ? "border-error" : "border-gray-300"
             } p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
             {...register("storage")}
-            defaultValue=""
             placeholder="Storage">
             <option value="">Pilih Storage</option>
             {storageList.map((storage) => (

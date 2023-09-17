@@ -12,10 +12,7 @@ import {useNext} from "~/hooks/useNext";
 import useToast from "~/hooks/useToast";
 import {useInsertFinance} from "~/services/finance";
 import {useGetPartnerDetail, useGetPartnerList} from "~/services/partner/list";
-import {
-  mitraListSearchAtom,
-  selectedMitraIdAtom,
-} from "~/state/formApplication";
+import {mitraListSearchAtom} from "~/state/formApplication";
 import {DetailApplicationIndividualSchema} from "~/validations/FormApplication";
 
 import {
@@ -56,7 +53,7 @@ const ApplicationDetailIndividualForm: React.FC<{
   const {toast} = useToast();
 
   const [mitraListSearch] = useAtom(mitraListSearchAtom);
-  const [selectedMitraId, setSelectedMitraId] = useAtom(selectedMitraIdAtom);
+  const selectedMitraId = watch("partner_id");
 
   const handleBeforeUnload = (e: {
     preventDefault: () => void;
@@ -73,15 +70,6 @@ const ApplicationDetailIndividualForm: React.FC<{
         window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, [isDirty]);
-
-  useEffect(() => {
-    let isMounted = true;
-    if (isMounted) setSelectedMitraId(null);
-
-    return () => {
-      isMounted = false;
-    };
-  }, [setSelectedMitraId]);
 
   const {data, isLoading} = useGetPartnerList({
     page: 1,
@@ -201,9 +189,14 @@ const ApplicationDetailIndividualForm: React.FC<{
             handleNext();
           }
         })
-        .catch(() => {
+        .catch((err) => {
+          const draftErrorMessage =
+            "Unable to update data, data is not in draft status";
           return toast({
-            message: "Terjadi kesalahan, silahkan coba kembali!",
+            message:
+              err.response.data.message !== draftErrorMessage
+                ? "Terjadi kesalahan, silahkan coba kembali!"
+                : "Hanya data dengan status Draf yang dapat diubah.",
             type: "error",
           });
         });
