@@ -8,21 +8,17 @@ import {
   type UseFormGetValues,
   type UseFormRegister,
 } from "react-hook-form";
-import Select from "react-select";
 
+import SelectComponent from "~/app/(dashboard)/(routes)/application/components/select-component";
 import {
   educationList,
   maritalStatusList,
 } from "~/app/(dashboard)/(routes)/application/constants";
 import FormItem from "~/components/form";
 import {Input, Text} from "~/components/ui";
-import {
-  mitraListSearchAtom,
-  selectedMitraIdAtom,
-} from "~/state/formApplication";
+import {mitraListSearchAtom} from "~/state/formApplication";
 
-import type {Control, FieldValues} from "react-hook-form";
-import type {SingleValue} from "react-select";
+import type {Control, FieldError, FieldValues} from "react-hook-form";
 import type {DetailApplicationIndividualType} from "~/interfaces/form/detailApplication";
 import type {Partner} from "~/interfaces/services/finance";
 import type {PartnerResult} from "~/interfaces/services/partner/list";
@@ -41,23 +37,11 @@ const ApplicantDataSection = ({
   mitraData?: PartnerResult[];
   isLoadingMitra?: boolean;
   dataPartner?: Partner;
-  control?: Control<FieldValues>;
+  control: Control<FieldValues>;
 }) => {
-  const {field: mitraField} = useController({control, name: "partner_id"});
   const {field: mitraKtp} = useController({control, name: "no_ktp"});
 
   const [, setMitraListSearch] = useAtom(mitraListSearchAtom);
-  const [, setSelectedMitraId] = useAtom(selectedMitraIdAtom);
-
-  const handleChangeMitraId = (
-    eventChange: SingleValue<{
-      value: string;
-      label: string;
-    }>,
-  ) => {
-    mitraField.onChange(eventChange?.value);
-    setSelectedMitraId(eventChange?.value as string);
-  };
 
   const handleSearchMitra = debounce((search: string) => {
     setMitraListSearch(search);
@@ -68,42 +52,26 @@ const ApplicantDataSection = ({
       <Text className="text-blue-600" weight="semi-bold">
         Data Pemohon
       </Text>
-
-      <FormItem
-        error={errors.partner_id}
+      <SelectComponent
+        control={control}
+        errorMessage={errors.partner_id as FieldError}
         label="ID Mitra"
-        className="flex flex-col gap-4 md:flex-row"
-        childClassName="w-full"
-        labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-        <Select
-          className="react-select"
-          defaultValue={
-            dataPartner
-              ? {
-                  value: dataPartner?.partner_id as string,
-                  label:
-                    `${dataPartner?.no_registration} - ${dataPartner?.name}` as string,
-                }
-              : null
-          }
-          isLoading={isLoadingMitra}
-          theme={(theme) => ({
-            ...theme,
-            borderRadius: 8,
-          })}
-          styles={{
-            menu: (provided) => ({...provided, zIndex: 9999}),
-          }}
-          placeholder=""
-          onInputChange={handleSearchMitra}
-          onChange={handleChangeMitraId}
-          components={{IndicatorSeparator: null}}
-          options={mitraData?.map((mitra) => ({
-            value: mitra.uuid,
-            label: `${mitra.no_registration} - ${mitra.name}`,
-          }))}
-        />
-      </FormItem>
+        fieldName="partner_id"
+        isLoading={isLoadingMitra}
+        defaultValue={
+          dataPartner
+            ? {
+                value: dataPartner?.partner_id,
+                label: `${dataPartner?.no_registration} - ${dataPartner?.name}`,
+              }
+            : null
+        }
+        onInputChange={handleSearchMitra}
+        options={mitraData?.map((mitra) => ({
+          value: mitra.uuid,
+          label: `${mitra.no_registration} - ${mitra.name}`,
+        }))}
+      />
 
       <FormItem
         label="Nama Lengkap (Sesuai KTP)"
@@ -179,7 +147,6 @@ const ApplicantDataSection = ({
               errors.house_ownership_status ? "border-error" : "border-gray-300"
             } p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
             {...register("house_ownership_status")}
-            defaultValue=""
             placeholder="Status Kepemilikan Rumah">
             <option value="">Pilih Status Kepemilikan Rumah</option>
             <option value="Milik Sendiri">Milik Sendiri</option>
@@ -243,7 +210,6 @@ const ApplicantDataSection = ({
               errors.last_education ? "border-error" : "border-gray-300"
             } p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
             {...register("last_education")}
-            defaultValue=""
             placeholder="Pendidikan Terakhir">
             <option value="">Pilih Pendidikan Terkahir</option>
             {educationList.map((edu) => (
@@ -267,7 +233,6 @@ const ApplicantDataSection = ({
               errors.marital_status ? "border-error" : "border-gray-300"
             } p-2 text-sm text-gray-900 focus:border-blue-500 focus:ring-blue-500`}
             {...register("marital_status")}
-            defaultValue=""
             placeholder="Status Perkawinan">
             <option value="">Pilih Status Perkawinan</option>
             {maritalStatusList.map((marital) => (

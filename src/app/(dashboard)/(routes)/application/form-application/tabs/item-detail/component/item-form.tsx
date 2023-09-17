@@ -18,8 +18,8 @@ import {
   type UseFormRegister,
   useWatch,
 } from "react-hook-form";
-import Select from "react-select";
 
+import SelectComponent from "~/app/(dashboard)/(routes)/application/components/select-component";
 import FormItem from "~/components/form";
 import ControllerWrapper from "~/components/form/Controller";
 import {Button, Icon, InputNumber, Text, Upload} from "~/components/ui";
@@ -55,18 +55,6 @@ const ItemForm: React.FC<ItemFormProps> = ({
   control,
   dataItem,
 }) => {
-  const {field: productIdField} = useController({
-    control,
-    name: `items.${index}.product_id62`,
-  });
-  const {field: stockIdField} = useController({
-    control,
-    name: `items.${index}.stock_id62`,
-  });
-  const {field: batchNumberField} = useController({
-    control,
-    name: `items.${index}.batch_number`,
-  });
   const {field: quantityField} = useController({
     control,
     name: `items.${index}.quantity`,
@@ -158,15 +146,6 @@ const ItemForm: React.FC<ItemFormProps> = ({
     setSearchBatch(search);
   }, 1500);
 
-  const handleChangeProduct = (
-    eventChange: SingleValue<{
-      value: string;
-      label: string;
-    }>,
-  ) => {
-    productIdField.onChange(eventChange?.value);
-  };
-
   const handleChangeInventory = (
     eventChange: SingleValue<{
       value: string;
@@ -176,6 +155,7 @@ const ItemForm: React.FC<ItemFormProps> = ({
       tenant: string;
       skuId: string;
     }>,
+    onChange: (arg0?: string) => void,
   ) => {
     setSelectedInventory({
       skuId: eventChange?.skuId as string,
@@ -183,7 +163,7 @@ const ItemForm: React.FC<ItemFormProps> = ({
       productType: eventChange?.productType as string,
       tenant: eventChange?.tenant as string,
     });
-    stockIdField.onChange(eventChange?.value);
+    onChange(eventChange?.value);
   };
 
   const handleChangeBatch = (
@@ -192,8 +172,9 @@ const ItemForm: React.FC<ItemFormProps> = ({
       label: string;
       quantity: number;
     }>,
+    onChange: (arg0?: string) => void,
   ) => {
-    batchNumberField.onChange(eventChange?.value);
+    onChange(eventChange?.value);
     quantityField.onChange(toNumber(eventChange?.quantity));
   };
 
@@ -245,74 +226,46 @@ const ItemForm: React.FC<ItemFormProps> = ({
           maxFile={5}
         />
       </FormItem>
+      <SelectComponent
+        control={control}
+        errorMessage={errors.items?.[index]?.product_id62 as FieldError}
+        label="Nama Gudang"
+        fieldName={`items.${index}.product_id62`}
+        defaultValue={{
+          label: dataItem?.batch?.product?.name as string,
+          value: dataItem?.batch?.product?.id62 as string,
+        }}
+        onInputChange={handleSearchProduct}
+        options={dataProduct?.results?.map((item) => ({
+          label: item?.name,
+          value: item?.id62,
+        }))}
+      />
 
-      <FormItem
-        error={errors.items?.[index]?.product_id62}
-        label="Nama Barang"
-        className="mt-5 flex flex-col gap-4 md:flex-row"
-        childClassName="w-full"
-        labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-        <Select
-          className="react-select"
-          theme={(theme) => ({
-            ...theme,
-            borderRadius: 8,
-          })}
-          styles={{
-            menu: (provided) => ({...provided, zIndex: 9999}),
-          }}
-          placeholder=""
-          onInputChange={handleSearchProduct}
-          onChange={(event) => handleChangeProduct(event)}
-          components={{IndicatorSeparator: null}}
-          defaultValue={{
-            label: dataItem?.batch?.product?.name as string,
-            value: dataItem?.batch?.product?.id62 as string,
-          }}
-          options={dataProduct?.results?.map((item) => ({
-            label: item?.name,
-            value: item?.id62,
-          }))}
-        />
-      </FormItem>
-
-      <FormItem
+      <SelectComponent
+        control={control}
+        errorMessage={errors.items?.[index]?.stock_id62 as FieldError}
         label="Nomor SKU"
-        error={errors.items?.[index]?.stock_id62}
-        className="mt-5 flex flex-col gap-4 md:flex-row"
-        childClassName="w-full"
-        labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-        <Select
-          className="react-select"
-          theme={(theme) => ({
-            ...theme,
-            borderRadius: 8,
-          })}
-          styles={{
-            menu: (provided) => ({...provided, zIndex: 9999}),
-          }}
-          placeholder=""
-          onInputChange={handleSearchInventory}
-          onChange={handleChangeInventory}
-          components={{IndicatorSeparator: null}}
-          defaultValue={{
-            label: dataItem?.batch?.sku?.SKU as string,
-            value: dataItem?.batch?.id62 as string,
-            owner: dataItem?.batch?.owner_name as string,
-            productType: dataItem?.batch?.product_type as string,
-            tenant: dataItem?.batch?.tenant?.id62 as string,
-            skuId: dataItem?.batch?.sku?.id62 as string,
-          }}
-          options={dataInventory?.results?.map((item) => ({
-            label: item?.sku.SKU,
-            value: item?.id62,
-            owner: item?.owner_name,
-            productType: item?.product_type,
-            tenant: item?.tenant.id62,
-            skuId: item?.sku?.id62,
-          }))}
-        />
-      </FormItem>
+        fieldName={`items.${index}.stock_id62`}
+        onInputChange={handleSearchInventory}
+        optionChange={handleChangeInventory}
+        defaultValue={{
+          label: dataItem?.batch?.sku?.SKU as string,
+          value: dataItem?.batch?.id62 as string,
+          owner: dataItem?.batch?.owner_name as string,
+          productType: dataItem?.batch?.product_type as string,
+          tenant: dataItem?.batch?.tenant?.id62 as string,
+          skuId: dataItem?.batch?.sku?.id62 as string,
+        }}
+        options={dataInventory?.results?.map((item) => ({
+          label: item?.sku.SKU,
+          value: item?.id62,
+          owner: item?.owner_name,
+          productType: item?.product_type,
+          tenant: item?.tenant.id62,
+          skuId: item?.sku?.id62,
+        }))}
+      />
 
       <FormItem
         label="Pilihan Stok"
@@ -332,44 +285,31 @@ const ItemForm: React.FC<ItemFormProps> = ({
         </select>
       </FormItem>
 
-      <FormItem
+      <SelectComponent
+        control={control}
+        errorMessage={errors.items?.[index]?.batch_number as FieldError}
         label="Nomor Batch"
-        error={errors.items?.[index]?.batch_number as FieldError}
-        className="mt-5 flex flex-col gap-4 md:flex-row"
-        childClassName="w-full"
-        labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-        <Select
-          className="react-select"
-          theme={(theme) => ({
-            ...theme,
-            borderRadius: 8,
-          })}
-          styles={{
-            menu: (provided) => ({...provided, zIndex: 9999}),
-          }}
-          placeholder=""
-          onInputChange={handleSearchBatch}
-          onChange={(event) => handleChangeBatch(event)}
-          components={{IndicatorSeparator: null}}
-          isOptionDisabled={(items) => {
-            const isSame = find(
-              dataItems,
-              (item) => item.batch_number === items.value,
-            );
-            return isSame?.batch_number === items.value;
-          }}
-          defaultValue={{
-            label: dataItem?.batch?.batch_number as string,
-            value: dataItem?.batch?.batch_number as string,
-            quantity: dataItem?.batch?.stock as number,
-          }}
-          options={dataBatch?.results?.map((item) => ({
-            label: item?.batch_number,
-            value: item?.batch_number,
-            quantity: item?.stock,
-          }))}
-        />
-      </FormItem>
+        fieldName={`items.${index}.batch_number`}
+        onInputChange={handleSearchBatch}
+        optionChange={handleChangeBatch}
+        defaultValue={{
+          label: dataItem?.batch?.batch_number as string,
+          value: dataItem?.batch?.batch_number as string,
+          quantity: dataItem?.batch?.stock as number,
+        }}
+        options={dataBatch?.results?.map((item) => ({
+          label: item?.batch_number,
+          value: item?.batch_number,
+          quantity: item?.stock,
+        }))}
+        isOptionDisabled={(items) => {
+          const isSame = find(
+            dataItems,
+            (item) => item.batch_number === items.value,
+          );
+          return isSame?.batch_number === items.value;
+        }}
+      />
 
       <FormItem
         label="Kuantitas"

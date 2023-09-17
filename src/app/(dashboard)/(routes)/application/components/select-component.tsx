@@ -4,24 +4,17 @@ import FormItem from "~/components/form";
 import ControllerWrapper from "~/components/form/Controller";
 
 import type {Control, FieldError, FieldValues} from "react-hook-form";
-import type {GroupBase, InputActionMeta, OptionsOrGroups} from "react-select";
+import type {
+  GroupBase,
+  InputActionMeta,
+  Options,
+  OptionsOrGroups,
+  SingleValue,
+} from "react-select";
 
-type Option = {
-  value: string;
-  label: string;
-};
+export type OtherOption<T> = T;
 
-const SelectComponent = ({
-  control,
-  errorMessage,
-  label,
-  fieldName,
-  optional,
-  isLoading,
-  defaultValue,
-  onInputChange,
-  options,
-}: {
+interface SelectComponentProps<Option> {
   control: Control<FieldValues>;
   errorMessage: FieldError;
   label: string;
@@ -31,7 +24,26 @@ const SelectComponent = ({
   isLoading?: boolean;
   onInputChange?: (newValue: string, actionMeta: InputActionMeta) => void;
   options?: OptionsOrGroups<Option, GroupBase<Option>>;
-}) => {
+  optionChange?: (
+    option: SingleValue<Option>,
+    onChange: (...event: unknown[]) => void,
+  ) => void;
+  isOptionDisabled?: (option: Option, selectValue: Options<Option>) => boolean;
+}
+
+const SelectComponent = <T,>({
+  control,
+  errorMessage,
+  label,
+  fieldName,
+  optional,
+  isLoading,
+  defaultValue,
+  onInputChange,
+  options,
+  optionChange,
+  isOptionDisabled,
+}: SelectComponentProps<T>): JSX.Element => {
   return (
     <FormItem
       label={label}
@@ -43,6 +55,7 @@ const SelectComponent = ({
       <ControllerWrapper fieldName={fieldName} control={control}>
         {({onChange}) => (
           <Select
+            id={fieldName}
             className="react-select"
             isLoading={isLoading}
             theme={(theme) => ({
@@ -55,9 +68,18 @@ const SelectComponent = ({
             }}
             placeholder=""
             onInputChange={onInputChange}
-            onChange={(e) => onChange(e?.value)}
+            onChange={(event) => {
+              if (optionChange) {
+                optionChange?.(event, onChange);
+              } else {
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                //@ts-ignore
+                onChange(event?.value);
+              }
+            }}
             components={{IndicatorSeparator: null}}
             options={options}
+            isOptionDisabled={isOptionDisabled}
           />
         )}
       </ControllerWrapper>

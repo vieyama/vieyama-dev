@@ -6,14 +6,14 @@ import {
   type UseFormGetValues,
   type UseFormRegister,
 } from "react-hook-form";
-import Select from "react-select";
 
+import SelectComponent from "~/app/(dashboard)/(routes)/application/components/select-component";
 import FormItem from "~/components/form";
 import {Input, InputTextArea, Text} from "~/components/ui";
 import GoogleMaps from "~/components/ui/Map";
 import {useGetWarehouseList} from "~/services/warehouse/list";
 
-import type {Control, FieldValues} from "react-hook-form";
+import type {Control, FieldError, FieldValues} from "react-hook-form";
 import type {SingleValue} from "react-select";
 import type {LatlongType} from "~/components/ui/Map";
 import type {DetailItemType} from "~/interfaces/form/detailItem";
@@ -34,7 +34,6 @@ const WarehouseForm: React.FC<{
     control,
     name: "warehouse_address",
   });
-  const {field: warehouseId} = useController({control, name: "warehouse_id62"});
 
   const editData = useMemo(
     () => ({
@@ -82,10 +81,13 @@ const WarehouseForm: React.FC<{
     },
   );
 
-  const handleSelectWarehouse = (event: SingleValue<WarehouseData>) => {
+  const handleSelectWarehouse = (
+    event: SingleValue<WarehouseData>,
+    onChange: (arg0?: string) => void,
+  ) => {
     setSelectedWarehouse(event as WarehouseData);
     warehouseAddress.onChange(event?.address?.address);
-    warehouseId.onChange(event?.id62);
+    onChange(event?.id62);
   };
 
   const latlong = {
@@ -98,28 +100,16 @@ const WarehouseForm: React.FC<{
       <Text className="text-blue-600" weight="semi-bold">
         Lokasi Barang
       </Text>
-      <FormItem
+      <SelectComponent
+        control={control}
+        errorMessage={errors.warehouse_id62 as FieldError}
         label="Nama Gudang"
-        error={errors.warehouse_id62}
-        className="flex flex-col gap-4 md:flex-row"
-        childClassName="w-full"
-        labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-        <Select
-          className="react-select"
-          theme={(theme) => ({
-            ...theme,
-            borderRadius: 8,
-          })}
-          placeholder="Pilih Gudang"
-          components={{IndicatorSeparator: null}}
-          options={dataWareHouse}
-          defaultValue={editData as unknown as WarehouseData}
-          onChange={handleSelectWarehouse}
-          styles={{
-            menu: (provided) => ({...provided, zIndex: 9999}),
-          }}
-        />
-      </FormItem>
+        fieldName="warehouse_id62"
+        defaultValue={editData as unknown as WarehouseData}
+        options={dataWareHouse}
+        optionChange={handleSelectWarehouse}
+      />
+
       {selectedWarehouse ? (
         <>
           <GoogleMaps latlong={latlong as LatlongType} />
