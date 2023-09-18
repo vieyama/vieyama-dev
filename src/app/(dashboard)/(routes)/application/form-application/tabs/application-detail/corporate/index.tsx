@@ -51,11 +51,12 @@ const ApplicationDetailCorporateForm: React.FC<{
     getValues,
     handleSubmit,
     watch,
-    formState: {errors, isDirty},
+    formState: {errors, dirtyFields},
   } = useForm<FormValueType>({
     resolver: yupResolver(DetailApplicationCorporateSchema),
     defaultValues: defaultValueForm,
   });
+  const isDirty = !isEmpty(dirtyFields);
 
   const selectedMitraId = watch("partner_id");
   const [mitraListSearch] = useAtom(mitraListSearchAtom);

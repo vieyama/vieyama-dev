@@ -3,6 +3,7 @@ import {useEffect, useState} from "react";
 import {yupResolver} from "@hookform/resolvers/yup";
 import dayjs from "dayjs";
 import {useAtom} from "jotai";
+import isEmpty from "lodash/isEmpty";
 import omit from "lodash/omit";
 import toNumber from "lodash/toNumber";
 import {useSearchParams} from "next/navigation";
@@ -40,11 +41,12 @@ const ApplicationDetailIndividualForm: React.FC<{
     watch,
     handleSubmit,
     control,
-    formState: {errors, isDirty},
+    formState: {errors, dirtyFields},
   } = useForm<DetailApplicationIndividualType>({
     resolver: yupResolver(DetailApplicationIndividualSchema),
     defaultValues: defaultValueForm,
   });
+  const isDirty = !isEmpty(dirtyFields);
   const maritalStatus = watch("marital_status");
 
   const searchParams = useSearchParams();

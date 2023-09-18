@@ -16,7 +16,10 @@ const ConfirmationForm = () => {
   const {toast} = useToast();
 
   const {data, isLoading} = useGetFinancingById(financeId as string);
-
+  const isFilledData =
+    !!data?.partner_id &&
+    !!data?.warehouse_id62 &&
+    !!data?.bank_statement_photo;
   const confirmApplication = useInsertFinance();
 
   const onSubmit = () => {
@@ -75,7 +78,12 @@ const ConfirmationForm = () => {
       <div className="mt-5">
         <RequirementDocuments financeData={data} />
       </div>
-      <FooterButton isLoading={false} onConfirm={onSubmit} />
+      <FooterButton
+        isLoading={false}
+        onConfirm={onSubmit}
+        isFilledData={isFilledData}
+        applicationStatus={data?.status}
+      />
     </div>
   );
 };
