@@ -9,9 +9,13 @@ const FooterButton = ({
   setSaveType,
   isDirty,
   onConfirm,
+  isFilledData,
+  applicationStatus,
 }: {
   isDirty?: boolean;
   isLoading: boolean;
+  isFilledData?: boolean;
+  applicationStatus?: string;
   setSaveType?: Dispatch<SetStateAction<"save" | "next">>;
   onConfirm?: () => void;
 }) => {
@@ -48,6 +52,10 @@ const FooterButton = ({
           isLoading={isLoading}
           className="w-full"
           type="submit"
+          disabled={
+            (process === "confirmation" && !isFilledData) ||
+            (process === "confirmation" && applicationStatus !== "draft")
+          }
           onClick={() =>
             process !== "confirmation" ? setSaveType?.("save") : onConfirm?.()
           }>

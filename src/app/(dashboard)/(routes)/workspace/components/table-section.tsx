@@ -86,9 +86,10 @@ const TableSection = () => {
                       {data.status}
                     </td>
                     <td className="flex gap-2 px-6 py-4 text-start text-gray-900">
-                      <Button variant="transparent" size="icon">
+                      <Link
+                        href={`/application/form-application?process=confirmation&type=${data.partner_type}&payment=${data.financing_type}&uuid=${data.uuid}&preview=true`}>
                         <Icon name="eyes" size={20} />
-                      </Button>
+                      </Link>
                       <Button variant="transparent" size="icon">
                         <Icon name="download" size={20} />
                       </Button>
