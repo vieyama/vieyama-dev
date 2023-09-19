@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import Select from "react-select";
 
 import FormItem from "~/components/form";
@@ -72,7 +73,6 @@ const SelectComponent = <T,>({
               if (optionChange) {
                 optionChange?.(event, onChange);
               } else {
-                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
                 //@ts-ignore
                 onChange(event?.value);
               }

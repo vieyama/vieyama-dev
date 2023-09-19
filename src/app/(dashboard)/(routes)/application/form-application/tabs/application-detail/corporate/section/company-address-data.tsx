@@ -58,11 +58,13 @@ const CompanyAddressData = ({
         value: string;
         label: string;
       }>,
+      onChange?: (arg0?: string) => void,
     ) => {
       setSelectedProvince({
         value: eventChange?.value as string,
         label: eventChange?.label as string,
       });
+      onChange?.(eventChange?.value);
       provinceName.onChange(eventChange?.label);
     },
     [setSelectedProvince],
@@ -74,11 +76,13 @@ const CompanyAddressData = ({
         value: string;
         label: string;
       }>,
+      onChange?: (arg0?: string) => void,
     ) => {
       setSelectedCity({
         value: eventChange?.value as string,
         label: eventChange?.label as string,
       });
+      onChange?.(eventChange?.value);
       cityName.onChange(eventChange?.label);
     },
     [setSelectedCity],
@@ -90,11 +94,13 @@ const CompanyAddressData = ({
         value: string;
         label: string;
       }>,
+      onChange?: (arg0?: string) => void,
     ) => {
       setSelectedDistrict({
         value: eventChange?.value as string,
         label: eventChange?.label as string,
       });
+      onChange?.(eventChange?.value);
       districtName.onChange(eventChange?.label);
     },
     [setSelectedDistrict],
