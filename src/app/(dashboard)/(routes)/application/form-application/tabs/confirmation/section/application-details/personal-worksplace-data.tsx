@@ -1,11 +1,10 @@
 import toString from "lodash/toString";
 
+import InputDisplay from "~/app/(dashboard)/(routes)/application/components/input-display";
+import RangeYearDisplay from "~/app/(dashboard)/(routes)/application/components/range-year-display";
+import TextAreaDisplay from "~/app/(dashboard)/(routes)/application/components/textarea-display";
 import {Text} from "~/components/ui";
 import {getLengthOfStay} from "~/utils/getLengthOfStay";
-
-import InputDisplay from "../../component/input-display";
-import RangeYearDisplay from "../../component/range-year-display";
-import TextAreaDisplay from "../../component/textarea-display";
 
 import type {FinanceResponseData} from "~/interfaces/services/finance";
 

@@ -5,7 +5,7 @@ import DirectorData from "./director-data";
 import FinancingData from "./financing-data";
 import PersonalWorksplaceData from "./personal-worksplace-data";
 import SpouseData from "./spouse-data";
-import CollapseComponent from "../../component/collapse-component";
+import CollapseComponent from "../../../../../components/collapse-component";
 import AddressData from "../global/address-data";
 import EmergencyContactData from "../global/emergency-contact-data";
 

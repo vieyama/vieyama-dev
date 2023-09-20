@@ -2,13 +2,15 @@
 
 import {type ChangeEvent, useEffect, useState} from "react";
 
-import {includes} from "lodash";
+import {includes, isEmpty} from "lodash";
 import Image from "next/image";
 
 import useToast from "~/hooks/useToast";
 import clientUpload from "~/utils/clientUpload";
 
 import DisplayImage from "./DisplayImage";
+import Icon from "../Icon";
+import Text from "../Text";
 
 export type FilesType = string[];
 
@@ -21,6 +23,7 @@ interface UploadProps {
   accept?: string;
   fileTypeLimiter?: string[];
   allowEmpty?: boolean;
+  type?: "input" | "button";
   id: string;
 }
 
@@ -33,6 +36,7 @@ const Upload: React.FC<UploadProps> = ({
   maxFileSise = 5,
   id,
   accept = ".doc, .docx, .pdf, .jpg, .jpeg, .png",
+  type = "button",
 }) => {
   const fileTypeLimiter = [
     "image/jpeg",
@@ -96,9 +100,13 @@ const Upload: React.FC<UploadProps> = ({
     await Promise.all(promise)
       .then((resultUpload) => {
         setIsLoading(false);
-        const result = resultUpload
-          .map((item) => item.data)
-          ?.map((item) => `fishfin/${item.id}`);
+
+        const result =
+          type === "button"
+            ? resultUpload
+                .map((item) => item.data)
+                ?.map((item) => `fishfin/${item.id}`)
+            : [`fishfin/${resultUpload[0]?.data?.id}`];
 
         return onChange?.(result);
       })
@@ -132,7 +140,7 @@ const Upload: React.FC<UploadProps> = ({
     }
   }
 
-  return (
+  return type === "button" ? (
     <div className="flex gap-4">
       {files
         ? files.map((file, index) => (
@@ -198,6 +206,28 @@ const Upload: React.FC<UploadProps> = ({
         </p>
       </div>
     </div>
+  ) : (
+    <label
+      htmlFor={`input-file-${id}`}
+      className={`${
+        isLoading ? "cursor-not-allowed" : "cursor-pointer"
+      } flex h-[40px] w-full flex-col items-start justify-center rounded-lg border-2 border-gray-300`}>
+      <div className="ml-3 flex w-full select-none flex-row items-center justify-between pr-4">
+        <Text variant="paragraph" className="text-gray-500">
+          {isEmpty(fileList) ? "Upload File" : fileList[0]}
+        </Text>
+        <Icon name="upload" size={24} />
+      </div>
+      <input
+        id={`input-file-${id}`}
+        accept={accept}
+        onChange={handleGetFile}
+        multiple={false}
+        disabled={isLoading}
+        type="file"
+        className="hidden"
+      />
+    </label>
   );
 };
 

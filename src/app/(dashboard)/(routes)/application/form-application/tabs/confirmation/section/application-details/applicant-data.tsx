@@ -3,11 +3,10 @@ import toNumber from "lodash/toNumber";
 import toString from "lodash/toString";
 import {useSearchParams} from "next/navigation";
 
+import InputDisplay from "~/app/(dashboard)/(routes)/application/components/input-display";
+import RangeYearDisplay from "~/app/(dashboard)/(routes)/application/components/range-year-display";
 import {Text} from "~/components/ui";
 import {getLengthOfStay} from "~/utils/getLengthOfStay";
-
-import InputDisplay from "../../component/input-display";
-import RangeYearDisplay from "../../component/range-year-display";
 
 import type {FinanceResponseData} from "~/interfaces/services/finance";
 import "dayjs/locale/id";

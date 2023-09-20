@@ -1,8 +1,7 @@
+import InputDisplay from "~/app/(dashboard)/(routes)/application/components/input-display";
+import TextAreaDisplay from "~/app/(dashboard)/(routes)/application/components/textarea-display";
 import {Text} from "~/components/ui";
 import GoogleMaps from "~/components/ui/Map";
-
-import InputDisplay from "../../component/input-display";
-import TextAreaDisplay from "../../component/textarea-display";
 
 import type {LatlongType} from "~/components/ui/Map";
 import type {FinanceResponseData} from "~/interfaces/services/finance";

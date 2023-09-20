@@ -1,7 +1,8 @@
+import CollapseComponent from "~/app/(dashboard)/(routes)/application/components/collapse-component";
+
 import FinanceDoc from "./section/finance-doc";
 import LegalDocs from "./section/legal-docs";
 import PhotosDoc from "./section/photos-doc";
-import CollapseComponent from "../../component/collapse-component";
 
 import type {FinanceResponseData} from "~/interfaces/services/finance";
 
