@@ -60,46 +60,53 @@ const TableSection = () => {
             </thead>
             <tbody>
               {(data?.results?.length || 0) > 0 ? (
-                data?.results.map((data, key) => (
-                  <tr
-                    key={data.id}
-                    className="border-b bg-white hover:bg-gray-50">
-                    <td className="px-6 py-4">{key + 1}</td>
-                    <td
-                      scope="row"
-                      className="whitespace-nowrap px-6 py-4 text-gray-900">
-                      {data.number}
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4 text-gray-900 first-letter:uppercase">
-                      {data.partner_type}
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4 text-gray-900">
-                      {!!data.company_name ? data.company_name : "-"}
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4 text-gray-900">
-                      {data.financing_type}
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4 text-gray-900">
-                      {data.applicant_name ?? "-"}
-                    </td>
-                    <td className="whitespace-nowrap px-6 py-4 text-gray-900 first-letter:uppercase">
-                      {data.status}
-                    </td>
-                    <td className="flex gap-2 px-6 py-4 text-start text-gray-900">
-                      <Link
-                        href={`/application/form-application?process=confirmation&type=${data.partner_type}&payment=${data.financing_type}&uuid=${data.uuid}&preview=true`}>
-                        <Icon name="eyes" size={20} />
-                      </Link>
-                      <Button variant="transparent" size="icon">
-                        <Icon name="download" size={20} />
-                      </Button>
-                      <Link
-                        href={`/application/form-application?process=application-details&type=${data.partner_type}&payment=${data.financing_type}&uuid=${data.uuid}`}>
-                        <Icon name="edit" size={20} />
-                      </Link>
-                    </td>
-                  </tr>
-                ))
+                data?.results.map((data, key) => {
+                  const lastNumber =
+                    pagination?.perPage * (pagination?.page - 1);
+
+                  return (
+                    <tr
+                      key={data.id}
+                      className="border-b bg-white hover:bg-gray-50">
+                      <td className="px-6 py-4">
+                        {pagination?.page > 1 ? key + lastNumber + 1 : key + 1}
+                      </td>
+                      <td
+                        scope="row"
+                        className="whitespace-nowrap px-6 py-4 text-gray-900">
+                        {data.number}
+                      </td>
+                      <td className="whitespace-nowrap px-6 py-4 text-gray-900 first-letter:uppercase">
+                        {data.partner_type}
+                      </td>
+                      <td className="whitespace-nowrap px-6 py-4 text-gray-900">
+                        {!!data.company_name ? data.company_name : "-"}
+                      </td>
+                      <td className="whitespace-nowrap px-6 py-4 text-gray-900">
+                        {data.financing_type}
+                      </td>
+                      <td className="whitespace-nowrap px-6 py-4 text-gray-900">
+                        {data.applicant_name ?? "-"}
+                      </td>
+                      <td className="whitespace-nowrap px-6 py-4 text-gray-900 first-letter:uppercase">
+                        {data.status}
+                      </td>
+                      <td className="flex gap-2 px-6 py-4 text-start text-gray-900">
+                        <Link
+                          href={`/application/form-application?process=confirmation&type=${data.partner_type}&payment=${data.financing_type}&uuid=${data.uuid}&preview=true`}>
+                          <Icon name="eyes" size={20} />
+                        </Link>
+                        <Button variant="transparent" size="icon">
+                          <Icon name="download" size={20} />
+                        </Button>
+                        <Link
+                          href={`/application/form-application?process=application-details&type=${data.partner_type}&payment=${data.financing_type}&uuid=${data.uuid}`}>
+                          <Icon name="edit" size={20} />
+                        </Link>
+                      </td>
+                    </tr>
+                  );
+                })
               ) : (
                 <>
                   <tr className="text-center">

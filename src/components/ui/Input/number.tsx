@@ -61,8 +61,10 @@ const InputNumber = forwardRef<HTMLInputElement, InputProps>(
       // Format the number with commas
       const formattedValue = Number(sanitizedValue).toLocaleString();
 
-      setNumber(formattedValue);
-      onChangeValue?.(sanitizedValue);
+      if (!isNaN(Number(sanitizedValue))) {
+        setNumber(formattedValue);
+        onChangeValue?.(sanitizedValue);
+      }
     };
     return (
       <div className="relative">
