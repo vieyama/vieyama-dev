@@ -5,7 +5,7 @@ import InputDisplay from "~/app/(dashboard)/(routes)/application/components/inpu
 import {Icon, Text} from "~/components/ui";
 import DisplayImage from "~/components/ui/Upload/DisplayImage";
 
-import WarehouseData from "../global/warehouse-data";
+import WarehouseData from "../../../form-application/tabs/confirmation/section/global/warehouse-data";
 
 import type {FinanceResponseData} from "~/interfaces/services/finance";
 

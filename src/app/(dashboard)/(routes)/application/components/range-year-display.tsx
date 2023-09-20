@@ -11,7 +11,7 @@ const RangeYearDisplay = ({
 }) => {
   return (
     <div className="items-left flex w-full flex-col gap-y-3 md:flex-row md:items-center">
-      <Text className="w-64">{label}</Text>
+      <Text className="w-[270px]">{label}</Text>
       <div className="flex w-full flex-col gap-4 sm:flex-row">
         <Input
           value={value1}

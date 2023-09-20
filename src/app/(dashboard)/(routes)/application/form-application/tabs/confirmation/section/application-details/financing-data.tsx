@@ -1,6 +1,5 @@
+import InputDisplay from "~/app/(dashboard)/(routes)/application/components/input-display";
 import {Text} from "~/components/ui";
-
-import InputDisplay from "../../component/input-display";
 
 import type {FinanceResponseData} from "~/interfaces/services/finance";
 

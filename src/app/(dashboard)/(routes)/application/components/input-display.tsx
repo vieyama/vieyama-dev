@@ -13,7 +13,7 @@ const InputDisplay = ({
 }) => {
   return (
     <div className="items-left flex w-full flex-col gap-y-3 md:flex-row md:items-center">
-      <Text className="w-64">
+      <Text className="w-[270px]">
         {label}
         {optional ? (
           <span className="ml-1 text-gray-500">(Opsional)</span>

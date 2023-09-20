@@ -13,12 +13,14 @@ const UploadComponent = ({
   label,
   fieldName,
   optional,
+  type = "button",
 }: {
   control: Control<FieldValues>;
   errorMessage: FieldError;
   label: string;
   fieldName: string;
   optional?: boolean;
+  type?: "button" | "input";
 }) => {
   const onChangeUpload = (
     onChange: (value: string[]) => void,
@@ -27,7 +29,7 @@ const UploadComponent = ({
   ) => {
     const images = values;
     const setImage = currentValue ? [...currentValue, ...images] : images;
-    onChange(setImage);
+    onChange(type === "button" ? setImage : images);
   };
 
   const onDeleteFile = (
@@ -40,14 +42,20 @@ const UploadComponent = ({
   return (
     <FormItem
       label={label}
-      labelClassName="mb-3.5"
       error={errorMessage}
       optional={optional}
-      className="mt-3.5">
+      labelClassName={
+        type === "input" ? "md:min-w-[250px] lg:min-w-[250px]" : "mb-3.5"
+      }
+      childClassName="w-full"
+      className={`mt-3.5 flex ${
+        type === "input" ? "flex-row items-center gap-4" : "flex-col"
+      }`}>
       <ControllerWrapper fieldName={fieldName} control={control}>
         {({onChange, value}) => (
           <Upload
             id={fieldName}
+            type={type}
             fileList={value as FilesType}
             onChange={(image) => onChangeUpload(onChange, image, value)}
             onDelete={(value) => onDeleteFile(onChange, value)}

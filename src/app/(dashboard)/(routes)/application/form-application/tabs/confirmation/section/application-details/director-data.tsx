@@ -2,9 +2,9 @@ import {Disclosure} from "@headlessui/react";
 import dayjs from "dayjs";
 import toNumber from "lodash/toNumber";
 
+import InputDisplay from "~/app/(dashboard)/(routes)/application/components/input-display";
 import {Icon, Text} from "~/components/ui";
 
-import InputDisplay from "../../component/input-display";
 import AddressData from "../global/address-data";
 
 import type {Director} from "~/interfaces/services/finance";
