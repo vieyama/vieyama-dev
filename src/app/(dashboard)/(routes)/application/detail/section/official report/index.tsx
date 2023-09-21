@@ -1,33 +1,39 @@
 import React, {useEffect, useMemo, useState} from "react";
 
-import {
-  type FieldErrors,
-  useController,
-  type UseFormGetValues,
-  type UseFormRegister,
-} from "react-hook-form";
+import {yupResolver} from "@hookform/resolvers/yup";
+import {useController, useForm} from "react-hook-form";
 
 import SelectComponent from "~/app/(dashboard)/(routes)/application/components/select-component";
 import FormItem from "~/components/form";
-import {Input, InputTextArea, Text} from "~/components/ui";
+import ControllerWrapper from "~/components/form/Controller";
+import {Checkbox, Input, InputTextArea, Text} from "~/components/ui";
 import GoogleMaps from "~/components/ui/Map";
 import {useGetWarehouseList} from "~/services/warehouse/list";
+import {DetailItemSchema} from "~/validations/FormItemDetail";
 
-import type {Control, FieldError, FieldValues} from "react-hook-form";
+import type {FieldError} from "react-hook-form";
 import type {SingleValue} from "react-select";
 import type {LatlongType} from "~/components/ui/Map";
 import type {DetailItemType} from "~/interfaces/form/detailItem";
-import type {Warehouse} from "~/interfaces/services/finance";
+import type {FinanceResponseData} from "~/interfaces/services/finance";
 import type {WarehouseData} from "~/interfaces/services/warehouse";
 
-const WarehouseForm: React.FC<{
-  register: UseFormRegister<DetailItemType>;
-  getValues: UseFormGetValues<DetailItemType>;
-  errors: FieldErrors<DetailItemType>;
-  partnerId: string;
-  warehouseData?: Warehouse;
-  control: Control<FieldValues>;
-}> = ({register, errors, partnerId, warehouseData, control}) => {
+const OfficialReport: React.FC<{
+  financeData?: FinanceResponseData;
+}> = ({financeData}) => {
+  const partnerId = financeData?.partner_id;
+  const warehouseData = financeData?.warehouse;
+  const {
+    register,
+    control,
+    formState: {errors},
+  } = useForm<DetailItemType>({
+    resolver: yupResolver(DetailItemSchema),
+    defaultValues: {
+      warehouse_id62: financeData?.warehouse_id62,
+      warehouse_address: financeData?.warehouse_address,
+    },
+  });
   const [selectedWarehouse, setSelectedWarehouse] = useState<WarehouseData>();
 
   const {field: warehouseAddress} = useController({
@@ -75,7 +81,7 @@ const WarehouseForm: React.FC<{
   }, [editData, warehouseData]);
 
   const {data: dataWareHouse} = useGetWarehouseList(
-    {partner_id: partnerId},
+    {partner_id: partnerId as string},
     {
       enabled: !!partnerId,
     },
@@ -90,15 +96,38 @@ const WarehouseForm: React.FC<{
     onChange(event?.id62);
   };
 
-  const latlong = {
-    lat: selectedWarehouse?.address?.lat_lng?.latitude,
-    long: selectedWarehouse?.address?.lat_lng?.longitude,
-  };
+  const latlong = useMemo(
+    () => ({
+      lat: selectedWarehouse?.address?.lat_lng?.latitude as number,
+      long: selectedWarehouse?.address?.lat_lng?.longitude as number,
+    }),
+    [
+      selectedWarehouse?.address?.lat_lng?.latitude,
+      selectedWarehouse?.address?.lat_lng?.longitude,
+    ],
+  );
 
+  const [latLong, setLatLong] = useState<LatlongType>();
+  useEffect(() => {
+    return latlong && setLatLong(latlong);
+  }, [latlong]);
+
+  const onChangeLatLong = (latlongValue: LatlongType) => {
+    setLatLong(latlongValue);
+  };
   return (
     <div className="flex flex-col gap-4 bg-white p-6">
+      <FormItem error={errors.warehouse_id62}>
+        <ControllerWrapper fieldName="approved" control={control}>
+          {({onChange, value}) => (
+            <Checkbox checked={value} onChange={onChange}>
+              Penyimpanan tidak sesuai dengan daftar pada formulir penilaian
+            </Checkbox>
+          )}
+        </ControllerWrapper>
+      </FormItem>
       <Text className="text-blue-600" weight="semi-bold">
-        Lokasi Barang
+        Berita Acara
       </Text>
       <SelectComponent
         control={control}
@@ -112,20 +141,24 @@ const WarehouseForm: React.FC<{
 
       {selectedWarehouse ? (
         <>
-          <GoogleMaps latlong={latlong as LatlongType} />
+          <GoogleMaps
+            latlong={latlong as LatlongType}
+            allowToChangePointing
+            onChangeLatLong={onChangeLatLong}
+          />
           <FormItem
             label="Longtitude"
             className="flex flex-col gap-4 md:flex-row"
             childClassName="w-full"
             labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-            <Input disabled value={latlong.long} />
+            <Input disabled value={latLong?.long} />
           </FormItem>
           <FormItem
             label="Latitude"
             className="flex flex-col gap-4 md:flex-row"
             childClassName="w-full"
             labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-            <Input disabled value={latlong.lat} />
+            <Input disabled value={latLong?.lat} />
           </FormItem>
           <FormItem
             label="Alamat Lengkap"
@@ -134,7 +167,6 @@ const WarehouseForm: React.FC<{
             childClassName="w-full"
             labelClassName="md:min-w-[250px] lg:min-w-[250px]">
             <InputTextArea
-              disabled
               isError={!!errors.warehouse_address}
               {...register("warehouse_address")}
             />
@@ -145,4 +177,4 @@ const WarehouseForm: React.FC<{
   );
 };
 
-export default WarehouseForm;
+export default OfficialReport;
