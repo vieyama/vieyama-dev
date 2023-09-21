@@ -2,7 +2,15 @@ import {useRouter} from "next/navigation";
 
 import {Button} from "~/components/ui";
 
-const FooterButton = ({isLoading}: {isLoading?: boolean}) => {
+const FooterButton = ({
+  isLoading,
+  withSave,
+  withReturn,
+}: {
+  isLoading?: boolean;
+  withSave?: boolean;
+  withReturn?: boolean;
+}) => {
   const router = useRouter();
   const handleBack = () => {
     return router.back();
@@ -18,6 +26,24 @@ const FooterButton = ({isLoading}: {isLoading?: boolean}) => {
           onClick={handleBack}>
           Kembali
         </Button>
+        {withSave ? (
+          <Button
+            variant="tertiary"
+            className="w-full"
+            type="button"
+            isLoading={isLoading}>
+            Simpan
+          </Button>
+        ) : null}
+        {withReturn ? (
+          <Button
+            variant="tertiary"
+            className="w-full"
+            type="button"
+            isLoading={isLoading}>
+            Kembalikan
+          </Button>
+        ) : null}
         <Button
           type="submit"
           variant="primary"

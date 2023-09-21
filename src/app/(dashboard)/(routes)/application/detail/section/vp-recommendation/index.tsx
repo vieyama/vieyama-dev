@@ -7,7 +7,7 @@ import FooterButton from "../../components/footer-button";
 
 import type {FinanceResponseData} from "~/interfaces/services/finance";
 
-const ClarificationNotes = ({}: {financeData?: FinanceResponseData}) => {
+const VPRecommendation = ({}: {financeData?: FinanceResponseData}) => {
   const {
     register,
     handleSubmit,
@@ -21,7 +21,7 @@ const ClarificationNotes = ({}: {financeData?: FinanceResponseData}) => {
         weight="semi-bold"
         variant="sub-header-2"
         className="mb-3.5 text-blue-600">
-        Klarifikasi / Konfirmasi / Catatan
+        Rekomendasi VP Ecosystem
       </Text>
       <form
         className="flex flex-col gap-3.5"
@@ -35,10 +35,10 @@ const ClarificationNotes = ({}: {financeData?: FinanceResponseData}) => {
           labelClassName="md:min-w-[250px] lg:min-w-[250px]">
           <InputTextArea isError={!!errors.notes} {...register("notes")} />
         </FormItem>
-        <FooterButton withReturn />
+        <FooterButton />
       </form>
     </div>
   );
 };
 
-export default ClarificationNotes;
+export default VPRecommendation;

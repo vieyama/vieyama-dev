@@ -7,8 +7,13 @@ import ApplicantInformation from "./section/applicant-information";
 import ApplicationInformation from "./section/application-information";
 import AppraisalNotes from "./section/appraisal-notes";
 import AssessmentClarification from "./section/assessment-clarification";
+import CARecommendations from "./section/ca-recommendation";
 import ClarificationNotes from "./section/clarification-notes";
+import CreditOfferHistory from "./section/credit-offer-history";
+import CreditOffers from "./section/credit-offers";
+import QCApproval from "./section/qc-approval";
 import QCAssignment from "./section/qc-assignment";
+import VPRecommendation from "./section/vp-recommendation";
 
 const DetailApplication = () => {
   const searchParams = useSearchParams();
@@ -47,6 +52,11 @@ const DetailApplication = () => {
       <AssessmentClarification financeData={data} />
       <QCAssignment financeData={data} />
       <ClarificationNotes financeData={data} />
+      <QCApproval financeData={data} />
+      <VPRecommendation financeData={data} />
+      <CARecommendations financeData={data} />
+      <CreditOfferHistory financeData={data} />
+      <CreditOffers />
     </div>
   );
 };
