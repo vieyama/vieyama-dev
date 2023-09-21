@@ -57,9 +57,7 @@ const ItemDetails: React.FC<{
                 <InputDisplay
                   label="Kuantitas"
                   inputClassName="text-end"
-                  value={`${
-                    Number(item?.batch?.stock).toLocaleString() ?? ""
-                  } Kg`}
+                  value={`${Number(item?.quantity).toLocaleString() ?? ""} Kg`}
                 />
               </Disclosure.Panel>
             </div>

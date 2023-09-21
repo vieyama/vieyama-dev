@@ -11,8 +11,12 @@ import CARecommendations from "./section/ca-recommendation";
 import ClarificationNotes from "./section/clarification-notes";
 import CreditOfferHistory from "./section/credit-offer-history";
 import CreditOffers from "./section/credit-offers";
+import CreditOffersResult from "./section/credit-offers/result";
+import FQCApproval from "./section/fqc-approval";
+import OfficialReport from "./section/official report";
 import QCApproval from "./section/qc-approval";
 import QCAssignment from "./section/qc-assignment";
+import SealInformation from "./section/seal-information";
 import VPRecommendation from "./section/vp-recommendation";
 
 const DetailApplication = () => {
@@ -57,6 +61,10 @@ const DetailApplication = () => {
       <CARecommendations financeData={data} />
       <CreditOfferHistory financeData={data} />
       <CreditOffers />
+      <CreditOffersResult />
+      <FQCApproval />
+      <OfficialReport financeData={data} />
+      <SealInformation />
     </div>
   );
 };
