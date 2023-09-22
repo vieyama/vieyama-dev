@@ -1,5 +1,5 @@
 "use client";
-import {Fragment} from "react";
+import {Fragment, useEffect} from "react";
 
 import {Transition} from "@headlessui/react";
 import {useAtom} from "jotai";
@@ -9,7 +9,21 @@ import {hideSidebarAtom} from "~/state/drawer";
 import SidebarComponent from "./sidebar";
 
 const Sidebar = () => {
-  const [hideSidebar] = useAtom(hideSidebarAtom);
+  const [hideSidebar, setHideSidebar] = useAtom(hideSidebarAtom);
+
+  useEffect(() => {
+    if (
+      /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(
+        navigator.userAgent,
+      )
+    ) {
+      // true for mobile device
+      setHideSidebar({isHide: true});
+    } else {
+      // false for not mobile device
+      setHideSidebar({isHide: false});
+    }
+  }, [setHideSidebar]);
 
   return (
     <Transition

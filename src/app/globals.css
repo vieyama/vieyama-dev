@@ -16,3 +16,13 @@
     --tw-ring-shadow: 0 0 #000 !important;
   }
 }
+
+.location-search-input{
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.suggestion-item--active{
+  position: relative;
+  z-index: 9999;
+}
