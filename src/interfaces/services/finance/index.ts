@@ -208,7 +208,7 @@ export interface Warehouse {
   available_rental_capacity: number;
   total_available_capacity: number;
   qr_stock_display: QrStockDisplay;
-  overviews: any[];
+  overviews: string[];
   photo_profile: string;
   category: Category;
   join_date_timestamp: number;
