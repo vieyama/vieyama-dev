@@ -72,55 +72,62 @@ const GoogleMaps = ({
   return (
     <div className="w-full">
       {allowToChangePointing ? (
-        <PlacesAutocomplete
-          value={address}
-          onChange={handleChangeAddress}
-          onSelect={handleSelectAddress}>
-          {({getInputProps, suggestions, getSuggestionItemProps, loading}) => (
-            <div>
-              <input
-                {...getInputProps({
-                  placeholder: "Search Places ...",
-                  className: "location-search-input",
-                })}
-              />
-              <div className="autocomplete-dropdown-container">
-                {loading && <div>Loading...</div>}
-                {suggestions.map((suggestion) => {
-                  const className = suggestion.active
-                    ? "suggestion-item--active"
-                    : "suggestion-item";
-                  const style = suggestion.active
-                    ? {
-                        backgroundColor: "#fafafa",
-                        height: 50,
-                        cursor: "pointer",
-                        display: "flex",
-                        alignItems: "center",
-                      }
-                    : {
-                        backgroundColor: "#ffffff",
-                        border: "1px solid #f0f0f0",
-                        display: "flex",
-                        alignItems: "center",
-                        height: 50,
-                        cursor: "pointer",
-                      };
-                  return (
-                    // eslint-disable-next-line react/jsx-key
-                    <div
-                      {...getSuggestionItemProps(suggestion, {
-                        className,
-                        style,
-                      })}>
-                      <span>{suggestion.description}</span>
-                    </div>
-                  );
-                })}
+        <>
+          <PlacesAutocomplete
+            value={address}
+            onChange={handleChangeAddress}
+            onSelect={handleSelectAddress}>
+            {({
+              getInputProps,
+              suggestions,
+              getSuggestionItemProps,
+              loading,
+            }) => (
+              <div>
+                <input
+                  {...getInputProps({
+                    placeholder: "Search Places ...",
+                    className: "location-search-input",
+                  })}
+                />
+                <div className="autocomplete-dropdown-container">
+                  {loading && <div>Loading...</div>}
+                  {suggestions.map((suggestion) => {
+                    const className = suggestion.active
+                      ? "suggestion-item--active"
+                      : "suggestion-item";
+                    const style = suggestion.active
+                      ? {
+                          backgroundColor: "#fafafa",
+                          height: 50,
+                          cursor: "pointer",
+                          display: "flex",
+                          alignItems: "center",
+                        }
+                      : {
+                          backgroundColor: "#ffffff",
+                          border: "1px solid #f0f0f0",
+                          display: "flex",
+                          alignItems: "center",
+                          height: 50,
+                          cursor: "pointer",
+                        };
+                    return (
+                      // eslint-disable-next-line react/jsx-key
+                      <div
+                        {...getSuggestionItemProps(suggestion, {
+                          className,
+                          style,
+                        })}>
+                        <span>{suggestion.description}</span>
+                      </div>
+                    );
+                  })}
+                </div>
               </div>
-            </div>
-          )}
-        </PlacesAutocomplete>
+            )}
+          </PlacesAutocomplete>
+        </>
       ) : null}
       <GoogleMap
         options={mapOptions}
