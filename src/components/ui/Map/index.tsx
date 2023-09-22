@@ -71,8 +71,10 @@ const GoogleMaps = ({
 
   return (
     <div className="w-full">
-      {allowToChangePointing ? (
+      {allowToChangePointing && isLoaded ? (
         <>
+          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
+          {/* @ts-nocheck */}
           <PlacesAutocomplete
             value={address}
             onChange={handleChangeAddress}
