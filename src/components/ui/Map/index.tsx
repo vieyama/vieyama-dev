@@ -1,11 +1,6 @@
-import type {SetStateAction} from "react";
 import {useMemo, useState} from "react";
 
 import {GoogleMap, MarkerF, useLoadScript} from "@react-google-maps/api";
-import PlacesAutocomplete, {
-  geocodeByAddress,
-  getLatLng,
-} from "react-places-autocomplete";
 
 import type {Libraries} from "@react-google-maps/api";
 
@@ -43,27 +38,27 @@ const GoogleMaps = ({
     libraries: libraries as Libraries,
   });
 
-  const [address, setAddress] = useState("");
-  const handleChangeAddress = (newAddress: SetStateAction<string>) => {
-    setAddress(newAddress);
-  };
-  const handleSelectAddress = (newAddress: SetStateAction<string>) => {
-    setAddress(newAddress);
-    geocodeByAddress(newAddress as string)
-      .then((results) => getLatLng(results[0]))
-      .then((result) => {
-        setLatLong({
-          lat: result?.lat,
-          long: result?.lng,
-        });
+  // const [address, setAddress] = useState("");
+  // const handleChangeAddress = (newAddress: SetStateAction<string>) => {
+  //   setAddress(newAddress);
+  // };
+  // const handleSelectAddress = (newAddress: SetStateAction<string>) => {
+  //   setAddress(newAddress);
+  //   geocodeByAddress(newAddress as string)
+  //     .then((results) => getLatLng(results[0]))
+  //     .then((result) => {
+  //       setLatLong({
+  //         lat: result?.lat,
+  //         long: result?.lng,
+  //       });
 
-        onChangeLatLong?.({
-          lat: result?.lat,
-          long: result?.lng,
-        });
-      })
-      .catch((error) => console.error("Error", error));
-  };
+  //       onChangeLatLong?.({
+  //         lat: result?.lat,
+  //         long: result?.lng,
+  //       });
+  //     })
+  //     .catch((error) => console.error("Error", error));
+  // };
 
   if (!isLoaded) {
     return <p>Loading...</p>;
@@ -71,10 +66,8 @@ const GoogleMaps = ({
 
   return (
     <div className="w-full">
-      {allowToChangePointing && isLoaded ? (
+      {/* {allowToChangePointing && isLoaded ? (
         <>
-          {/* eslint-disable-next-line @typescript-eslint/ban-ts-comment */}
-          {/* @ts-nocheck */}
           <PlacesAutocomplete
             value={address}
             onChange={handleChangeAddress}
@@ -130,7 +123,7 @@ const GoogleMaps = ({
             )}
           </PlacesAutocomplete>
         </>
-      ) : null}
+      ) : null} */}
       <GoogleMap
         options={mapOptions}
         zoom={14}
