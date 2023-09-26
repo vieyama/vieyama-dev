@@ -35,7 +35,7 @@ const ClarificationNotes = ({}: {financeData?: FinanceResponseData}) => {
           labelClassName="md:min-w-[250px] lg:min-w-[250px]">
           <InputTextArea isError={!!errors.notes} {...register("notes")} />
         </FormItem>
-        <FooterButton withReturn />
+        <FooterButton withReject withApprove />
       </form>
     </div>
   );

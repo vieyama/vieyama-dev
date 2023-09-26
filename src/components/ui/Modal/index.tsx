@@ -19,6 +19,7 @@ export interface IModal {
   title?: string;
   footer?: ReactNode;
   className?: string;
+  withTitle?: boolean;
 }
 
 const modalVarians = cva("bg-white px-6 py-2 rounded-xl", {
@@ -47,6 +48,7 @@ const Modal: FC<IModal> = ({
   title,
   footer,
   className,
+  withTitle = true,
 }) => {
   return (
     <Transition appear show={isOpen} as={Fragment} data-testid="overlay">
@@ -77,24 +79,26 @@ const Modal: FC<IModal> = ({
           <Dialog.Panel className="fixed inset-0 z-10 overflow-y-auto">
             <div className="min-h-screen flex h-screen w-full items-center justify-center p-4 sm:p-0">
               <div className={cn(modalVarians({size, className}))}>
-                <div
-                  className={`flex h-10 items-center ${
-                    title ? "justify-between" : "justify-end"
-                  }`}>
-                  <span
-                    className={`text-lg font-semibold ${
-                      title ? "block" : "hidden"
+                {withTitle ? (
+                  <div
+                    className={`flex h-10 items-center ${
+                      title ? "justify-between" : "justify-end"
                     }`}>
-                    {title}
-                  </span>
-                  <Button
-                    className={closable ? "block" : "hidden"}
-                    size="icon"
-                    onClick={onClose}
-                    variant="transparent">
-                    <Icon name="x" size={24} />
-                  </Button>
-                </div>
+                    <span
+                      className={`text-lg font-semibold ${
+                        title ? "block" : "hidden"
+                      }`}>
+                      {title}
+                    </span>
+                    <Button
+                      className={closable ? "block" : "hidden"}
+                      size="icon"
+                      onClick={onClose}
+                      variant="transparent">
+                      <Icon name="x" size={24} />
+                    </Button>
+                  </div>
+                ) : null}
                 <div className="mt-2">{children}</div>
                 {footer}
               </div>
