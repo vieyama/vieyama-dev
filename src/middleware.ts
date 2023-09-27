@@ -16,7 +16,11 @@ export function middleware(request: NextRequest) {
     return NextResponse.redirect(new URL("/login", request.url));
   }
 
-  if (!!accessToken?.value && request.nextUrl.pathname === "/login") {
+  if (
+    !!accessToken?.value &&
+    !!wmsToken?.value &&
+    request.nextUrl.pathname === "/login"
+  ) {
     return NextResponse.redirect(new URL("/", request.url));
   }
 }
