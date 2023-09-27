@@ -4,9 +4,13 @@ import type {NextRequest} from "next/server";
 
 export function middleware(request: NextRequest) {
   const accessToken = request.cookies.get("accessToken");
+  const wmsToken = request.cookies.get("wmsToken");
 
   if (
-    (!accessToken?.value || accessToken?.value === undefined) &&
+    (!accessToken?.value ||
+      accessToken?.value === undefined ||
+      !wmsToken?.value ||
+      wmsToken?.value === undefined) &&
     request.nextUrl.pathname !== "/login"
   ) {
     return NextResponse.redirect(new URL("/login", request.url));
