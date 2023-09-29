@@ -15,7 +15,7 @@ const FooterButton = ({
   isDirty?: boolean;
   isLoading: boolean;
   isFilledData?: boolean;
-  applicationStatus?: string;
+  applicationStatus?: number;
   setSaveType?: Dispatch<SetStateAction<"save" | "next">>;
   onConfirm?: () => void;
 }) => {
@@ -54,7 +54,7 @@ const FooterButton = ({
           type="submit"
           disabled={
             (process === "confirmation" && !isFilledData) ||
-            (process === "confirmation" && applicationStatus !== "draft")
+            (process === "confirmation" && applicationStatus !== 0)
           }
           onClick={() =>
             process !== "confirmation" ? setSaveType?.("save") : onConfirm?.()

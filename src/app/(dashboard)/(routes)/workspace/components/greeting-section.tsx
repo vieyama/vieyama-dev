@@ -16,14 +16,14 @@ const Greeting = () => {
       <div className="flex flex-col gap-2">
         <div className="flex flex-col gap-x-2 md:flex-row">
           <Text variant="sub-header-2" weight="bold">
-            Hi, {authUser?.user?.fullname ?? "User"} !
+            Hi, {authUser?.name ?? "User"} !
           </Text>
           <Text variant="sub-header-2" weight="medium">
             Welcome back to your FishFin Workspace
           </Text>
         </div>
         <Text variant="sub-header-2" className="text-blue-600">
-          Sales
+          {authUser?.role?.name ?? ""}
         </Text>
       </div>
     </div>

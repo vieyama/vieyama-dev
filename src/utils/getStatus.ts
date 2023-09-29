@@ -1,10 +1,10 @@
-export const getStatus = (status: string) => {
+export const getStatus = (status: number) => {
   let result = "";
   switch (status) {
-    case "draft":
+    case 0:
       result = "Draf Sales";
       break;
-    case "pending":
+    case 5:
       result = "Pending Appraisal Assignment";
       break;
     default:

@@ -7,6 +7,7 @@ export interface WarehouseData {
   id62: string;
   name: string;
   label?: string;
+  value?: string;
   address: Address;
 }
 

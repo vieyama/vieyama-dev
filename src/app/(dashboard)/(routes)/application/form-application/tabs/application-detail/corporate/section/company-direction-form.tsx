@@ -184,12 +184,12 @@ const CompanyDirectionForm: React.FC<{
           </div>
           <Disclosure.Panel className="mt-5 flex flex-col gap-5">
             <FormItem
-              label="Alamat Lengkap"
+              label="Nama Lengkap"
               error={errors.directors?.[index]?.name}
               className="flex flex-col gap-4 md:flex-row"
               childClassName="w-full"
               labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-              <InputTextArea
+              <Input
                 isError={!!errors.directors?.[index]?.name}
                 {...register(`directors.${index}.name`)}
               />

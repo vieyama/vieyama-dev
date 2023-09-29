@@ -6,7 +6,9 @@ export interface AuthData {
   id: number;
   client_id: string;
   wms_token: string;
+  name: string;
   user: User;
+  role: {name: string; id: number};
 }
 
 export interface AuthUserData extends AuthData {
