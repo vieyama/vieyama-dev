@@ -26,6 +26,7 @@ export interface FinancingParams {
   emergency_office_no_telp?: string;
   emergency_home_number?: string;
   directors?: Director[];
+  submitted_at?: string;
 
   spouse_ktp_photo?: string[];
   applicant_npwp_photo?: string[];
@@ -176,7 +177,7 @@ export interface FinanceResponseData {
   unapproved_by: string;
   unapproved_at: string;
   rejection_note: string;
-  status: string;
+  status: {no: number; text: string};
   created_at: Date;
   updated_at: Date;
   deleted_at: string;

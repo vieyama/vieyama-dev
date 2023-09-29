@@ -9,7 +9,6 @@ import Link from "next/link";
 import {Button, Icon, TableSkeleton, Text} from "~/components/ui";
 import {useGetFinancingList} from "~/services/finance";
 import {financingListSearchAtom} from "~/state/workspace";
-import {getStatus} from "~/utils/getStatus";
 
 const TableSection = () => {
   const [financingListSearch] = useAtom(financingListSearchAtom);
@@ -90,7 +89,7 @@ const TableSection = () => {
                         {data.applicant_name ?? "-"}
                       </td>
                       <td className="whitespace-nowrap px-6 py-4 text-gray-900 first-letter:uppercase">
-                        {getStatus(data.status)}
+                        {data.status.text}
                       </td>
                       <td className="flex gap-2 px-6 py-4 text-start text-gray-900">
                         <Link

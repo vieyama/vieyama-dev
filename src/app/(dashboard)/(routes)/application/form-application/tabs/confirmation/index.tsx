@@ -1,3 +1,4 @@
+import dayjs from "dayjs";
 import {useRouter, useSearchParams} from "next/navigation";
 
 import useToast from "~/hooks/useToast";
@@ -28,6 +29,7 @@ const ConfirmationForm = () => {
         step: "confirm",
         uuid: financeId,
         financing_type: applicationType,
+        submitted_at: dayjs().toISOString(),
       })
       .then(() => {
         toast({
@@ -82,7 +84,7 @@ const ConfirmationForm = () => {
         isLoading={false}
         onConfirm={onSubmit}
         isFilledData={isFilledData}
-        applicationStatus={data?.status}
+        applicationStatus={data?.status?.no}
       />
     </div>
   );

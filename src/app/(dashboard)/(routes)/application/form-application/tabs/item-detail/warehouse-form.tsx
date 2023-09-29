@@ -87,7 +87,7 @@ const WarehouseForm: React.FC<{
   ) => {
     setSelectedWarehouse(event as WarehouseData);
     warehouseAddress.onChange(event?.address?.address);
-    onChange(event?.id62);
+    onChange(event?.value);
   };
 
   const latlong = {
@@ -106,7 +106,7 @@ const WarehouseForm: React.FC<{
         label="Nama Gudang"
         fieldName="warehouse_id62"
         defaultValue={editData as unknown as WarehouseData}
-        options={dataWareHouse}
+        options={dataWareHouse?.map((item) => ({value: item.id62, ...item}))}
         optionChange={handleSelectWarehouse}
       />
 
