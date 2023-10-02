@@ -37,7 +37,7 @@ const PersonalWorksplaceData: React.FC<{
       />
       <InputDisplay
         label="Bidang Usaha"
-        value={financeData?.personal_workplace_business_fields[0] ?? ""}
+        value={financeData?.personal_workplace_business_fields?.[0] ?? ""}
       />
       <InputDisplay
         label="Jabatan"

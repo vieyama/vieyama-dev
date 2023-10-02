@@ -17,6 +17,7 @@ export type ReqruitmentDocCorporateType = {
   office_photo?: string[];
   selfie_pic_photo?: string[];
   selfie_comisarist_photo?: string[];
+  status?: number;
 };
 
 export type ReqruitmentDocIndividualType = {
@@ -29,4 +30,5 @@ export type ReqruitmentDocIndividualType = {
   invoices_others_photo?: string[] | null;
   house_photo?: string[] | null;
   selfie_pic_photo?: string[] | null;
+  status?: number;
 };

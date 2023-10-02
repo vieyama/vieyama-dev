@@ -1,3 +1,5 @@
+import dayjs from "dayjs";
+
 import {Text} from "~/components/ui";
 
 import InputDisplay from "../../../components/input-display";
@@ -43,7 +45,12 @@ const ApplicantInformation = ({
         label="Lokasi Barang"
         value={financeData?.warehouse_address ?? ""}
       />
-      <InputDisplay label="Tanggal dan waktu pengiriman" value={""} />
+      <InputDisplay
+        label="Tanggal dan waktu pengiriman"
+        value={`${dayjs(financeData?.submitted_at).format(
+          "DD / MMMM / YYYY H:mm",
+        )} WIB`}
+      />
     </div>
   );
 };

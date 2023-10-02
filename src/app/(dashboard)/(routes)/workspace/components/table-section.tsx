@@ -8,9 +8,13 @@ import Link from "next/link";
 
 import {Button, Icon, TableSkeleton, Text} from "~/components/ui";
 import {useGetFinancingList} from "~/services/finance";
+import {authUserAtom} from "~/state/userAuth";
 import {financingListSearchAtom} from "~/state/workspace";
 
 const TableSection = () => {
+  const [authUser] = useAtom(authUserAtom);
+  const roleId = authUser?.role?.id;
+
   const [financingListSearch] = useAtom(financingListSearchAtom);
   const [pagination, setPagination] = useState({
     page: 1,
@@ -100,7 +104,11 @@ const TableSection = () => {
                           <Icon name="download" size={20} />
                         </Button>
                         <Link
-                          href={`/application/form-application?process=application-details&type=${data.partner_type}&payment=${data.financing_type}&uuid=${data.uuid}`}>
+                          href={
+                            roleId === 2
+                              ? `/application/form-application?process=application-details&type=${data.partner_type}&payment=${data.financing_type}&uuid=${data.uuid}`
+                              : `/application/detail?uuid=${data.uuid}`
+                          }>
                           <Icon name="edit" size={20} />
                         </Link>
                       </td>

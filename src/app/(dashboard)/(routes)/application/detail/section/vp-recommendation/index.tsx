@@ -7,7 +7,13 @@ import FooterButton from "../../components/footer-button";
 
 import type {FinanceResponseData} from "~/interfaces/services/finance";
 
-const VPRecommendation = ({}: {financeData?: FinanceResponseData}) => {
+const VPRecommendation = ({
+  financeData,
+}: {
+  financeData?: FinanceResponseData;
+}) => {
+  const financeStatus = financeData?.status?.no;
+
   const {
     register,
     handleSubmit,
@@ -35,7 +41,7 @@ const VPRecommendation = ({}: {financeData?: FinanceResponseData}) => {
           labelClassName="md:min-w-[250px] lg:min-w-[250px]">
           <InputTextArea isError={!!errors.notes} {...register("notes")} />
         </FormItem>
-        <FooterButton />
+        <FooterButton status={financeStatus ?? 0} />
       </form>
     </div>
   );

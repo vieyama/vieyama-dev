@@ -15,12 +15,14 @@ const FooterButton = ({
   withReturn,
   withReject,
   withApprove,
+  status,
 }: {
   isLoading?: boolean;
   withSave?: boolean;
   withReturn?: boolean;
   withReject?: boolean;
   withApprove?: boolean;
+  status: number;
 }) => {
   const router = useRouter();
   const handleBack = () => {
@@ -95,6 +97,7 @@ const FooterButton = ({
         )}
       </div>
       <ModalComponent
+        status={status}
         isOpen={isOpenModal}
         onClose={onClose}
         modalType={modalType}

@@ -203,9 +203,14 @@ const ApplicationDetailCorporateForm: React.FC<{
       financing_type: applicationType,
     };
 
+    if (defaultValueForm?.status !== 0) {
+      return handleNext();
+    }
+
     if (!isDirty && saveType === "next") {
       return handleNext();
     }
+
     if (isDirty) {
       insertApplicationDetail
         .mutateAsync(dataSave)
@@ -258,6 +263,7 @@ const ApplicationDetailCorporateForm: React.FC<{
       <div className="mt-4 bg-white p-6">
         <EmergencyContactSection register={register} errors={errors} />
         <FooterButton
+          applicationStatus={defaultValueForm?.status ?? 0}
           isLoading={insertApplicationDetail.isLoading}
           setSaveType={setSaveType}
           isDirty={isDirty}

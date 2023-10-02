@@ -46,6 +46,7 @@ export type DetailApplicationCorporateType = {
   email?: string;
   number_of_employees?: number;
   directors?: Directors[];
+  status?: number;
 } & EmergencyType &
   AddressType;
 
@@ -94,5 +95,6 @@ export type DetailApplicationIndividualType = {
   personal_workplace_income?: number;
   personal_workplace_other_income?: number;
   personal_workplace_additional_income?: number;
+  status?: number;
 } & EmergencyType &
   AddressType;

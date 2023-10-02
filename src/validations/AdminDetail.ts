@@ -1,6 +1,9 @@
 import * as Yup from "yup";
 
-import type {QCAssignType} from "~/interfaces/form/adminDetail";
+import type {
+  EvaluationFormType,
+  QCAssignType,
+} from "~/interfaces/form/adminDetail";
 
 const requiredMessage = "This field is required.";
 
@@ -9,8 +12,13 @@ const AdminDetailSchema = Yup.object<QCAssignType>({
   province_name: Yup.string().required(requiredMessage),
   city_id: Yup.number().required(requiredMessage),
   city_name: Yup.string().required(requiredMessage),
-  qc_name: Yup.string().required(requiredMessage),
-  letter_of_assignment: Yup.string().required(requiredMessage),
+  pic: Yup.number().required(requiredMessage),
+  assignment_letter: Yup.array().of(Yup.string()).required(requiredMessage),
 });
 
-export {AdminDetailSchema};
+const EvaluationSchema = Yup.object<EvaluationFormType>({
+  notes: Yup.string().required(requiredMessage),
+  reason: Yup.string().required(requiredMessage),
+});
+
+export {AdminDetailSchema, EvaluationSchema};

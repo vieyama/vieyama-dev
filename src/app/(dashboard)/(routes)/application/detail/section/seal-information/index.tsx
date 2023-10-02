@@ -9,7 +9,13 @@ import FooterButton from "../../components/footer-button";
 
 import type {FinanceResponseData} from "~/interfaces/services/finance";
 
-const SealInformation = ({}: {financeData?: FinanceResponseData}) => {
+const SealInformation = ({
+  financeData,
+}: {
+  financeData?: FinanceResponseData;
+}) => {
+  const financeStatus = financeData?.status?.no;
+
   const {
     register,
     handleSubmit,
@@ -53,7 +59,7 @@ const SealInformation = ({}: {financeData?: FinanceResponseData}) => {
             )}
           </ControllerWrapper>
         </FormItem>
-        <FooterButton />
+        <FooterButton status={financeStatus ?? 0} />
       </form>
     </div>
   );

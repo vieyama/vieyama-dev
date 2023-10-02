@@ -24,6 +24,7 @@ const RequirementDocument = () => {
     bank_statement_photo: data?.bank_statement_photo,
     house_photo: data?.house_photo,
     selfie_pic_photo: data?.selfie_pic_photo,
+    status: data?.status?.no,
   };
 
   const defaultValueCorporate = {
@@ -44,6 +45,7 @@ const RequirementDocument = () => {
     selfie_comisarist_photo: data?.selfie_comisarist_photo,
     bank_statement_photo: data?.bank_statement_photo,
     office_photo: data?.office_photo,
+    status: data?.status?.no,
   };
 
   if (isLoading) {
