@@ -178,6 +178,7 @@ export interface FinanceResponseData {
   unapproved_at: string;
   rejection_note: string;
   status: {no: number; text: string};
+  submitted_at: string;
   created_at: Date;
   updated_at: Date;
   deleted_at: string;
@@ -185,6 +186,12 @@ export interface FinanceResponseData {
   directors: Director[];
   partner: Partner;
   warehouse: Warehouse;
+
+  admin_notes?: string;
+  admin_rejection_at?: string;
+  admin_rejection_notes?: string;
+  admin_rejection_reason?: string;
+  admin_submitted_at?: string;
 }
 
 export interface Warehouse {

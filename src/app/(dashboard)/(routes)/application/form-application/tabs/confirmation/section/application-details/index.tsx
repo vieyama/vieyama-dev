@@ -1,5 +1,3 @@
-import {useSearchParams} from "next/navigation";
-
 import ApplicantData from "./applicant-data";
 import DirectorData from "./director-data";
 import FinancingData from "./financing-data";
@@ -14,8 +12,7 @@ import type {FinanceResponseData} from "~/interfaces/services/finance";
 const ApplicationDetails: React.FC<{
   financeData?: FinanceResponseData;
 }> = ({financeData}) => {
-  const searchParams = useSearchParams();
-  const userType = searchParams.get("type");
+  const userType = financeData?.partner_type;
   return (
     <CollapseComponent title="Rincian Aplikasi">
       <FinancingData financeData={financeData} />

@@ -8,7 +8,9 @@ import FooterButton from "../../components/footer-button";
 
 import type {FinanceResponseData} from "~/interfaces/services/finance";
 
-const FQCApproval = ({}: {financeData?: FinanceResponseData}) => {
+const FQCApproval = ({financeData}: {financeData?: FinanceResponseData}) => {
+  const financeStatus = financeData?.status?.no;
+
   const {
     handleSubmit,
     control,
@@ -41,7 +43,7 @@ const FQCApproval = ({}: {financeData?: FinanceResponseData}) => {
             )}
           </ControllerWrapper>
         </FormItem>
-        <FooterButton />
+        <FooterButton status={financeStatus ?? 0} />
       </form>
     </div>
   );

@@ -84,7 +84,7 @@ const ConfirmationForm = () => {
         isLoading={false}
         onConfirm={onSubmit}
         isFilledData={isFilledData}
-        applicationStatus={data?.status?.no}
+        applicationStatus={data?.status?.no ?? 0}
       />
     </div>
   );

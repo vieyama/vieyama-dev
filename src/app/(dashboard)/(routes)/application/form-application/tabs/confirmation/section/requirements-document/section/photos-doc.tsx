@@ -1,5 +1,3 @@
-import {useSearchParams} from "next/navigation";
-
 import ImageDisplay from "~/app/(dashboard)/(routes)/application/components/image-display";
 import {Text} from "~/components/ui";
 
@@ -8,8 +6,7 @@ import type {FinanceResponseData} from "~/interfaces/services/finance";
 const PhotosDoc: React.FC<{
   financeData?: FinanceResponseData;
 }> = ({financeData}) => {
-  const searchParams = useSearchParams();
-  const mitraType = searchParams.get("type");
+  const mitraType = financeData?.partner_type;
 
   const IndividualDisplay = () => {
     return (

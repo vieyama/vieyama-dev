@@ -10,7 +10,8 @@ import FooterButton from "../../components/footer-button";
 
 import type {FinanceResponseData} from "~/interfaces/services/finance";
 
-const CreditOffers = ({}: {financeData?: FinanceResponseData}) => {
+const CreditOffers = ({financeData}: {financeData?: FinanceResponseData}) => {
+  const financeStatus = financeData?.status?.no;
   const {
     handleSubmit,
     control,
@@ -331,7 +332,7 @@ const CreditOffers = ({}: {financeData?: FinanceResponseData}) => {
             }}
           </ControllerWrapper>
         </FormItem>
-        <FooterButton withReturn />
+        <FooterButton withReturn status={financeStatus ?? 0} />
       </form>
     </div>
   );

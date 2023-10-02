@@ -1,11 +1,16 @@
 import {useCallback} from "react";
 
 import {yupResolver} from "@hookform/resolvers/yup";
+import dayjs from "dayjs";
+import {useSearchParams} from "next/navigation";
+import {useRouter} from "next/router";
 import {useController, useForm} from "react-hook-form";
 
-import FormItem from "~/components/form";
-import {Input, Text} from "~/components/ui";
+import {Text} from "~/components/ui";
 import {useGetRegion} from "~/hooks/useGetRegion";
+import useToast from "~/hooks/useToast";
+import {useInsertFinancingLoan} from "~/services/loan";
+import {useGetQCList} from "~/services/users/qcList/list";
 import {AdminDetailSchema} from "~/validations/AdminDetail";
 
 import SelectComponent from "../../../components/select-component";
@@ -17,9 +22,10 @@ import type {SingleValue} from "react-select";
 import type {QCAssignType} from "~/interfaces/form/adminDetail";
 import type {FinanceResponseData} from "~/interfaces/services/finance";
 
-const QCAssignment = ({}: {financeData?: FinanceResponseData}) => {
+const QCAssignment = ({financeData}: {financeData?: FinanceResponseData}) => {
+  const statusFinance = financeData?.status?.no;
+
   const {
-    register,
     handleSubmit,
     control,
     formState: {errors},
@@ -34,6 +40,8 @@ const QCAssignment = ({}: {financeData?: FinanceResponseData}) => {
     provinceOption,
     cityOption,
   } = useGetRegion();
+
+  const {data: dataQC} = useGetQCList({search: "", page: 1, per_page: 100});
 
   const {field: provinceName} = useController({
     control,
@@ -50,11 +58,13 @@ const QCAssignment = ({}: {financeData?: FinanceResponseData}) => {
         value: string;
         label: string;
       }>,
+      onChange?: (arg0?: string) => void,
     ) => {
       setSelectedProvince({
         value: eventChange?.value as string,
         label: eventChange?.label as string,
       });
+      onChange?.(eventChange?.value);
       provinceName.onChange(eventChange?.label);
     },
     [setSelectedProvince],
@@ -66,17 +76,58 @@ const QCAssignment = ({}: {financeData?: FinanceResponseData}) => {
         value: string;
         label: string;
       }>,
+      onChange?: (arg0?: string) => void,
     ) => {
       setSelectedCity({
         value: eventChange?.value as string,
         label: eventChange?.label as string,
       });
+      onChange?.(eventChange?.value);
       cityName.onChange(eventChange?.label);
     },
     [setSelectedCity],
   );
 
-  const handleSave = () => {};
+  const {toast} = useToast();
+
+  const searchParams = useSearchParams();
+  const financeId = searchParams.get("uuid");
+  const router = useRouter();
+
+  const insertFinancingLoan = useInsertFinancingLoan();
+
+  const handleSave = (values: QCAssignType) => {
+    const dataSave = {
+      uuid: financeId as string,
+      pic: values?.pic,
+      city: {
+        id: values?.city_id,
+        name: values?.city_name,
+      },
+      province: {
+        id: values?.province_id,
+        name: values?.province_name,
+      },
+      assignment_letter: values?.assignment_letter?.[0],
+      date_timestamps: dayjs().toISOString(),
+      status: financeData?.status?.no,
+    };
+    insertFinancingLoan
+      .mutateAsync(dataSave)
+      .then(() => {
+        router.replace("/workspace");
+        return toast({
+          message: "Berhasil menugaskan QC",
+          type: "success",
+        });
+      })
+      .catch(() =>
+        toast({
+          message: "Terjadi kesalahan, silahkan coba kembali!",
+          type: "error",
+        }),
+      );
+  };
 
   return (
     <div className="bg-white p-6">
@@ -89,18 +140,17 @@ const QCAssignment = ({}: {financeData?: FinanceResponseData}) => {
       <form
         className="flex flex-col gap-3.5"
         onSubmit={handleSubmit(handleSave)}>
-        <FormItem
+        <SelectComponent
+          control={control}
+          errorMessage={errors.pic as FieldError}
           label="Nama Petugas QC"
-          error={errors.qc_name}
-          className="flex flex-col gap-4 md:flex-row"
-          childClassName="w-full"
-          labelClassName="md:min-w-[250px] lg:min-w-[250px]">
-          <Input
-            type="number"
-            {...register("qc_name")}
-            isError={!!errors.qc_name}
-          />
-        </FormItem>
+          fieldName="pic"
+          options={dataQC?.results?.map((item) => ({
+            value: item?.id,
+            label: item?.name,
+          }))}
+        />
+
         <SelectComponent
           control={control}
           errorMessage={errors.province_id as FieldError}
@@ -122,11 +172,11 @@ const QCAssignment = ({}: {financeData?: FinanceResponseData}) => {
         <UploadComponent
           control={control}
           type="input"
-          errorMessage={errors.letter_of_assignment as FieldError}
+          errorMessage={errors.assignment_letter as FieldError}
           label="Rekening Koran 6 Bulan Terakhir"
-          fieldName="letter_of_assignment"
+          fieldName="assignment_letter"
         />
-        <FooterButton />
+        <FooterButton status={statusFinance ?? 0} />
       </form>
     </div>
   );

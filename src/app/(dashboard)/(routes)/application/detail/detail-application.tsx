@@ -1,29 +1,34 @@
 "use client";
+import {useAtom} from "jotai";
 import {useSearchParams} from "next/navigation";
 
 import {useGetFinancingById} from "~/services/finance";
+import {authUserAtom} from "~/state/userAuth";
 
 import ApplicantInformation from "./section/applicant-information";
 import ApplicationInformation from "./section/application-information";
-import AppraisalNotes from "./section/appraisal-notes";
-import AssessmentClarification from "./section/assessment-clarification";
-import CARecommendations from "./section/ca-recommendation";
+// import AppraisalNotes from "./section/appraisal-notes";
+// import AssessmentClarification from "./section/assessment-clarification";
+// import CARecommendations from "./section/ca-recommendation";
 import ClarificationNotes from "./section/clarification-notes";
-import CreditOfferHistory from "./section/credit-offer-history";
-import CreditOffers from "./section/credit-offers";
-import CreditOffersResult from "./section/credit-offers/result";
-import FQCApproval from "./section/fqc-approval";
-import OfficialReport from "./section/official report";
-import QCApproval from "./section/qc-approval";
+// import CreditOfferHistory from "./section/credit-offer-history";
+// import CreditOffers from "./section/credit-offers";
+// import CreditOffersResult from "./section/credit-offers/result";
+// import FQCApproval from "./section/fqc-approval";
+// import OfficialReport from "./section/official report";
+// import QCApproval from "./section/qc-approval";
 import QCAssignment from "./section/qc-assignment";
-import SealInformation from "./section/seal-information";
-import VPRecommendation from "./section/vp-recommendation";
+// import SealInformation from "./section/seal-information";
+// import VPRecommendation from "./section/vp-recommendation";
 
 const DetailApplication = () => {
   const searchParams = useSearchParams();
   const financeId = searchParams.get("uuid");
-
+  const [authUser] = useAtom(authUserAtom);
+  const roleId = authUser?.role?.id;
   const {data, isLoading} = useGetFinancingById(financeId as string);
+  const status = data?.status?.no;
+
   if (isLoading) {
     return (
       <div className="flex h-96 items-center justify-center">
@@ -52,11 +57,14 @@ const DetailApplication = () => {
     <div className="m-8 ml-6 border border-stroke">
       <ApplicantInformation financeData={data} />
       <ApplicationInformation financeData={data} />
-      <AppraisalNotes financeData={data} />
-      <AssessmentClarification financeData={data} />
-      <QCAssignment financeData={data} />
-      <ClarificationNotes financeData={data} />
-      <QCApproval financeData={data} />
+      {/* <AppraisalNotes financeData={data} /> */}
+      {/* <AssessmentClarification financeData={data} /> */}
+      {[5].includes(roleId as number) && status === 5 ? (
+        <ClarificationNotes financeData={data} />
+      ) : null}
+      {status === 1 ? <QCAssignment financeData={data} /> : null}
+
+      {/* <QCApproval financeData={data} />
       <VPRecommendation financeData={data} />
       <CARecommendations financeData={data} />
       <CreditOfferHistory financeData={data} />
@@ -64,7 +72,7 @@ const DetailApplication = () => {
       <CreditOffersResult />
       <FQCApproval />
       <OfficialReport financeData={data} />
-      <SealInformation />
+      <SealInformation /> */}
     </div>
   );
 };

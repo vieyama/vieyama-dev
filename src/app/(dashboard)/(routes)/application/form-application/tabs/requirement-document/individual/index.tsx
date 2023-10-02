@@ -65,6 +65,11 @@ const RequirementDocumentIndividualForm: React.FC<{
       financing_type: applicationType,
       uuid: financeId,
     };
+
+    if (defaultValueForm?.status !== 0) {
+      return handleNext();
+    }
+
     if (!isDirty && saveType === "next") {
       return handleNext();
     }
@@ -92,6 +97,7 @@ const RequirementDocumentIndividualForm: React.FC<{
       <FinanceDocSection errors={errors} control={control} />
       <PhotosDocSection errors={errors} control={control} />
       <FooterButton
+        applicationStatus={defaultValueForm?.status ?? 0}
         isLoading={insertFinance.isLoading}
         setSaveType={setSaveType}
       />

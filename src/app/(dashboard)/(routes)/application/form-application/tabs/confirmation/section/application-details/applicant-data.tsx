@@ -1,7 +1,6 @@
 import dayjs from "dayjs";
 import toNumber from "lodash/toNumber";
 import toString from "lodash/toString";
-import {useSearchParams} from "next/navigation";
 
 import InputDisplay from "~/app/(dashboard)/(routes)/application/components/input-display";
 import RangeYearDisplay from "~/app/(dashboard)/(routes)/application/components/range-year-display";
@@ -16,8 +15,7 @@ dayjs.locale("id");
 const ApplicantData: React.FC<{
   financeData?: FinanceResponseData;
 }> = ({financeData}) => {
-  const searchParams = useSearchParams();
-  const userType = searchParams.get("type");
+  const userType = financeData?.partner_type;
 
   const IndividualDisplay = () => {
     return (
@@ -72,7 +70,11 @@ const ApplicantData: React.FC<{
         <InputDisplay
           optional
           label="No. Handphone #2 (Opsional)"
-          value={financeData?.no_hp_other ?? ""}
+          value={
+            financeData?.no_hp_other === "NaN"
+              ? ""
+              : financeData?.no_hp_other ?? ""
+          }
         />
         <InputDisplay label="Alamat Email" value={financeData?.email ?? ""} />
       </>

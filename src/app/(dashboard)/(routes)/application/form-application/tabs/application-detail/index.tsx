@@ -99,6 +99,7 @@ const ApplicationDetails = ({userType}: {userType: string}) => {
     emergency_no_hp: data?.emergency_no_hp,
     emergency_office_no_telp: data?.emergency_office_no_telp,
     emergency_home_number: data?.emergency_home_number,
+    status: data?.status?.no,
   };
 
   const defaultValueCorporate = {
@@ -130,6 +131,7 @@ const ApplicationDetails = ({userType}: {userType: string}) => {
     emergency_no_hp: data?.emergency_no_hp ?? "",
     emergency_office_no_telp: data?.emergency_office_no_telp ?? "",
     emergency_home_number: data?.emergency_home_number ?? "",
+    status: data?.status?.no,
     directors:
       (data?.directors?.length ?? 0) > 0
         ? data?.directors.map((item) => ({

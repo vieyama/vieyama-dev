@@ -19,7 +19,11 @@ import FooterButton from "../../components/footer-button";
 import type {DetailItemType} from "~/interfaces/form/detailItem";
 import type {FinanceResponseData} from "~/interfaces/services/finance";
 
-const ItemDetailsForm = ({data}: {data: FinanceResponseData}) => {
+const ItemDetailsForm = ({
+  data: defaultValues,
+}: {
+  data: FinanceResponseData;
+}) => {
   const searchParams = useSearchParams();
 
   const financeId = searchParams.get("uuid");
@@ -37,11 +41,11 @@ const ItemDetailsForm = ({data}: {data: FinanceResponseData}) => {
   } = useForm<DetailItemType>({
     resolver: yupResolver(DetailItemSchema),
     defaultValues: {
-      warehouse_id62: data?.warehouse_id62,
-      warehouse_address: data?.warehouse_address,
+      warehouse_id62: defaultValues?.warehouse_id62,
+      warehouse_address: defaultValues?.warehouse_address,
       items:
-        (data?.items?.length ?? 0) > 0
-          ? data?.items?.map((item) => ({
+        (defaultValues?.items?.length ?? 0) > 0
+          ? defaultValues?.items?.map((item) => ({
               id: item?.id,
               photos: item?.photos,
               product_id62: item?.product_id62,
@@ -106,9 +110,14 @@ const ItemDetailsForm = ({data}: {data: FinanceResponseData}) => {
       })),
     };
 
+    if (defaultValues?.status?.no !== 0) {
+      return handleNext();
+    }
+
     if (!isDirty && saveType === "next") {
       return handleNext();
     }
+
     if (isDirty) {
       insertItemsDetail
         .mutateAsync(dataSave)
@@ -130,22 +139,23 @@ const ItemDetailsForm = ({data}: {data: FinanceResponseData}) => {
   return (
     <form onSubmit={handleSubmit(onSubmit)}>
       <WarehouseForm
-        partnerId={data?.partner_id}
+        partnerId={defaultValues?.partner_id}
         register={register}
         control={control}
         getValues={getValues}
         errors={errors}
-        warehouseData={data?.warehouse}
+        warehouseData={defaultValues?.warehouse}
       />
       <ItemsForm
-        partnerId={data?.partner_id}
-        dataItems={data?.items}
+        partnerId={defaultValues?.partner_id}
+        dataItems={defaultValues?.items}
         register={register}
         setValue={setValue}
         control={control}
         errors={errors}
       />
       <FooterButton
+        applicationStatus={defaultValues?.status?.no ?? 0}
         isLoading={insertItemsDetail.isLoading}
         setSaveType={setSaveType}
         isDirty={isDirty}

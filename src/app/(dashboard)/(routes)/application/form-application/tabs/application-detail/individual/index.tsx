@@ -80,6 +80,7 @@ const ApplicationDetailIndividualForm: React.FC<{
     assign_to_me: 1,
     partner_type: "individual",
   });
+
   const {field: mitraKtp} = useController({control, name: "no_ktp"});
   const {field: bussinesField} = useController({
     control,
@@ -94,7 +95,7 @@ const ApplicationDetailIndividualForm: React.FC<{
       setValue("pob", result.pob);
       setValue("dob", dayjs(toNumber(result.dob)).format("YYYY-MM-DD"));
       setValue("no_telp", result.no_telp);
-      setValue("no_hp", result.no_hp_other);
+      setValue("no_hp", result.no_hp);
       setValue("email", result.email);
       setValue("address", result.address);
       setValue("province_id", result.province.id);
@@ -142,7 +143,8 @@ const ApplicationDetailIndividualForm: React.FC<{
       toNumber(data.personal_workplace_length_of_work_year) * 12 +
       toNumber(data.personal_workplace_length_of_work_month);
 
-    const no_hp = data.no_hp2;
+    const no_hp = data.no_hp ?? "";
+    const no_hp_other = data?.no_hp2 ?? "";
 
     const removedData = omit(
       data,
@@ -170,6 +172,7 @@ const ApplicationDetailIndividualForm: React.FC<{
       financing_type: applicationType,
       dob,
       no_hp,
+      no_hp_other,
       province,
       city,
       district,
@@ -180,9 +183,14 @@ const ApplicationDetailIndividualForm: React.FC<{
       directors: [],
     };
 
+    if (![0, 6].includes(defaultValueForm?.status ?? 0)) {
+      return handleNext();
+    }
+
     if (!isDirty && saveType === "next") {
       return handleNext();
     }
+
     if (isDirty) {
       insertApplicationDetail
         .mutateAsync(dataSave)
@@ -242,6 +250,7 @@ const ApplicationDetailIndividualForm: React.FC<{
         />
         <EmergencyContactSection register={register} errors={errors} />
         <FooterButton
+          applicationStatus={defaultValueForm?.status ?? 0}
           isDirty={isDirty}
           isLoading={insertApplicationDetail.isLoading}
           setSaveType={setSaveType}
