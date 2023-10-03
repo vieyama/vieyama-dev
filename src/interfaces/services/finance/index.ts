@@ -192,6 +192,9 @@ export interface FinanceResponseData {
   admin_rejection_notes?: string;
   admin_rejection_reason?: string;
   admin_submitted_at?: string;
+  qc_assignment_letter?: string;
+  qc_notes?: string;
+  qc?: {name?: string; id?: number; email?: string};
 }
 
 export interface Warehouse {

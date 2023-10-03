@@ -1,5 +1,6 @@
 "use client";
 
+import type {Dispatch, SetStateAction} from "react";
 import {useState} from "react";
 
 import {useRouter} from "next/navigation";
@@ -16,13 +17,18 @@ const FooterButton = ({
   withReject,
   withApprove,
   status,
+  disabled,
+  setSaveType,
 }: {
+  disabled?: boolean;
   isLoading?: boolean;
   withSave?: boolean;
   withReturn?: boolean;
   withReject?: boolean;
   withApprove?: boolean;
   status: number;
+  isDirty?: boolean;
+  setSaveType?: Dispatch<SetStateAction<"save" | "submit">>;
 }) => {
   const router = useRouter();
   const handleBack = () => {
@@ -50,9 +56,11 @@ const FooterButton = ({
         </Button>
         {withSave ? (
           <Button
+            disabled={disabled}
             variant="tertiary"
             className="w-full"
-            type="button"
+            type="submit"
+            onClick={() => setSaveType?.("save")}
             isLoading={isLoading}>
             Simpan
           </Button>
@@ -91,6 +99,8 @@ const FooterButton = ({
             type="submit"
             variant="primary"
             isLoading={isLoading}
+            disabled={disabled}
+            onClick={() => setSaveType?.("submit")}
             className="w-full">
             Kirim
           </Button>

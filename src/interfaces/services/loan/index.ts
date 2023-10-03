@@ -12,7 +12,7 @@ export type FinancingLoanBodyParams = {
   province?: Region;
   city?: Region;
   assignment_letter?: string;
-  items?: [];
+  items?: {id?: number; qc_hpp?: number; qc_quantity?: number}[];
   loan_type?: string;
   inventory_value?: number;
   funding_ratio?: number;

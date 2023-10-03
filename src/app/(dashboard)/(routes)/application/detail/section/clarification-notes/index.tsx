@@ -13,8 +13,10 @@ import type {FinanceResponseData} from "~/interfaces/services/finance";
 
 const ClarificationNotes = ({
   financeData,
+  refetch,
 }: {
   financeData?: FinanceResponseData;
+  refetch: () => void;
 }) => {
   const {
     register,
@@ -39,12 +41,15 @@ const ClarificationNotes = ({
       date_timestamps: dayjs().toISOString(),
       status: financeData?.status?.no,
     };
-    insertFinancingLoan.mutateAsync(dataSave).catch(() =>
-      toast({
-        message: "Terjadi kesalahan, silahkan coba kembali!",
-        type: "error",
-      }),
-    );
+    insertFinancingLoan
+      .mutateAsync(dataSave)
+      .then(() => refetch())
+      .catch(() =>
+        toast({
+          message: "Terjadi kesalahan, silahkan coba kembali!",
+          type: "error",
+        }),
+      );
   };
 
   return (

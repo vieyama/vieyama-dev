@@ -1,5 +1,5 @@
 export type Items = {
-  id?: string | null;
+  id?: number | null;
   photos?: string[];
   product_id62?: string;
   stock_id62?: string;
@@ -22,6 +22,7 @@ export type Items = {
     is_fishfin: boolean;
     is_void: boolean;
   };
+  qc_hpp?: number;
 };
 
 export interface Product {

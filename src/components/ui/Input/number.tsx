@@ -34,7 +34,7 @@ export interface InputProps
     >,
     VariantProps<typeof inputVariants> {
   isError?: boolean;
-  onChangeValue?: (string: string) => void;
+  onChangeValue?: (string: number | string) => void;
   customPrefix?: React.ReactNode;
   customSuffix?: React.ReactNode;
 }
@@ -64,6 +64,9 @@ const InputNumber = forwardRef<HTMLInputElement, InputProps>(
       if (!isNaN(Number(sanitizedValue))) {
         setNumber(formattedValue);
         onChangeValue?.(sanitizedValue);
+      } else {
+        setNumber("");
+        onChangeValue?.(0);
       }
     };
     return (

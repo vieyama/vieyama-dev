@@ -6,7 +6,7 @@ import {useAtom} from "jotai";
 import toNumber from "lodash/toNumber";
 import Link from "next/link";
 
-import {Button, Icon, TableSkeleton, Text} from "~/components/ui";
+import {Button, Icon, TableSkeleton, Text, Tooltip} from "~/components/ui";
 import {useGetFinancingList} from "~/services/finance";
 import {authUserAtom} from "~/state/userAuth";
 import {financingListSearchAtom} from "~/state/workspace";
@@ -96,21 +96,25 @@ const TableSection = () => {
                         {data.status.text}
                       </td>
                       <td className="flex gap-2 px-6 py-4 text-start text-gray-900">
-                        <Link
-                          href={`/application/form-application?process=confirmation&type=${data.partner_type}&payment=${data.financing_type}&uuid=${data.uuid}&preview=true`}>
-                          <Icon name="eyes" size={20} />
-                        </Link>
+                        <Tooltip message="Lihat Detail">
+                          <Link
+                            href={`/application/form-application?process=confirmation&type=${data.partner_type}&payment=${data.financing_type}&uuid=${data.uuid}&preview=true`}>
+                            <Icon name="eyes" size={20} />
+                          </Link>
+                        </Tooltip>
                         <Button variant="transparent" size="icon">
                           <Icon name="download" size={20} />
                         </Button>
-                        <Link
-                          href={
-                            roleId === 2
-                              ? `/application/form-application?process=application-details&type=${data.partner_type}&payment=${data.financing_type}&uuid=${data.uuid}`
-                              : `/application/detail?uuid=${data.uuid}`
-                          }>
-                          <Icon name="edit" size={20} />
-                        </Link>
+                        <Tooltip message="Edit Data">
+                          <Link
+                            href={
+                              roleId === 2
+                                ? `/application/form-application?process=application-details&type=${data.partner_type}&payment=${data.financing_type}&uuid=${data.uuid}`
+                                : `/application/detail?uuid=${data.uuid}`
+                            }>
+                            <Icon name="edit" size={20} />
+                          </Link>
+                        </Tooltip>
                       </td>
                     </tr>
                   );
