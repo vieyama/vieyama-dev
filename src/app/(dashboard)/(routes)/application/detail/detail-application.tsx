@@ -1,33 +1,39 @@
 "use client";
+import {useMemo} from "react";
+
 import {useAtom} from "jotai";
 import {useSearchParams} from "next/navigation";
 
 import {useGetFinancingById} from "~/services/finance";
 import {authUserAtom} from "~/state/userAuth";
 
-import ApplicantInformation from "./section/applicant-information";
-import ApplicationInformation from "./section/application-information";
-// import AppraisalNotes from "./section/appraisal-notes";
-// import AssessmentClarification from "./section/assessment-clarification";
-// import CARecommendations from "./section/ca-recommendation";
-import ClarificationNotes from "./section/clarification-notes";
-// import CreditOfferHistory from "./section/credit-offer-history";
-// import CreditOffers from "./section/credit-offers";
-// import CreditOffersResult from "./section/credit-offers/result";
-// import FQCApproval from "./section/fqc-approval";
-// import OfficialReport from "./section/official report";
-// import QCApproval from "./section/qc-approval";
-import QCAssignment from "./section/qc-assignment";
-// import SealInformation from "./section/seal-information";
-// import VPRecommendation from "./section/vp-recommendation";
+import AdminSection from "./roles/admin";
+import QCSection from "./roles/qc";
 
 const DetailApplication = () => {
   const searchParams = useSearchParams();
   const financeId = searchParams.get("uuid");
   const [authUser] = useAtom(authUserAtom);
   const roleId = authUser?.role?.id;
-  const {data, isLoading} = useGetFinancingById(financeId as string);
-  const status = data?.status?.no;
+  const {data, isLoading, refetch} = useGetFinancingById(financeId as string);
+
+  const displayData = useMemo(() => {
+    let result = <></>;
+
+    switch (roleId) {
+      case 5:
+        result = <AdminSection financeData={data} refetch={refetch} />;
+        break;
+      case 3:
+        result = <QCSection financeData={data} />;
+        break;
+      default:
+        result = <></>;
+        break;
+    }
+
+    return result;
+  }, [data, roleId, refetch]);
 
   if (isLoading) {
     return (
@@ -53,28 +59,8 @@ const DetailApplication = () => {
       </div>
     );
   }
-  return (
-    <div className="m-8 ml-6 border border-stroke">
-      <ApplicantInformation financeData={data} />
-      <ApplicationInformation financeData={data} />
-      {/* <AppraisalNotes financeData={data} /> */}
-      {/* <AssessmentClarification financeData={data} /> */}
-      {[5].includes(roleId as number) && status === 5 ? (
-        <ClarificationNotes financeData={data} />
-      ) : null}
-      {status === 1 ? <QCAssignment financeData={data} /> : null}
 
-      {/* <QCApproval financeData={data} />
-      <VPRecommendation financeData={data} />
-      <CARecommendations financeData={data} />
-      <CreditOfferHistory financeData={data} />
-      <CreditOffers />
-      <CreditOffersResult />
-      <FQCApproval />
-      <OfficialReport financeData={data} />
-      <SealInformation /> */}
-    </div>
-  );
+  return <div className="m-8 ml-6 border border-stroke">{displayData}</div>;
 };
 
 export default DetailApplication;

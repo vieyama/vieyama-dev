@@ -3,6 +3,7 @@ import * as Yup from "yup";
 import type {
   EvaluationFormType,
   QCAssignType,
+  QCValuationType,
 } from "~/interfaces/form/adminDetail";
 
 const requiredMessage = "This field is required.";
@@ -21,4 +22,30 @@ const EvaluationSchema = Yup.object<EvaluationFormType>({
   reason: Yup.string().required(requiredMessage),
 });
 
-export {AdminDetailSchema, EvaluationSchema};
+const QCValuationSchema = Yup.object<QCValuationType>({
+  appraisalItems: Yup.array().of(
+    Yup.object().shape({
+      qc_quantity: Yup.number().when("is_draft", ([maritalStatus], schema) =>
+        maritalStatus === true
+          ? schema.notRequired()
+          : schema.required(requiredMessage),
+      ),
+      qc_hpp: Yup.number()
+        .min(1, requiredMessage)
+        .when("is_draft", ([maritalStatus], schema) =>
+          maritalStatus === true
+            ? schema.notRequired()
+            : schema.required(requiredMessage),
+        ),
+    }),
+  ),
+  notes: Yup.string().when("is_draft", ([maritalStatus], schema) =>
+    maritalStatus === true
+      ? schema.notRequired()
+      : schema.required(requiredMessage),
+  ),
+  approved: Yup.boolean(),
+  is_draft: Yup.boolean(),
+});
+
+export {AdminDetailSchema, EvaluationSchema, QCValuationSchema};

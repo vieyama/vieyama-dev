@@ -2,8 +2,7 @@ import {useCallback} from "react";
 
 import {yupResolver} from "@hookform/resolvers/yup";
 import dayjs from "dayjs";
-import {useSearchParams} from "next/navigation";
-import {useRouter} from "next/router";
+import {useRouter, useSearchParams} from "next/navigation";
 import {useController, useForm} from "react-hook-form";
 
 import {Text} from "~/components/ui";
