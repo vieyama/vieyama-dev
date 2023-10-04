@@ -18,6 +18,10 @@ const AppraisalNotes = ({financeData}: {financeData?: FinanceResponseData}) => {
         Catatan Penilaian
       </Text>
       <InputDisplay
+        label="Nomor Penilaian"
+        value={financeData?.qc_number ?? ""}
+      />
+      <InputDisplay
         label="Tanggal dan waktu"
         value={`${dayjs(financeData?.qc_submitted_at).format(
           "DD / MMMM / YYYY H:mm",
