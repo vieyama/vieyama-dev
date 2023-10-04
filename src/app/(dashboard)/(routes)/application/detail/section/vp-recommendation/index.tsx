@@ -27,7 +27,11 @@ const VPRecommendation = ({
     register,
     handleSubmit,
     formState: {errors},
-  } = useForm<{notes?: string}>({});
+  } = useForm<{notes?: string}>({
+    defaultValues: {
+      notes: financeData?.vp_notes,
+    },
+  });
 
   const insertFinancingLoan = useInsertFinancingLoan();
 
@@ -44,7 +48,7 @@ const VPRecommendation = ({
       .then(() => {
         router.replace("/workspace");
         return toast({
-          message: "Berhasil menyimpan data",
+          message: "Permohonan Anda telah dikirimkan!",
           type: "success",
         });
       })
