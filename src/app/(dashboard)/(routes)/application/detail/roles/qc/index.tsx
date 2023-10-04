@@ -74,7 +74,7 @@ const QCSection: React.FC<{
         }
 
         return toast({
-          message: "Berhasil menugaskan QC",
+          message: "Berhasil menyimpan data",
           type: "success",
         });
       })

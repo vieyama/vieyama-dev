@@ -13,16 +13,11 @@ const ApplicationInformation = ({
 }) => {
   return (
     <div className="bg-white p-6">
-      <Divider className="py-3.5" />
       <ApplicationDetails financeData={financeData} />
       <Divider className="py-3.5" />
       <RequirementDocuments financeData={financeData} />
-      {/* <Divider className="py-3.5" /> */}
-      {/* <AppraisalInformation financeData={financeData} /> */}
       <Divider className="py-3.5" />
       <ItemDetails financeData={financeData} />
-      {/* <Divider className="py-3.5" /> */}
-      {/* <ItemValuationDetails financeData={financeData} /> */}
     </div>
   );
 };
