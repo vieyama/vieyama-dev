@@ -1,3 +1,6 @@
+import dayjs from "dayjs";
+import {isEmpty} from "lodash";
+
 import {Text} from "~/components/ui";
 
 import InputDisplay from "../../../components/input-display";
@@ -16,19 +19,19 @@ const AppraisalNotes = ({financeData}: {financeData?: FinanceResponseData}) => {
       </Text>
       <InputDisplay
         label="Tanggal dan waktu"
-        value={financeData?.number ?? ""}
+        value={`${dayjs(financeData?.qc_submitted_at).format(
+          "DD / MMMM / YYYY H:mm",
+        )} WIB`}
       />
       <InputDisplay
         label="Penangung Jawab Penilaian"
-        value={
-          financeData?.partner_type === "corporate"
-            ? financeData?.no_telp
-            : financeData?.no_hp ?? ""
-        }
+        value={`${financeData?.qc?.name} (QC)`}
       />
       <TextAreaDisplay
         label="Catatan"
-        value={financeData?.warehouse_address ?? ""}
+        value={
+          isEmpty(financeData?.qc_notes) ? "-" : financeData?.qc_notes ?? ""
+        }
       />
     </div>
   );

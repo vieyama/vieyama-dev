@@ -9,6 +9,7 @@ import {authUserAtom} from "~/state/userAuth";
 
 import AdminSection from "./roles/admin";
 import QCSection from "./roles/qc";
+import VPSection from "./roles/vp";
 
 const DetailApplication = () => {
   const searchParams = useSearchParams();
@@ -26,6 +27,9 @@ const DetailApplication = () => {
         break;
       case 3:
         result = <QCSection financeData={data} />;
+        break;
+      case 4:
+        result = <VPSection financeData={data} />;
         break;
       default:
         result = <></>;

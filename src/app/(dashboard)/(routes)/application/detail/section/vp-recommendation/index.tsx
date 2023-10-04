@@ -1,7 +1,11 @@
+import dayjs from "dayjs";
+import {useRouter, useSearchParams} from "next/navigation";
 import {useForm} from "react-hook-form";
 
 import FormItem from "~/components/form";
 import {InputTextArea, Text} from "~/components/ui";
+import useToast from "~/hooks/useToast";
+import {useInsertFinancingLoan} from "~/services/loan";
 
 import FooterButton from "../../components/footer-button";
 
@@ -14,12 +18,43 @@ const VPRecommendation = ({
 }) => {
   const financeStatus = financeData?.status?.no;
 
+  const searchParams = useSearchParams();
+  const financeId = searchParams.get("uuid");
+  const router = useRouter();
+  const {toast} = useToast();
+
   const {
     register,
     handleSubmit,
     formState: {errors},
   } = useForm<{notes?: string}>({});
-  const handleSave = () => {};
+
+  const insertFinancingLoan = useInsertFinancingLoan();
+
+  const handleSave = (values: {notes?: string}) => {
+    const dataSave = {
+      uuid: financeId as string,
+      notes: values?.notes,
+      date_timestamps: dayjs().toISOString(),
+      status: financeData?.status?.no,
+    };
+
+    insertFinancingLoan
+      .mutateAsync(dataSave)
+      .then(() => {
+        router.replace("/workspace");
+        return toast({
+          message: "Berhasil menyimpan data",
+          type: "success",
+        });
+      })
+      .catch(() =>
+        toast({
+          message: "Terjadi kesalahan, silahkan coba kembali!",
+          type: "error",
+        }),
+      );
+  };
 
   return (
     <div className="bg-white p-6">

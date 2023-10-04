@@ -195,6 +195,8 @@ export interface FinanceResponseData {
   qc_assignment_letter?: string;
   qc_notes?: string;
   qc?: {name?: string; id?: number; email?: string};
+  qc_number?: string;
+  qc_submitted_at?: string;
 }
 
 export interface Warehouse {
