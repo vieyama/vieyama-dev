@@ -1,3 +1,4 @@
+
 # FishFin
 
 FishFin Dashboard Application using NextJS and React
@@ -95,3 +96,74 @@ This mean you give a explanation what you doing in your code.
 and `Create login page` is description what you doing.
 
 And every PR should be reviewed by one person
+
+### Structure Folder
+this project use NextJS 13 with App Directory
+```md
+├── src
+    ├── app
+	    ├── (auth)
+		    ├── login
+			    ├── login.tsx
+			    └── page.tsx
+		    └── layout.tsx
+	    ├── (dashboard)
+		    ├── (routes)
+			    ├── application
+				    ├── components
+				    ├── constants
+				    ├── detail
+				    ├── form-application
+				    ├── layout.tsx
+				    └── page.tsx
+			    └── workspace
+				    ├── components
+				    └── page.tsx
+		    ├── components
+		    ├── constants
+		    ├── layout.tsx
+		    └── loading.tsx
+	    ├── favicon.ico
+	    ├── globals.css
+	    ├── layout.tsx
+	    └── page.tsx
+    ├── components
+    ├── constants
+    ├── hooks
+    ├── interfaces
+    ├── services
+    ├── state
+    ├── utils
+    └── validations
+├── public
+    └── assets
+		├── auth-illustration.svg
+		├── broken-image.svg
+		├── fishfin-logo-white.svg
+		├── fishfin-logo.svg
+		├── no-images.svg
+		├── preview-docx.svg
+		├── preview-image.svg
+		├── preview-pdf.svg
+		└── upload-icon.svg
+├── middleware.ts
+├── .commitlintrc.json
+├── .editorconfig
+├── .env
+├── .eslintignore
+├── .eslintrc
+├── .gitignore
+├── .gitlab-ci.yml
+├── .prettierignore
+├── .prettierrc
+├── next.config.js
+├── tailwind.config.js
+├── sonar-project.properties
+├── README.md
+└── tsconfig.json
+```
+In general, the app directory structure includes:
+1. folder name, if the folder name contains () then the folder will not appear in the route url, for example app/(auth)/login then the url will be localhost:3000/login.
+2. file 'page.tsx'. This file marks a folder as a router.
+3. There is a folder called components in each parent folder in the app folder. The component folder is a collection of component files that are only used by the parent folder. as well as other folders such as constants and other folders.
+4. file 'Layout.tsx'. This file is a layout component for each route. For example, in the auth folder there is a layout file so only children of the auth route can access it. so we can create each route with a different layout file if necessary.
