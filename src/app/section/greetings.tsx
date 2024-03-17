@@ -1,102 +1,65 @@
 "use client";
 
+import { Portofolio, baseUrl } from "@/utils/directusClient";
 import { Switch } from "@headlessui/react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { TypeAnimation } from "react-type-animation";
 
-export default function Greetings() {
-  const [enabled, setEnabled] = useState(false);
-  const { systemTheme, theme, setTheme } = useTheme();
-  const currentTheme = theme === "system" ? systemTheme : theme;
+export default function Greetings({ data }: { data: Portofolio }) {
+  const [mounted, setMounted] = useState(false)
+  const { theme, setTheme, resolvedTheme } = useTheme()
+
+  // When mounted on client, now we can show the UI
+  useEffect(() => setMounted(true), [])
 
   return (
     <div
-      className={`min-h-screen flex justify-center items-center flex-col ${
-        currentTheme === "dark" ? "bg-slate-700" : "bg-orange-100"
-      }`}
+      className="flex flex-col items-center justify-center min-h-screen bg-orange-100 dark:bg-slate-700"
     >
       <Image
-        src={enabled ? "/laptop-code-white.png" : "/laptop-code.png"}
+        src={mounted && (theme === 'dark' || resolvedTheme === 'dark') ? `${baseUrl}/assets/${data.HeaderLogoDark}` : `${baseUrl}/assets/${data.HeaderLogoLight}`}
         width={200}
         height={200}
         alt={"Laptop Icon"}
       />
-      <h1 className="text-2xl md:text-3xl mb-2">Yovie Fesya Pratama</h1>
+      <h1 className="mb-2 text-2xl md:text-3xl">{data.Fullname}</h1>
       <TypeAnimation
-        sequence={["Frontend Developer", 500]}
+        sequence={[data.Title, 500]}
         wrapper="h1"
         cursor={true}
         repeat={Infinity}
-        className="text-2xl md:text-5xl font-bold"
+        className="text-2xl font-bold md:text-5xl"
       />
-      <div className="mt-8 mb-4 flex gap-4 flex-wrap justify-center">
-        <a
-          href="https://github.com/vieyama"
-          target="_blank"
-          className={`p-2 border-2 ${
-            currentTheme === "dark" ? "border-white" : "border-black"
-          }`}
-        >
-          Github
-        </a>
-        <a
-          href="https://www.linkedin.com/in/yovie-fesya"
-          target="_blank"
-          className={`p-2 border-2 ${
-            currentTheme === "dark" ? "border-white" : "border-black"
-          }`}
-        >
-          LinkedIn
-        </a>
-        <a
-          href="https://www.instagram.com/yoviefp33/"
-          target="_blank"
-          className={`p-2 border-2 ${
-            currentTheme === "dark" ? "border-white" : "border-black"
-          }`}
-        >
-          Instagram
-        </a>
-        <a
-          href="mailto:yoviefp@gmail.com"
-          target="_blank"
-          className={`p-2 border-2 ${
-            currentTheme === "dark" ? "border-white" : "border-black"
-          }`}
-        >
-          Email (yoviefp@gmail.com)
-        </a>
-        <a
-          href="https://drive.google.com/file/d/1-73NaXyELSsj1A3Q6aRornRVpCzq74x9/view"
-          target="_blank"
-          className={`p-2 border-2 ${
-            currentTheme === "dark" ? "border-white" : "border-black"
-          }`}
-        >
-          My CV
-        </a>
+      <div className="flex flex-wrap justify-center gap-4 mt-8 mb-4">
+        {data.Links.map(link => (
+          <a
+            key={link.id}
+            href={link.Url}
+            target="_blank"
+            className="p-2 border-2 border-black dark:border-white"
+          >
+            {link.Display}
+          </a>
+        ))}
       </div>
       <Switch
-        checked={enabled}
-        onChange={(e) => {
-          setEnabled(!enabled);
-          setTheme(e ? "dark" : "light");
+        checked={mounted && (theme === 'dark' || resolvedTheme === 'dark')}
+        onChange={() => {
+          setTheme(theme === 'dark' || resolvedTheme === 'dark' ? 'light' : 'dark')
         }}
-        className={`${
-          enabled ? "bg-cyan-700" : "bg-slate-500"
-        } relative inline-flex h-14 w-28 items-center rounded-full mt-4`}
+        className={`${mounted && (theme === 'dark' || resolvedTheme === 'dark') ? "bg-cyan-700" : "bg-slate-500"
+          } relative inline-flex h-14 w-28 items-center rounded-full mt-4`}
       >
-        <span className="sr-only">Enable notifications</span>
+        <span className="sr-only">Switch Themes</span>
 
         <Image
-          src={enabled ? "/moon.png" : "/sun.png"}
+          src={mounted && (theme === 'dark' || resolvedTheme === 'dark') ? "/moon.png" : "/sun.png"}
           width={50}
           height={50}
-          className={`${
-            enabled ? "translate-x-14" : "translate-x-1"
-          } inline-block transform rounded-full bg-orange-500 transition`}
+          className={`${mounted && (theme === 'dark' || resolvedTheme === 'dark') ? "translate-x-14" : "translate-x-1"
+            } inline-block transform rounded-full bg-orange-500 transition`}
           alt={"Laptop Icon"}
         />
       </Switch>
