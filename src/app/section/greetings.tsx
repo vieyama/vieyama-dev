@@ -1,13 +1,12 @@
 "use client";
 
-import { Portofolio, baseUrl } from "@/utils/directusClient";
 import { Switch } from "@headlessui/react";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import { useEffect, useState } from "react";
 import { TypeAnimation } from "react-type-animation";
 
-export default function Greetings({ data }: { data: Portofolio }) {
+export default function Greetings() {
   const [mounted, setMounted] = useState(false)
   const { theme, setTheme, resolvedTheme } = useTheme()
 
@@ -19,30 +18,48 @@ export default function Greetings({ data }: { data: Portofolio }) {
       className="flex flex-col items-center justify-center min-h-screen bg-orange-100 dark:bg-slate-700"
     >
       <Image
-        src={mounted && (theme === 'dark' || resolvedTheme === 'dark') ? `${baseUrl}/assets/${data.HeaderLogoDark}` : `${baseUrl}/assets/${data.HeaderLogoLight}`}
+        src={mounted && (theme === 'dark' || resolvedTheme === 'dark') ? "/laptop-code-white.png" : "/laptop-code.png"}
         width={200}
         height={200}
         alt={"Laptop Icon"}
       />
-      <h1 className="mb-2 text-2xl md:text-3xl">{data.Fullname}</h1>
+      <h1 className="mb-2 text-2xl md:text-3xl">Yovie Fesya Pratama</h1>
       <TypeAnimation
-        sequence={[data.Title, 500]}
+        sequence={["Fullstack Developer", 500]}
         wrapper="h1"
         cursor={true}
         repeat={Infinity}
         className="text-2xl font-bold md:text-5xl"
       />
       <div className="flex flex-wrap justify-center gap-4 mt-8 mb-4">
-        {data.Links.map(link => (
-          <a
-            key={link.id}
-            href={link.Url}
-            target="_blank"
-            className="p-2 border-2 border-black dark:border-white"
-          >
-            {link.Display}
-          </a>
-        ))}
+        <a
+          href="https://github.com/vieyama"
+          target="_blank"
+          className="p-2 border-2 border-black dark:border-white"
+        >
+          Github
+        </a>
+        <a
+          href="https://www.linkedin.com/in/yovie-fesya"
+          target="_blank"
+          className="p-2 border-2 border-black dark:border-white"
+        >
+          LinkedIn
+        </a>
+        <a
+          href="mailto:yoviefp@gmail.com"
+          target="_blank"
+          className="p-2 border-2 border-black dark:border-white"
+        >
+          Email (yoviefp@gmail.com)
+        </a>
+        <a
+          href="https://drive.google.com/file/d/1mklOGj6U5s9rZfy7OZMLcFO7ezf8jLCj/view?usp=sharing"
+          target="_blank"
+          className="p-2 border-2 border-black dark:border-white"
+        >
+          My CV
+        </a>
       </div>
       <Switch
         checked={mounted && (theme === 'dark' || resolvedTheme === 'dark')}
