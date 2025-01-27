@@ -54,7 +54,7 @@ export default function Greetings() {
           Email (yoviefp@gmail.com)
         </a>
         <a
-          href="https://www.canva.com/design/DAFmQgASIXw/QHxuVb-MY_1K-Ur_Sd8NKg/view?utm_content=DAFmQgASIXw&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=h1515c03051"
+          href="https://www.canva.com/design/DAGdZE-lpxA/Dc3lQgaAhFDchIHMRkr2Ug/view?utm_content=DAGdZE-lpxA&utm_campaign=designshare&utm_medium=link2&utm_source=uniquelinks&utlId=hdab5574f6a"
           target="_blank"
           className="p-2 border-2 border-black dark:border-white"
         >
