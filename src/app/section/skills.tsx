@@ -13,11 +13,11 @@ const Skills: React.FC<{}> = () => {
           <li>ReactJS</li>
           <li>Angular</li>
           <li>NextJS</li>
+          <li>Supabase</li>
           <li>NestJS</li>
           <li>NodeJS</li>
           <li>Redux</li>
           <li>Jotai</li>
-          <li>WordPress</li>
           <li>Laravel</li>
         </ul>
         <ul className="max-w-md space-y-1 list-disc list-inside">
@@ -32,6 +32,7 @@ const Skills: React.FC<{}> = () => {
           <li>Jest / React Testing Library</li>
           <li>GIT</li>
           <li>Docker</li>
+          <li>WordPress</li>
         </ul>
       </div>
     </div>

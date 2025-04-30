@@ -3,7 +3,6 @@
 import { Button, Dialog, DialogPanel, DialogTitle } from '@headlessui/react'
 import { useRouter } from 'next/navigation'
 import { ReactNode, useState } from 'react'
-import { Popover, PopoverButton, PopoverPanel } from '@headlessui/react'
 
 export default function ProjectModal({ display, title, url, description }: { display: ReactNode, title: string, url: string, description: string }) {
     const [isOpen, setIsOpen] = useState(false)
